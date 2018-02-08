@@ -1,0 +1,85 @@
+@startuml
+
+class UserContent
+
+abstract class User {
+    userId
+    username
+    firstName
+    lastName
+    email
+    password
+    following
+    followers
+}
+
+User "..*" *-- LinkedAccount
+class LinkedAccount {
+    site
+    userInfo
+}
+User "..*" *-- UserContent
+User "1" *-- UserSettings
+User "..*" *-- Recommendation
+User "1..*" *-- Playlist
+
+class UserSettings {
+    notificationPreferences
+    blockedUserIds[]
+}
+
+class Recommendation {
+    movieId
+    recommenderIds
+}
+
+class Playlist {
+    movieIds
+}
+
+Playlist "..*" *-- Comment
+Playlist "1" *-- Rating
+
+abstract class Content
+Content "0..1" *-- Content : parent
+
+abstract class UserContent extends Content {
+    contentId
+    userId
+}
+class Comment extends UserContent {
+    text
+}
+
+class Review extends UserContent {
+    text
+}
+Review "1" *-- Rating
+Review "..*" *-- Comment
+
+class Movie extends Content {
+    id
+    name
+    description
+    productionInfo
+    photo
+}
+
+Movie "1..*" *-- Rating
+Movie "..*" *-- Review
+Movie "..*" *-- AffiliateCode
+Movie "..*" *-- DistributionLink
+
+class AffiliateCode {
+    code
+    provider
+}
+
+class DistributionLink {
+    link
+}
+
+interface Rating {
+    getRating()
+}
+@enduml
