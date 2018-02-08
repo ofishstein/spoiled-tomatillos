@@ -1,0 +1,5 @@
+# ignore packaged app
+*.zip
+
+# ignore locally installed packages
+node_modules
