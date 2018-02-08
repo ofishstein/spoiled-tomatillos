@@ -1,0 +1,16 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to {{ title }}!
+  </h1>
+</div>
+<a routerLink="api/hello/string">Get hello string</a>
+<br />
+<a routerLink="api/hello/object">Get hello object</a>
+<br />
+<a routerLink="api/hello/insert">Insert hello object</a>
+<br />
+<a routerLink="api/hello/insert/JPA is awesome">Insert "JPA is awesome"</a>
+<br />
+<a routerLink="api/hello/select/all">Select all hello objects</a>
+<br />
+<router-outlet></router-outlet>
