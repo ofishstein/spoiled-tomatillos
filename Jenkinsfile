@@ -10,7 +10,8 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'cd /spoiled-tomatillos-client/ && npm install' 
+            	sh 'ls'
+                sh 'cd spoiled-tomatillos-client/ && npm install' 
             }
         }
     }
