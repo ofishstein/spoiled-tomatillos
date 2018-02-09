@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
-echo 'going to project client directory'
-cd spoiled-tomatillos-client/
+echo 'going to project server directory'
+cd spoiled-tomatillos-server/
 
 echo 'The following "npm" command (if executed) installs the "cross-env"'
 echo 'dependency into the local "node_modules" directory, which will ultimately'
