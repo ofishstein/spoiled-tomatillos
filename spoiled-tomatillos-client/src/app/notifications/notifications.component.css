@@ -1,0 +1,13 @@
+div.border {
+    border-color: black !important;
+    border-collapse: collapse !important;
+}
+
+div.border:hover {
+    background-color: lightgoldenrodyellow;
+}
+
+a {
+    /*color: inherit; we may or may not want this*/
+    text-decoration: none;
+}
