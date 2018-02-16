@@ -8,13 +8,15 @@ import { AppRoutingModule } from './/app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HelloComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
