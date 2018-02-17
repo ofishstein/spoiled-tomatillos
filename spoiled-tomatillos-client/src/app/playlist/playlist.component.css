@@ -1,0 +1,8 @@
+.row.st-display-flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+.row.st-display-flex > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div id="watchlist" class="panel panel-info">
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <a routerLink="#!/profile/">
+          <span class="glyphicon glyphicon-chevron-left"></span></a>
+          Watchlist</h1>
+    </div>
+    <div class="panel-body">
+      <div class="row st-display-flex">
+        <div class="col-xs-6 col-sm-3" *ngFor="let movie of playlist">
+          <div class="thumbnail">
+            <a routerLink="#!/movie/">
+              <div class="caption">
+                <h4>{{ movie.Title }}</h4>
+              </div>
+              <img src="{{ movie.Poster }}"/>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--<nav aria-label="Page navigation">-->
+    <!--<ul class="pagination">-->
+      <!--<li>-->
+        <!--<a href="" (click)="" aria-label="Previous">-->
+          <!--<span aria-hidden="true">&laquo;</span>-->
+        <!--</a>-->
+      <!--</li>-->
+
+      <!--<li *ngFor="let page of pages">-->
+        <!--<a href="" (click)="">{{page}}</a>-->
+      <!--</li>-->
+
+      <!--<li>-->
+        <!--<a href="" (click)="" aria-label="Next">-->
+          <!--<span aria-hidden="true">&raquo;</span>-->
+        <!--</a>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</nav>-->
+</div>
