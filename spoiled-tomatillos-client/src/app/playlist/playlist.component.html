@@ -1,20 +1,20 @@
-<div class="container-fluid">
-  <div id="watchlist" class="panel panel-info">
-    <div class="panel-heading">
-      <h1 class="panel-title">
-        <a routerLink="#!/profile/">
-          <span class="glyphicon glyphicon-chevron-left"></span></a>
-          Watchlist</h1>
-    </div>
-    <div class="panel-body">
-      <div class="row st-display-flex">
-        <div class="col-xs-6 col-sm-3" *ngFor="let movie of playlist">
-          <div class="thumbnail">
-            <a routerLink="#!/movie/">
-              <div class="caption">
-                <h4>{{ movie.Title }}</h4>
-              </div>
-              <img src="{{ movie.Poster }}"/>
+<div class="container-fluid justify-content-center">
+  <div id="watchlist" class="card bg-light mb-3 col-xs-12 col-sm-10 offset-sm-1">
+    <h1 class="card-header">
+      <a routerLink="#!/profile/">
+        <i class="material-icons">chevron_left</i>
+      </a>
+      Watchlist
+    </h1>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-3" *ngFor="let movie of playlist">
+          <div class="st-thumbnail">
+            <div class="st-toolbar-overlay">
+              <i (click)="removeFromPlaylist(movie.id)" class="material-icons">delete</i>
+            </div>
+            <a routerLink="movie/{{ movie.id }}">
+              <img class="st-thumbnail-img" src="{{ movie.Poster }}"/>
             </a>
           </div>
         </div>

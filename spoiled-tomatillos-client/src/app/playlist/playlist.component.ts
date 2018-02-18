@@ -33,4 +33,8 @@ export class PlaylistComponent implements OnInit {
     ];
   }
 
+  removeFromPlaylist(movieId: int) : void {
+    // call service to remove given movie from user's playlist
+  }
+
 }
