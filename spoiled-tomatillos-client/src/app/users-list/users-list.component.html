@@ -1,5 +1,5 @@
 <div class="container-fluid justify-content-center">
-  <div class="col-xs-12 col-sm-10 offset-sm-1">
+  <div class="col-xs-10 col-sm-10 offset-xs-1 offset-sm-1">
   <div id="{{ listType }}" class="card bg-light mb-3">
     <h1 class="card-header">
       <a routerLink="/user/{{ uid }}">
@@ -10,10 +10,12 @@
     <div class="card-body">
       <div class="card-deck justify-content-center">
         <div  *ngFor="let user of users">
-          <div class="card m-3">
+          <div class="card m-3 st-card-wrapper">
             <a routerLink="/user/{{ user.id }}">
               <div class="card-img-top">
-                <img class="st-user-thumbnail" src="{{ user.profileImageUrl }}">
+                <img class="st-user-thumbnail" [style.width.px]="user.style.width"
+                     [style.height.px]="user.style.height"
+                     src="{{ user.profileImage.url }}">
               </div>
               <div class="card-title m-2">
                 <h4>{{ user.username }}</h4>

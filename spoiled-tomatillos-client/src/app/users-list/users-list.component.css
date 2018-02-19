@@ -1,7 +1,19 @@
-.st-user-thumbnail {
-  width: 100%;
-  height: auto;
+.st-card-wrapper {
+  width: 200px;
+}
 
+.card-img-top {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.st-user-thumbnail {
+  margin: auto;
+  display: block;
+  padding: 5px;
 }
 
 .st-navigate-back {
