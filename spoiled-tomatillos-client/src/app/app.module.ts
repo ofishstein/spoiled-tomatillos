@@ -8,6 +8,7 @@ import { AppRoutingModule } from './/app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
 
@@ -17,6 +18,7 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     HelloComponent,
     NotificationsComponent,
+    HomeComponent,
     AccountSettingsComponent,
     LoginComponent
   ],
