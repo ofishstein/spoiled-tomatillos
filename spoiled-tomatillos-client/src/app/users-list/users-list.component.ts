@@ -23,11 +23,11 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit() {
     this.users = [
-      {userId: 124, username: "bob", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
-      {userId: 124, username: "bob", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: true},
-      {userId: 124, username: "bob", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
-      {userId: 124, username: "bob", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
-      {userId: 124, username: "bob", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: true}
+      {userId: 124, username: "bob_lob_law", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
+      {userId: 125, username: "fred124", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: true},
+      {userId: 126, username: "jane", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
+      {userId: 127, username: "ann_23sdf", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: false},
+      {userId: 128, username: "shreksy_lexy", profileImageUrl: "../../assets/profile_image_placeholder.png", isFollowing: true}
     ];
     // if (this.listType == 'followers') {
     //   this.getFollowers();
