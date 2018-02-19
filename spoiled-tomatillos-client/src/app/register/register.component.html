@@ -1,26 +1,51 @@
 <div class="container">
     <h2>Register</h2>
-    <form name="form">
-    	<div class="form-group">
-    		<label for="email">Email</label>
-            <input type="email" class="form-control" name="email"/>
-    	</div>
-    	<div class="form-group">
-    		<label for="username">Username</label>
-            <input type="text" class="form-control" name="username"/>
-    	</div>
-    	<div class="form-group">
-    		<label for="password">Password</label>
-            <input type="password" class="form-control" name="password"/>
-    	</div>
-    	<div class="form-group">
-    		<label for="confirm-password">Confirm Password</label>
-            <input type="password" class="form-control" name="confirm-password"/>
-    	</div>
-    	<!-- TODO profile picture uploading -->
-    	<div class="form-group">
-            <button class="btn btn-primary">Register</button>
-            <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+    <form name="form" class="p-2">
+        <div class="form-row">
+            <div class="form-group col-12 col-sm-3">
+                <div class="form-row">
+                    <div class="col-12" style="text-align: center">
+                        <img class="img-fluid" src="http://lorempixel.com/200/300">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12" style="text-align: center">
+                        <input type="button" class="btn btn-sm btn-outline-primary mt-1" value="Upload Photo">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12 col-sm-9">
+                <div class="form-row form-group">
+                    <div class="col-6">
+                        <label for="firstName">First</label>
+                        <input type="text" class="form-control" id="firstName">
+                    </div>
+                    <div class="col-6">
+                        <label for="lastName">Last</label>
+                        <input type="text" class="form-control" id="lastName">
+                    </div>
+                </div>
+            	<div class="form-group">
+            		<label for="email">Email</label>
+                    <input type="email" class="form-control" name="email"/>
+            	</div>
+            	<div class="form-group">
+            		<label for="username">Username</label>
+                    <input type="text" class="form-control" name="username"/>
+            	</div>
+            	<div class="form-group">
+            		<label for="password">Password</label>
+                    <input type="password" class="form-control" name="password"/>
+            	</div>
+            	<div class="form-group">
+            		<label for="confirm-password">Confirm Password</label>
+                    <input type="password" class="form-control" name="confirm-password"/>
+            	</div>
+            	<div class="form-group">
+                    <button class="btn btn-primary">Register</button>
+                    <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
         </div>
     </form>
 </div>
