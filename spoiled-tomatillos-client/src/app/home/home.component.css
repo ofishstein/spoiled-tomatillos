@@ -1,0 +1,21 @@
+div.description {
+    text-align: center;
+}
+
+@media(min-width: 768px) {
+    div.description {
+        text-align: left;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+div.mb-1 {
+    border: 1px solid lightslategray;
+}
+  div.mb-1:hover {
+      background-color: lightgoldenrodyellow;
+  }
