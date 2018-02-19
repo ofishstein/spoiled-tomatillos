@@ -9,6 +9,8 @@ import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HomeComponent } from './home/home.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { HomeComponent } from './home/home.component';
     AppComponent,
     HelloComponent,
     NotificationsComponent,
-    HomeComponent
+    HomeComponent,
+    AccountSettingsComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
