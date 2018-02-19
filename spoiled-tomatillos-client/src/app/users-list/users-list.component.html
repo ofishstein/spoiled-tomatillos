@@ -3,12 +3,11 @@
   <div id="{{ listType }}" class="card bg-light mb-3">
     <h1 class="card-header">
       <a routerLink="/user/{{ uid }}">
-        <i class="material-icons">chevron_left</i>
+        <i class="material-icons st-navigate-back">chevron_left</i>
       </a>
       {{ listTitle }}
     </h1>
     <div class="card-body">
-      <!--<div class="container">-->
       <div class="card-deck justify-content-center">
         <div  *ngFor="let user of users">
           <div class="card m-3">
@@ -23,7 +22,7 @@
             </a>
             <div class="card-footer">
               <div *ngIf="user.isFollowing; else followButton">
-                <button id="follow-btn" class="btn btn-secondary" (click)="unfollow(user.id)">
+                <button id="unfollow-btn" class="btn btn-secondary" (click)="unfollow(user.id)">
                   <i class="material-icons st-icon">remove_circle</i>Unfollow
                 </button>
               </div>
@@ -40,7 +39,6 @@
     </div>
   </div>
   </div>
-  <!--</div>-->
 
   <!--<nav aria-label="Page navigation">-->
   <!--<ul class="pagination">-->
