@@ -6,6 +6,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -16,7 +17,8 @@ const routes = [
   { path: 'notifications', component: NotificationsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
-  { path: 'login', component: LoginComponent}
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent }
 ];
 
 @NgModule({
