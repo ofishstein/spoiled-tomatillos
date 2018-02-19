@@ -8,9 +8,12 @@ import { AppRoutingModule } from './/app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { NotificationsComponent } from './notifications/notifications.component';
+<<<<<<< HEAD
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
+=======
+>>>>>>> d56726bc3d7623a00c2eb1bc09ea2551d8cb86ab
 import { RegisterComponent } from './register/register.component';
 
 
