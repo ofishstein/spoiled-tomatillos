@@ -18,7 +18,7 @@ const routes = [
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
   { path: 'login', component: LoginComponent},
-  { path: 'user/:uid/watchlist', component: PlaylistComponent }
+  { path: 'user/:uid/playlist', component: PlaylistComponent }
 ];
 
 @NgModule({
