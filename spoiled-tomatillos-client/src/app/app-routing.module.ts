@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const routes = [
@@ -25,7 +26,8 @@ const routes = [
   { path: 'admin/create', component: AdminRegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'admin/login', component: AdminLoginComponent }
+  { path: 'search', component: SearchComponent },
+  { path: 'admin/login', component: AdminLoginComponent}
 ];
 
 @NgModule({

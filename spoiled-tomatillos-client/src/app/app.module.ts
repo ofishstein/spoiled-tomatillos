@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -28,12 +30,14 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
     PlaylistComponent,
     AdminRegisterComponent,
     RegisterComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [HelloService],
   bootstrap: [AppComponent]
