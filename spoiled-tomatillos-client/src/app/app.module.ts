@@ -12,6 +12,9 @@ import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { AdminRegisterComponent } from './admin-register/admin-register.component';
+import { RegisterComponent } from './register/register.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 
 @NgModule({
@@ -22,7 +25,10 @@ import { PlaylistComponent } from './playlist/playlist.component';
     HomeComponent,
     AccountSettingsComponent,
     LoginComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    AdminRegisterComponent,
+    RegisterComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,
