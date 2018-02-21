@@ -1,0 +1,46 @@
+<div class="container-fluid justify-content-center">
+  <div class="col-xs-12 col-sm-10 offset-sm-1">
+    <div id="watchlist" class="card bg-light mb-3">
+      <h1 class="card-header">
+        <a routerLink="#!/profile/">
+          <i class="material-icons">chevron_left</i>
+        </a>
+        Playlist
+      </h1>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-3" *ngFor="let movie of playlist">
+            <div class="st-thumbnail">
+              <div class="st-toolbar-overlay">
+                <i (click)="removeFromPlaylist(movie.id)" class="material-icons">delete</i>
+              </div>
+              <a routerLink="movie/{{ movie.id }}">
+                <img class="st-thumbnail-img" src="{{ movie.Poster }}"/>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--<nav aria-label="Page navigation">-->
+      <!--<ul class="pagination">-->
+        <!--<li>-->
+          <!--<a href="" (click)="" aria-label="Previous">-->
+            <!--<span aria-hidden="true">&laquo;</span>-->
+          <!--</a>-->
+        <!--</li>-->
+
+        <!--<li *ngFor="let page of pages">-->
+          <!--<a href="" (click)="">{{page}}</a>-->
+        <!--</li>-->
+
+        <!--<li>-->
+          <!--<a href="" (click)="" aria-label="Next">-->
+            <!--<span aria-hidden="true">&raquo;</span>-->
+          <!--</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</nav>-->
+  </div>
+</div>
