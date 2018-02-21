@@ -10,6 +10,8 @@ import { AdminRegisterComponent } from './admin-register/admin-register.componen
 import { RegisterComponent } from './register/register.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
+
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -24,7 +26,8 @@ const routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'admin/login', component: AdminLoginComponent },
-  { path: 'admin/addmovie', component: AddMovieComponent }
+  { path: 'admin/movie/add', component: AddMovieComponent },
+  { path: 'admin/movie/edit/:movie', component: EditMovieComponent }
 ];
 
 @NgModule({
