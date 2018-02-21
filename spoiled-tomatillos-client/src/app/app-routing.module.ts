@@ -6,6 +6,8 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
+import { PlaylistComponent } from './playlist/playlist.component';
+import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegisterComponent } from './register/register.component';
 import { SearchComponent } from './search/search.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
@@ -19,6 +21,9 @@ const routes = [
   { path: 'notifications', component: NotificationsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
+  { path: 'login', component: LoginComponent},
+  { path: 'user/:uid/playlist', component: PlaylistComponent },
+  { path: 'admin/create', component: AdminRegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'search', component: SearchComponent },
