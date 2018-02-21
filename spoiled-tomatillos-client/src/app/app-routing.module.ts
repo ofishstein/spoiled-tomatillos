@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 const routes = [
@@ -19,7 +20,8 @@ const routes = [
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'search', component: SearchComponent },
   { path: 'admin/login', component: AdminLoginComponent}
 ];
 
