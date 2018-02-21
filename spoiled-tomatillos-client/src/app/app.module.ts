@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
 import { AdminRegisterComponent } from './admin-register/admin-register.component';
+import { RegisterComponent } from './register/register.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { AdminRegisterComponent } from './admin-register/admin-register.componen
     HomeComponent,
     AccountSettingsComponent,
     LoginComponent,
-    AdminRegisterComponent 
+    AdminRegisterComponent,
+    RegisterComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,
