@@ -19,6 +19,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MovieComponent } from './movie/movie.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
+import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -37,6 +38,7 @@ const routes = [
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/movie/add', component: AddMovieComponent },
   { path: 'admin/movie/edit/:movie', component: EditMovieComponent },
+  { path: 'admin/user/:uid', component: AdminUserDetailComponent },
   { path: 'admin/home', component: AdminHomeComponent },
   { path: 'user/:uid/:listType', component: UsersListComponent },
   { path: 'user/:uid', component: UserProfileComponent },

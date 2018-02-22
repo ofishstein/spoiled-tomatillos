@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>User Detail View</h2>
+    </div>
+  </div>
+
+  <div *ngIf="userInfo" class="row border p-2">
+    <h4>User Overview</h4>
+    <div class="col-12 border">
+      <div *ngFor="let propertyName of getOwnPropertyNames(userInfo)" class="row">
+        <div class="col-3 border">{{ propertyName | titlecase }}</div>
+        <div *ngIf="!isDate(userInfo[propertyName])" class="col-9 border">{{ userInfo[propertyName] }}</div>
+        <div *ngIf="isDate(userInfo[propertyName])" class="col-9 border">{{ userInfo[propertyName] | date:'shortDate' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="cases" class="row border mt-2 p-2" style="background-color: lightgoldenrowyellow">
+    <h4>Case Listing</h4>
+    <div class="col-12">
+      <div *ngFor="let case of cases" class="row border mb-3 aCase">
+        <div *ngFor="let propertyName of getOwnPropertyNames(case)" class="col-12">
+          <div class="row">
+          <div class="col-3 border">{{ propertyName | titlecase }}</div>
+          <div *ngIf="!isDate(case[propertyName])" class="col-9 border">{{ case[propertyName] }}</div>
+          <div *ngIf="isDate(case[propertyName])" class="col-9 border">{{ case[propertyName] | date:'shortDate' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
