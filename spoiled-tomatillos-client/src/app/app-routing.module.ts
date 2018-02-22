@@ -31,7 +31,7 @@ const routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/movie/add', component: AddMovieComponent },
-  { path: 'admin/movie/edit/:movie', component: EditMovieComponent }
+  { path: 'admin/movie/edit/:movie', component: EditMovieComponent },
   { path: 'search', component: SearchComponent }
 ];
 

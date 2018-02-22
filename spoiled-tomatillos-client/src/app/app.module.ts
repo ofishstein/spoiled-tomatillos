@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
+import { UsersService } from './users.service';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
@@ -43,7 +44,7 @@ import { SearchComponent } from './search/search.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [HelloService],
+  providers: [HelloService, UsersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
