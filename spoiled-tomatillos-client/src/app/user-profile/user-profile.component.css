@@ -1,0 +1,52 @@
+.card {
+  margin-bottom: 25px;
+}
+
+.card-header {
+  padding-top: 5px;
+  padding-bottom: 0;
+}
+
+.card-body {
+  margin: 5px;
+  padding: 10px;
+
+}
+
+.st-follower-thumbnail {
+  width: 100px;
+  height: 100px;
+}
+
+.nav-link.active {
+  font-size: large;
+  font-weight: 700;
+}
+
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.row.display-flex > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+
+#activityTabs .card-header {
+  padding-bottom: 12px;
+}
+
+.st-thumbnail {
+  height: 96%;
+  align-content: center;
+  padding: 5px;
+  border: solid;
+  border-color: slategray;
+  margin: 5px;
+  border-width: 1px;
+}
+
+img.st-thumbnail-img {
+  width: 100%;
+  height: 100%;
+}

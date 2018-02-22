@@ -1,0 +1,183 @@
+<div class="container-fluid">
+  <div class="hidden-xs col-sm-10 offset-sm-1">
+    <div class="row">
+    <!-- desktop view - right side displays profile image, bio, followers, following -->
+    <div class="col-sm-4">
+
+      <!-- profile image, user info, bio -->
+      <div #userInfoContainer id="user-info" class="card bg-light">
+        <div class="card-header bg-light">
+          <h1>{{ user.username }}</h1>
+        </div>
+        <div class="card-body">
+          <div class="card-img-top st-profile-image mb-3">
+            <img class="img-responsive" width="100%" src="{{ user.profileImage.url }}">
+          </div>
+          <div id="bio">
+            {{ user.bio }}
+          </div>
+        </div>
+      </div>
+
+      <!-- following -->
+      <div #followingContainer id="following" class="card bg-light">
+        <div class="card-header bg-light">
+          <h5>Following</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!--display-flex justify-content-center">-->
+            <div class="col-xs-4" *ngFor="let foll of user.following | slice:0:5">
+              <div class="card ml-2 mr-2 mb-2">
+                <a routerLink="/user/{{ foll.userId }}">
+                  <div class="card-img-top">
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.profileImage.url }}"
+                         width="100%" height="auto"/>
+                  </div>
+                  <div class="card-title mb-0 text-center">
+                    <small>{{ foll.username }}</small>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="text-right">
+            <a routerLink="following"><small class="text-muted">View all >></small></a>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- followers -->
+      <div #followersContainer id="followers" class="card bg-light">
+        <div class="card-header bg-light">
+          <h5>Followers</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!--display-flex justify-content-center">-->
+            <div class="col-xs-4" *ngFor="let follower of user.followers | slice:0:5">
+              <div class="card ml-2 mr-2 mb-2">
+                <a routerLink="/user/{{ follower.userId }}">
+                  <div class="card-img-top">
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.profileImage.url }}"
+                         width="100%" height="auto"/>
+                  </div>
+                  <div class="card-title mb-0 text-center">
+                    <small>{{ follower.username }}</small>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="text-right">
+            <a routerLink="followers"><small class="text-muted">View all >></small></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- desktop view - left side displays playlist, recent activity and reviews -->
+    <div class="col-sm-8">
+
+      <!-- playlist -->
+      <div #playlist class="card bg-light">
+        <div class="card-header bg-light">
+          <h4>Playlist</h4>
+        </div>
+
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-3" *ngFor="let movie of user.playlist | slice:0:5">
+              <div class="st-thumbnail">
+                <a routerLink="movie/{{ movie.id }}">
+                  <img class="st-thumbnail-img" src="{{ movie.Poster }}"/>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="text-right">
+            <a routerLink="playlist"><small class="text-muted">View all >></small></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- recent activity and reviews -->
+      <div #activityTabs id="activityTabs" class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" data-target="#recentActivityTab">Recent Activity</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" data-target="#reviewsTab">Reviews</a>
+            </li>
+          </ul>
+        </div>
+        <div class="card-body">
+          <div class="tab-content">
+
+            <!-- recent activity -->
+            <div class="tab-pane active container" id="recentActivityTab">
+              <!--<div *ngFor="let activity of recentActivity">-->
+              <div class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/movie/1">
+                  <img class="d-flex align-self-center mr-3"
+                     src="https://images-na.ssl-images-amazon.com/images/M/MV5BMjE4NTA1NzExN15BMl5BanBnXkFtZTYwNjc3MjM3._V1_SX300.jpg"
+                       height="100px" width="auto">
+                </a>
+                <div class="media-body">
+                  <p class="text-left">john_doe reviewed
+                    <a routerLink="/movie/1">How to Lose a Guy in 10 Days</a>
+                  <br/>
+                  </p>
+                  <p class="text-muted text-right"><small>18h ago</small></p>
+                </div>
+              </div>
+
+              <div class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/movie/1">
+                  <img class="d-flex align-self-center mr-3"
+                     src="https://images-na.ssl-images-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
+                       height="100px" width="auto">
+                </a>
+                <div class="media-body">
+                  <p class="text-left">john_doe suggested
+                    <a routerLink="/movie/1">Shrek</a> to <a routerLink="/user/1">shreksy_lexy</a>
+                  </p>
+                  <p class="text-muted text-right"><small>3d ago</small></p>
+                </div>
+              </div>
+              <!--</div>-->
+            </div>
+
+            <!-- reviews -->
+            <div class="tab-pane container" id="reviewsTab">
+              reviews
+              <div class="card-footer">
+                <div class="text-right">
+                  <a routerLink="reviews"><small class="text-muted">View all >></small></a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!--&lt;!&ndash; mobile view &ndash;&gt;-->
+  <!--<div class="col-xs-12 hidden-sm hidden-md hidden-lg">-->
+    <!--<ng-container ngTemplateOutlet="userInfoContainer">-->
+
+    <!--</ng-container>-->
+
+  <!--</div>-->
+</div>
+</div>
+</div>
