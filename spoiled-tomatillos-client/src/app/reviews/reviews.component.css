@@ -1,0 +1,22 @@
+/*.review-container {*/
+  /*height: 8.5em;*/
+/*}*/
+
+/*.st-trunc-text {*/
+  /*max-height: 7em;*/
+  /*overflow: hidden;*/
+  /*position: relative;*/
+  /*display: block;*/
+  /*line-height: 1.5em;*/
+/*}*/
+
+/*.st-trunc-text::before {*/
+  /*background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, white 50%);*/
+  /*content: '\200C';*/
+  /*display: block;*/
+  /*position: absolute;*/
+  /*right: 0;*/
+  /*top: 5.5em;*/
+  /*width: 25%;*/
+  /*text-align: center;*/
+/*}*/

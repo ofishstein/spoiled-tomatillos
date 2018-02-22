@@ -23,6 +23,8 @@ import { SearchComponent } from './search/search.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { MovieComponent } from './movie/movie.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 
 
@@ -44,6 +46,8 @@ import { AdminSearchComponent } from './admin-search/admin-search.component';
     AdminHomeComponent,
     UsersListComponent,
     UserProfileComponent,
+    ReviewsComponent,
+    MovieComponent,
     AdminSearchComponent
   ],
   imports: [

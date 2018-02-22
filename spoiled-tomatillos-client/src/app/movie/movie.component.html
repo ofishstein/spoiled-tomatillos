@@ -1,0 +1,92 @@
+<div class="container-fluid">
+  <div class="col-xs-12 col-sm-10 mx-auto">
+    <!--<div class="card bg-light">-->
+      <!--<div class="media row">-->
+        <!--<div class="col-xs-4">-->
+        <!--<img class="d-flex align-self-top p-4"-->
+             <!--src="{{ movie.poster }}">-->
+        <!--<div class="media-body">-->
+          <!--<div class="card-header bg-light m-3">-->
+            <!--<h1>{{ movie.title }}</h1>  <small class="text-muted">({{ movie.year }})</small>-->
+            <!--<span class="align-right">-->
+              <!--<input type="hidden" class="rating"-->
+                     <!--data-filled="material-icons star" data-empty="glyphicon glyphicon-heart-empty"/>-->
+            <!--</span>-->
+            <!--<div class="card-title text-muted">-->
+              <!--<small>{{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+    <div class="row">
+      <!-- movie poster -->
+      <div class="col-xs-4 col-sm-4">
+        <img class="img-fluid" src="{{ movie.poster }}">
+      </div>
+
+      <!-- movie header -->
+      <div class="col-xs-8 col-sm-8">
+        <div class="card bg-light">
+          <h1 class="card-header">
+            <span class="text-left">{{ movie.title }}</span>
+            <span class="text-right">{{ movie.rating }} / 10</span>
+          </h1>
+          <div class="card-title text-muted m-1">
+            <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
+            <br/>
+            <button class="btn btn-primary m-3">
+              <i class="material-icons">add_to_queue</i>  Add to Playlist
+            </button>
+            <button class="btn btn-primary m-3">
+              <i class="material-icons">star</i>  Add Rating
+            </button>
+            <button class="btn btn-primary m-3">
+              <i class="material-icons">share</i>  Suggest to a Friend
+            </button>
+          </div>
+
+          <div class="card-body">
+            <p>{{ movie.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-light mt-3">
+      <h4 class="card-header">Reviews</h4>
+      <ng-container *ngTemplateOutlet="reviewsList"></ng-container>
+      <div class="card-footer">
+        <div class="text-right">
+          <a routerLink="reviews"><small class="text-muted">View all >></small></a>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #reviewsList class="card-body">
+      <div class="row m-3 border-bottom" *ngFor="let review of reviews | slice:0:3">
+        <div class="media">
+          <div class="card ml-2 mr-2 mb-2">
+            <a routerLink="/user/{{ review.user.userId }}">
+              <div class="card-img-top">
+                <img class="rounded mx-auto img-thumbnail" src="{{ review.user.profileImageUrl }}"
+                     width="150px" height="auto"/>
+              </div>
+              <div class="card-title mb-0 text-center">
+                <small>{{ review.user.username }}</small>
+              </div>
+            </a>
+          </div>
+
+          <div class="media-body">
+            <h5 class="mt-0">{{ review.title }}</h5>
+            <h6>{{ review.rating }} / 10</h6>
+            <p>{{ review.text }}</p>
+          </div>
+        </div>
+
+      </div>
+    </ng-template>
+  </div>
+</div>

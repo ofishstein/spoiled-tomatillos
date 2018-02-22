@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 
 @Component({
   selector: 'app-user-profile',
@@ -11,6 +10,8 @@ export class UserProfileComponent implements OnInit {
   private uid: number;
   private user: any;
   private isFollowing: boolean;
+  @ViewChild('reviewsList')
+  private reviewsListTemplate: TemplateRef<any>;
 
   constructor(private route: ActivatedRoute) {
     this.uid = parseInt(this.route.snapshot.params.uid);
@@ -51,7 +52,20 @@ export class UserProfileComponent implements OnInit {
         {id: 4, Title: 'Goon', Poster: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTcxOTQwMTQ3MF5BMl5BanBnXkFtZTcwMDcyOTQwNw@@._V1_SX300.jpg'},
         {id: 5, Title: 'Ex Machina', Poster: 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxNzc0OTIxMV5BMl5BanBnXkFtZTgwNDI3NzU2NDE@._V1_SX300.jpg'},
       ],
-      recentActivity: []};
+      reviews: [
+        {id: 1, title: 'Review Title', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin urna sem, porta mattis ipsum dignissim id. Maecenas rutrum, mauris et fermentum consectetur, purus lectus tincidunt est, non faucibus dui diam sed mauris. Integer nec urna justo. Suspendisse feugiat turpis ac nisl mollis convallis. Duis nec mi molestie, tempus ipsum nec, dapibus ipsum. Proin vulputate elementum mauris, non maximus nulla ornare a. In porttitor justo libero, eget eleifend libero eleifend tempor. Aenean et dapibus elit.',
+          rating: '10', user: {
+          userId: 123, username: 'john_doe', profileImageUrl: 'http://lorempixel.com/400/400/'
+        }},
+        {id: 1, title: 'Cool Movie', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin urna sem, porta mattis ipsum dignissim id. Maecenas rutrum, mauris et fermentum consectetur, purus lectus tincidunt est, non faucibus dui diam sed mauris. Integer nec urna justo. Suspendisse feugiat turpis ac nisl mollis convallis. Duis nec mi molestie, tempus ipsum nec, dapibus ipsum. Proin vulputate elementum mauris, non maximus nulla ornare a. In porttitor justo libero, eget eleifend libero eleifend tempor. Aenean et dapibus elit.',
+          rating: '7', user: {
+          userId: 123, username: 'john_doe', profileImageUrl: 'http://lorempixel.com/400/400/'
+        }},
+        {id: 1, title: 'It brought tears to my eyes.', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin urna sem, porta mattis ipsum dignissim id.',
+          rating: '8', user: {
+          userId: 123, username: 'john_doe', profileImageUrl: 'http://lorempixel.com/400/400/'
+        }}]
+    };
 
     this.isFollowing = false;
   }

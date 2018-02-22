@@ -16,6 +16,8 @@ import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MovieComponent } from './movie/movie.component';
+import { ReviewsComponent } from './reviews/reviews.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 
 const routes = [
@@ -38,6 +40,8 @@ const routes = [
   { path: 'admin/home', component: AdminHomeComponent },
   { path: 'user/:uid/:listType', component: UsersListComponent },
   { path: 'user/:uid', component: UserProfileComponent },
+  { path: 'movie/:id', component: MovieComponent },
+  { path: 'movie/:id/reviews', component: ReviewsComponent },
   { path: 'admin/search', component: AdminSearchComponent }
 ];
 
