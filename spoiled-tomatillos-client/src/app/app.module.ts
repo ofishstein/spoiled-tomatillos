@@ -20,6 +20,9 @@ import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { SearchComponent } from './search/search.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminSearchComponent } from './admin-search/admin-search.component';
 
 
 @NgModule({
@@ -37,7 +40,10 @@ import { AdminHomeComponent } from './admin-home/admin-home.component';
     AddMovieComponent,
     EditMovieComponent,
     SearchComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    UsersListComponent,
+    UserProfileComponent,
+    AdminSearchComponent
   ],
   imports: [
     BrowserModule,

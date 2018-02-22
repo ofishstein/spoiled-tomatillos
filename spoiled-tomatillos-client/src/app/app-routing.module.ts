@@ -14,7 +14,9 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
-
+import { UsersListComponent } from './users-list/users-list.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { AdminSearchComponent } from './admin-search/admin-search.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -33,7 +35,10 @@ const routes = [
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/movie/add', component: AddMovieComponent },
   { path: 'admin/movie/edit/:movie', component: EditMovieComponent },
-  { path: 'admin/home', component: AdminHomeComponent }
+  { path: 'admin/home', component: AdminHomeComponent },
+  { path: 'user/:uid/:listType', component: UsersListComponent },
+  { path: 'user/:uid', component: UserProfileComponent },
+  { path: 'admin/search', component: AdminSearchComponent }
 ];
 
 @NgModule({
