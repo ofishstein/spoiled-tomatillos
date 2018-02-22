@@ -6,7 +6,13 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
-
+import { PlaylistComponent } from './playlist/playlist.component';
+import { AdminRegisterComponent } from './admin-register/admin-register.component';
+import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AddMovieComponent } from './add-movie/add-movie.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { UsersListComponent } from './users-list/users-list.component';
 
 const routes = [
@@ -19,6 +25,14 @@ const routes = [
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
   { path: 'login', component: LoginComponent},
+  { path: 'user/:uid/playlist', component: PlaylistComponent },
+  { path: 'admin/create', component: AdminRegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/movie/add', component: AddMovieComponent },
+  { path: 'admin/movie/edit/:movie', component: EditMovieComponent },
+  { path: 'search', component: SearchComponent },
   { path: 'user/:uid/:listType', component: UsersListComponent }
 ];
 
