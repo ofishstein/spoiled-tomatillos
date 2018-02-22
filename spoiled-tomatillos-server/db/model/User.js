@@ -11,11 +11,11 @@ const User = session.define('users', {
   email: { type: Sequelize.STRING(255), unique: true },
   password: Sequelize.STRING(255),
   first: { type: Sequelize.STRING(63), field: 'first_name' },
-  last: { type: Sequelize.STRING(63), field: 'last_name' },
-  preferences: Sequelize.TEXT,
+  last: { type: Sequelize.STRING(63), field: 'last_name' }
 },
 {// don't forget to enable timestamps!
-   createdAt: 'create_time',
+  createdAt: 'create_time',
+  updatedAt: false
 }
 );
 
