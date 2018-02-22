@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Spoiled Tomatillos Admin Portal</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-sm-8">
+      <h2>User Case Management</h2>
+      <input type="search" class="form-control" placeholder="Search..">
+      <br>
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-fixed">
+          <thead>
+              <tr>
+                <th class="col-2">CaseId</th><th class="col-2">Date</th><th class="col-2">Status</th><th class="col-2">userId</th><th class="col-2">Flag Ct.</th><th class="col-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of userCases">
+                <td class="col-2">{{ row.id }}</td>
+                <td class="col-2">{{ formatDateStr(row.date) }}</td>
+                <!--<td class="col-2">{{ row.username }}</td>-->
+                <td class="col-2">{{ row.status }}</td>
+                <td class="col-2">{{ row.userId }}</td>
+                <td class="col-2">{{ row.flagCount }}</td>
+                <td class="col-2"><button type="button" class="btn btn-sm btn-outline-info">Action</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-4">
+      <h2>Movie Management</h2>
+      <button type="button" class="btn btn-info mb-2">Add New Movie</button><br>
+      <button type="button" class="btn btn-info mb-2">Edit Existing Movie</button><br>
+    </div>
+  </div>
+</div>

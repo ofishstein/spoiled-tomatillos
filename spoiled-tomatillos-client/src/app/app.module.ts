@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
+import { UsersService } from './users.service';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
@@ -19,10 +20,12 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { SearchComponent } from './search/search.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { MovieComponent } from './movie/movie.component';
+import { AdminSearchComponent } from './admin-search/admin-search.component';
 
 
 @NgModule({
@@ -40,10 +43,12 @@ import { MovieComponent } from './movie/movie.component';
     AddMovieComponent,
     EditMovieComponent,
     SearchComponent,
+    AdminHomeComponent,
     UsersListComponent,
     UserProfileComponent,
     ReviewsComponent,
-    MovieComponent
+    MovieComponent,
+    AdminSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,7 @@ import { MovieComponent } from './movie/movie.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [HelloService],
+  providers: [HelloService, UsersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
