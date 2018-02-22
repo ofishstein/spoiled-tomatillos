@@ -8,8 +8,11 @@ const bodyParser = require('body-parser');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const api = require('./routes/api');
+const cors = require('cors')
+
 
 const app = express();
+app.use(cors())
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
