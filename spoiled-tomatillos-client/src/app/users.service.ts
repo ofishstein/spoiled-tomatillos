@@ -14,7 +14,10 @@ export class UsersService {
 
   public create(user: User) {
   	const endpoint = this.serverBaseUri +'/create';
-  	return this.http.post(endpoint, user);
+  	return this.http.post(endpoint, user, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+        responseType: 'text' 
+     });
   }
 
 }
