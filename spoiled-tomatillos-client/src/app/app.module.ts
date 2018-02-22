@@ -26,6 +26,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { MovieComponent } from './movie/movie.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
+import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { AdminSearchComponent } from './admin-search/admin-search.component';
     UserProfileComponent,
     ReviewsComponent,
     MovieComponent,
-    AdminSearchComponent
+    AdminSearchComponent,
+    AdminUserDetailComponent
   ],
   imports: [
     BrowserModule,
