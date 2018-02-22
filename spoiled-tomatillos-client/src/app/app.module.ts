@@ -19,6 +19,7 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { SearchComponent } from './search/search.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { SearchComponent } from './search/search.component';
     AdminLoginComponent,
     AddMovieComponent,
     EditMovieComponent,
-    SearchComponent
+    SearchComponent,
+    AdminHomeComponent
   ],
   imports: [
     BrowserModule,
