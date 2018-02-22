@@ -1,0 +1,100 @@
+<div class="container">
+    <h2>Add Movie</h2>
+    <form name="form" class="p-2">
+        <div class="form-row">
+            <div class="form-group col-12 col-sm-3">
+                <div class="form-row">
+                    <div class="col-12" style="text-align: center">
+                        <img class="img-fluid" src="http://lorempixel.com/200/300">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12" style="text-align: center">
+                        <input type="button" class="btn btn-sm btn-outline-primary mt-1" value="Upload Movie Photo">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12 col-sm-9">
+            	<div class="form-group">
+                	<h4>Movie Information</h4>
+                </div>
+                <div class="form-group">
+            		<label for="primaryTitle">Primary Title</label>
+                    <input type="text" class="form-control" name="primaryTitle"/>
+            	</div>
+            	<div class="form-group">
+            		<label for="originalTitle">Original Title</label>
+                    <input type="text" class="form-control" name="originalTitle"/>
+            	</div>
+            	<div class="form-row form-group">
+                    <div class="col-6">
+                        <label for="runtime">Runtime Minutes</label>
+                        <input type="text" class="form-control" id="runtime">
+                    </div>
+                    <div class="col-6">
+                        <label for="year">Release Year</label>
+                        <input type="text" class="form-control" id="year">
+                    </div>
+                </div>
+                <div class="form-row form-group">
+                    <div class="col-4">
+                        <label for="imdbId">IMDb ID</label>
+                        <input type="text" class="form-control" id="imdbId">
+                    </div>
+                    <div class="col-4">
+                        <label for="imdbRating">IMDb Rating</label>
+                        <input type="text" class="form-control" id="imdbRating">
+                    </div>
+                    <div class="col-4">
+                        <label for="rating">Critic Rating</label>
+                        <input type="text" class="form-control" id="rating">
+                    </div>
+                </div>
+                <div class="form-group">
+                	<h4>Affliate Codes</h4>
+                </div>
+            	<div class="form-row form-group">
+            		<div class="col-4">
+            			<label for="affProvider">Affliate Provider</label>
+                    	<input type="text" class="form-control" name="affProvider"/>
+            		</div>
+                    <div class="col-4">
+                        <label for="affCode">Affiliate Code</label>
+                        <input type="text" class="form-control" id="affCode">
+                    </div>
+                    <div class="col-4">
+                        <label for="affLink">Affiliate Link</label>
+                        <input type="text" class="form-control" id="affLink">
+                    </div>
+                </div>
+                <div class="form-group">
+                	<h4>Streaming Links</h4>
+                </div>
+                <div class="form-row form-group">
+                    <div class="col-6">
+                    	<label for="streamService">Streaming Service</label>
+                    	<br>
+                        <select id="streamService" class="form-control">
+						  <option value="netflix">Netflix</option>
+						  <option value="hulu">Hulu</option>
+						  <option value="amazon">Amazon Video</option>
+						  <option value="youtube">Youtube</option>
+						</select>
+                    </div>
+                    <div class="col-6">
+                        <label for="link">Link</label>
+                        <input type="text" class="form-control" id="link">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-secondary btn-block">Add Additional Streaming Service</button>
+                </div>
+            	<div class="form-group">
+                    <button class="btn btn-primary">Add Movie</button>
+                    <a [routerLink]="" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

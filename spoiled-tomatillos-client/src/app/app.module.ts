@@ -16,6 +16,8 @@ import { PlaylistComponent } from './playlist/playlist.component';
 import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegisterComponent } from './register/register.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AddMovieComponent } from './add-movie/add-movie.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { SearchComponent } from './search/search.component';
 
 
@@ -31,6 +33,8 @@ import { SearchComponent } from './search/search.component';
     AdminRegisterComponent,
     RegisterComponent,
     AdminLoginComponent,
+    AddMovieComponent,
+    EditMovieComponent,
     SearchComponent
   ],
   imports: [
