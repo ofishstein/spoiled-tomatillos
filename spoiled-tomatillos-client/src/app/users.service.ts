@@ -14,7 +14,7 @@ export class UsersService {
 
   public create(user: User) {
   	const endpoint = this.serverBaseUri +'/create';
-  	return this.http.post(endpoint, JSON.stringify(user));
+  	return this.http.post(endpoint, user);
   }
 
 }

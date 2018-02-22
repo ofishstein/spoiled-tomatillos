@@ -39,6 +39,7 @@ export class RegisterComponent implements OnInit {
             },
             error => {
             	//todo
+              console.log(error);
             	this.loading = false;
             	this.fail = true;
             });
