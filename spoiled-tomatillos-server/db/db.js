@@ -1,19 +1,60 @@
 /* All database interaction handled here. */
 
-const mysql = require('mysql');
+const Sequelize = require('sequelize');
 
-const connection = mysql.createConnect({
-  host: 'localhost', // TODO: Use Tomatillo sql server
-  user: 'spoiledTomatillos', //TODO: Not sure what user to use here
-  password: 'secret_here', // TODO: Security???
-  database: 'SpoiledTomatillos DB', // TODO: Actual database here.
-});
+const Op = Sequelize.Op;
+const operatorsAliases = {
+  $eq: Op.eq,
+  $ne: Op.ne,
+  $gte: Op.gte,
+  $gt: Op.gt,
+  $lte: Op.lte,
+  $lt: Op.lt,
+  $not: Op.not,
+  $in: Op.in,
+  $notIn: Op.notIn,
+  $is: Op.is,
+  $like: Op.like,
+  $notLike: Op.notLike,
+  $iLike: Op.iLike,
+  $notILike: Op.notILike,
+  $regexp: Op.regexp,
+  $notRegexp: Op.notRegexp,
+  $iRegexp: Op.iRegexp,
+  $notIRegexp: Op.notIRegexp,
+  $between: Op.between,
+  $notBetween: Op.notBetween,
+  $overlap: Op.overlap,
+  $contains: Op.contains,
+  $contained: Op.contained,
+  $adjacent: Op.adjacent,
+  $strictLeft: Op.strictLeft,
+  $strictRight: Op.strictRight,
+  $noExtendRight: Op.noExtendRight,
+  $noExtendLeft: Op.noExtendLeft,
+  $and: Op.and,
+  $or: Op.or,
+  $any: Op.any,
+  $all: Op.all,
+  $values: Op.values,
+  $col: Op.col,
+};
 
-connection.connect(err => {
-  if (err) {
-    throw err;
-  }
-  console.log('Connected!');
-});
+const sequelize = new Sequelize(
+  'cs4500_spring2018_fishstein',
+  'ofishstein',
+  'cs4500db',
+  {
+    host: 'cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com',
+    dialect: 'mysql',
+    operatorsAliases,
 
-exports.get_session = () => {return connection};
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  });
+
+exports.get_session = () => {return sequelize;};

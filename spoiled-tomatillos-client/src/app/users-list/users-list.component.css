@@ -1,0 +1,48 @@
+.st-card-wrapper {
+  width: 200px;
+}
+
+.card-img-top {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.st-user-thumbnail {
+  margin: auto;
+  display: block;
+  padding: 5px;
+}
+
+.st-navigate-back {
+  color: #f8f9fa;
+}
+
+#followers h1, #following h1 {
+  background-color: #17a2b8;
+  color: #f8f9fa;
+}
+
+.card-title h4{
+  text-align: center;
+}
+
+.card-footer {
+  text-align: center;
+}
+
+.st-icon {
+  position: relative;
+  top: 5px;
+  right: 5px;
+  font-size: 20px;
+}
+
+#follow-btn, #unfollow-btn {
+  font-size: 12px;
+  padding-top: 0;
+  padding-bottom: 3px;
+  width: 100%;
+}
