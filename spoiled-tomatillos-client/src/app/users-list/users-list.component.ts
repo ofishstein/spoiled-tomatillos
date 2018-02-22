@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {userInfo} from "os";
 
 @Component({
   selector: 'app-users-list',
@@ -13,7 +12,7 @@ export class UsersListComponent implements OnInit {
   private uid: number;
   private listType: string;
   private listTitle: string;
-  private users;
+  private users: any[];
 
   constructor(private route: ActivatedRoute) {
     this.uid = parseInt(this.route.snapshot.params.uid);
@@ -64,28 +63,28 @@ export class UsersListComponent implements OnInit {
    * Follow the given user
    * @param userToFollow the uid of the user being followed
    */
-  follow(userToFollow: number) : void {
+  follow(userToFollow: number): void {
   }
 
   /**
    * Unfollow the given user
    * @param userToUnfollow the uid of the user being unfollowed
    */
-  unfollow(userToUnfollow: number) : void {
+  unfollow(userToUnfollow: number): void {
   }
 
-  /**
-   * Get the list of followers for this user
-   */
-  getFollowers() : Observable<object> {
-
-  }
-
-  /**
-   * Get the list of users this user is following
-   */
-  getFollowing() : Observable<object> {
-
-  }
+  // /**
+  //  * Get the list of followers for this user
+  //  */
+  // getFollowers(): Observable<object> {
+  //
+  // }
+  //
+  // /**
+  //  * Get the list of users this user is following
+  //  */
+  // getFollowing(): Observable<object> {
+  //
+  // }
 
 }

@@ -11,7 +11,7 @@
       <div class="card-deck justify-content-center">
         <div  *ngFor="let user of users">
           <div class="card m-3 st-card-wrapper">
-            <a routerLink="/user/{{ user.id }}">
+            <a routerLink="/user/{{ user.userId }}">
               <div class="card-img-top">
                 <img class="st-user-thumbnail" [style.width.px]="user.style.width"
                      [style.height.px]="user.style.height"
