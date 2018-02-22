@@ -21,6 +21,8 @@ import { EditMovieComponent } from './edit-movie/edit-movie.component';
 import { SearchComponent } from './search/search.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { MovieComponent } from './movie/movie.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     EditMovieComponent,
     SearchComponent,
     UsersListComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    ReviewsComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule,

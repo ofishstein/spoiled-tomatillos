@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <div class="col-xs-12 col-sm-10 offset-sm-1">
+    <div id="reviews" class="card bg-light">
+      <h1 class="card-header">
+        <a routerLink="/movie/{{ movieId }}">
+          <i class="material-icons">chevron_left</i>
+        </a>
+        Reviews
+      </h1>
+
+      <ng-container *ngTemplateOutlet="reviewsList"></ng-container>
+
+      <ng-template #reviewsList class="card-body">
+        <div class="row m-3 border-bottom" *ngFor="let review of reviews">
+          <div class="media">
+            <div class="card ml-2 mr-2 mb-2">
+              <a routerLink="/user/{{ review.user.userId }}">
+                <div class="card-img-top">
+                  <img class="rounded mx-auto img-thumbnail" src="{{ review.user.profileImageUrl }}"
+                       width="150px" height="auto"/>
+                </div>
+                <div class="card-title mb-0 text-center">
+                  <small>{{ review.user.username }}</small>
+                </div>
+              </a>
+            </div>
+
+            <div class="media-body">
+              <h5 class="mt-0">{{ review.title }}</h5>
+              <h6>{{ review.rating }} / 10</h6>
+              <p>{{ review.text }}</p>
+            </div>
+          </div>
+
+        </div>
+      </ng-template>
+
+    <!--<nav aria-label="Page navigation">-->
+    <!--<ul class="pagination">-->
+    <!--<li>-->
+    <!--<a href="" (click)="" aria-label="Previous">-->
+    <!--<span aria-hidden="true">&laquo;</span>-->
+    <!--</a>-->
+    <!--</li>-->
+
+    <!--<li *ngFor="let page of pages">-->
+    <!--<a href="" (click)="">{{page}}</a>-->
+    <!--</li>-->
+
+    <!--<li>-->
+    <!--<a href="" (click)="" aria-label="Next">-->
+    <!--<span aria-hidden="true">&raquo;</span>-->
+    <!--</a>-->
+    <!--</li>-->
+    <!--</ul>-->
+    <!--</nav>-->
+    </div>
+  </div>
+</div>

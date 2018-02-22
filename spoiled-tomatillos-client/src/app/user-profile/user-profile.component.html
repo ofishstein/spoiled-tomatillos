@@ -94,7 +94,7 @@
           <div class="row">
             <div class="col-sm-3" *ngFor="let movie of user.playlist | slice:0:5">
               <div class="st-thumbnail">
-                <a routerLink="movie/{{ movie.id }}">
+                <a routerLink="/movie/{{ movie.id }}">
                   <img class="st-thumbnail-img" src="{{ movie.Poster }}"/>
                 </a>
               </div>
@@ -109,7 +109,7 @@
       </div>
 
       <!-- recent activity and reviews -->
-      <div #activityTabs id="activityTabs" class="card text-center">
+      <div #activityTabs id="activityTabs" class="card">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
@@ -159,12 +159,51 @@
 
             <!-- reviews -->
             <div class="tab-pane container" id="reviewsTab">
-              reviews
-              <div class="card-footer">
-                <div class="text-right">
-                  <a routerLink="reviews"><small class="text-muted">View all >></small></a>
+              <div class="card-body">
+                <div class="row mt-3 border-bottom">
+                  <div class="media">
+                    <div class="card ml-2 mr-2 mb-2">
+                      <a routerLink="/movie/1">
+                        <div class="card-img-top">
+                          <img class="rounded mx-auto img-thumbnail" src="https://images-na.ssl-images-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
+                               width="150px" height="auto"/>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="media-body ml-3">
+                      <h5 class="mt-0">Cool movie</h5>
+                      <h6>8 / 10</h6>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin urna sem, porta mattis ipsum dignissim id. Maecenas rutrum, mauris et fermentum consectetur, purus lectus tincidunt est, non faucibus dui diam sed mauris. Integer nec urna justo. Suspendisse feugiat turpis ac nisl mollis convallis. Duis nec mi molestie, tempus ipsum nec, dapibus ipsum. Proin vulputate elementum mauris, non maximus nulla ornare a. In porttitor justo libero, eget eleifend libero eleifend tempor. Aenean et dapibus elit.
+                      </p>
+                    </div>
+                  </div>
                 </div>
+
+                <div class="row mt-3 border-bottom">
+                  <div class="media">
+                    <div class="card ml-2 mr-2 mb-2">
+                      <a routerLink="/movie/1">
+                        <div class="card-img-top">
+                          <img class="rounded mx-auto img-thumbnail" src="https://images-na.ssl-images-amazon.com/images/M/MV5BMTcxOTQwMTQ3MF5BMl5BanBnXkFtZTcwMDcyOTQwNw@@._V1_SX300.jpg"
+                               width="150px" height="auto"/>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="media-body ml-3">
+                      <h5 class="mt-0">Review Title</h5>
+                      <h6>10 / 10</h6>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin urna sem, porta mattis ipsum dignissim id. Maecenas rutrum, mauris et fermentum consectetur, purus lectus tincidunt est, non faucibus dui diam sed mauris. Integer nec urna justo. Suspendisse feugiat turpis ac nisl mollis convallis. Duis nec mi molestie, tempus ipsum nec, dapibus ipsum. Proin vulputate elementum mauris, non maximus nulla ornare a. In porttitor justo libero, eget eleifend libero eleifend tempor. Aenean et dapibus elit.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
+              <!--<div class="card-footer">-->
+                <!--<div class="text-right">-->
+                  <!--<a routerLink="reviews"><small class="text-muted">View all >></small></a>-->
+                <!--</div>-->
+              <!--</div>-->
             </div>
           </div>
       </div>
