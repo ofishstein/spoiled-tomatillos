@@ -19,7 +19,6 @@ export class AdminRegisterComponent implements OnInit {
   };
 
   loading = false;
-  fail = false;
 
   constructor(private router: Router, private userService: UsersService) { }
 
@@ -28,7 +27,6 @@ export class AdminRegisterComponent implements OnInit {
 
   register() {
   	this.loading = true;
-  	this.fail = false;
     this.userService.create(this.user)
         .subscribe(
             data => {
@@ -37,8 +35,8 @@ export class AdminRegisterComponent implements OnInit {
             },
             error => {
             	//todo
+              console.log(error);
             	this.loading = false;
-            	this.fail = true;
             });
   }
 
