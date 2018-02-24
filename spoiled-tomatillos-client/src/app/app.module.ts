@@ -27,6 +27,7 @@ import { ReviewsComponent } from './reviews/reviews.component';
 import { MovieComponent } from './movie/movie.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
+import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.
     ReviewsComponent,
     MovieComponent,
     AdminSearchComponent,
-    AdminUserDetailComponent
+    AdminUserDetailComponent,
+    AdminCaseReviewComponent
   ],
   imports: [
     BrowserModule,
