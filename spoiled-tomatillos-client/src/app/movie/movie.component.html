@@ -56,37 +56,16 @@
 
     <div class="card bg-light mt-3">
       <h4 class="card-header">Reviews</h4>
-      <ng-container *ngTemplateOutlet="reviewsList"></ng-container>
+      <div class="card-body">
+        <div class="row m-3 border-bottom" *ngFor="let review of reviews | slice:0:3">
+          <app-review [review]="review"></app-review>
+        </div>
+      </div>
       <div class="card-footer">
         <div class="text-right">
           <a routerLink="reviews"><small class="text-muted">View all >></small></a>
         </div>
       </div>
     </div>
-
-    <ng-template #reviewsList class="card-body">
-      <div class="row m-3 border-bottom" *ngFor="let review of reviews | slice:0:3">
-        <div class="media">
-          <div class="card ml-2 mr-2 mb-2">
-            <a routerLink="/user/{{ review.user.userId }}">
-              <div class="card-img-top">
-                <img class="rounded mx-auto img-thumbnail" src="{{ review.user.profileImageUrl }}"
-                     width="150px" height="auto"/>
-              </div>
-              <div class="card-title mb-0 text-center">
-                <small>{{ review.user.username }}</small>
-              </div>
-            </a>
-          </div>
-
-          <div class="media-body">
-            <h5 class="mt-0">{{ review.title }}</h5>
-            <h6>{{ review.rating }} / 10</h6>
-            <p>{{ review.text }}</p>
-          </div>
-        </div>
-
-      </div>
-    </ng-template>
   </div>
 </div>
