@@ -20,6 +20,7 @@ import { MovieComponent } from './movie/movie.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
+import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -44,7 +45,8 @@ const routes = [
   { path: 'user/:uid', component: UserProfileComponent },
   { path: 'movie/:id', component: MovieComponent },
   { path: 'movie/:id/reviews', component: ReviewsComponent },
-  { path: 'admin/search', component: AdminSearchComponent }
+  { path: 'admin/search', component: AdminSearchComponent },
+  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent }
 ];
 
 @NgModule({
