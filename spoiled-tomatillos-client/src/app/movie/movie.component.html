@@ -1,33 +1,79 @@
 <div class="container-fluid">
-  <div class="col-xs-12 col-sm-10 mx-auto">
-    <!--<div class="card bg-light">-->
-      <!--<div class="media row">-->
-        <!--<div class="col-xs-4">-->
-        <!--<img class="d-flex align-self-top p-4"-->
-             <!--src="{{ movie.poster }}">-->
-        <!--<div class="media-body">-->
-          <!--<div class="card-header bg-light m-3">-->
-            <!--<h1>{{ movie.title }}</h1>  <small class="text-muted">({{ movie.year }})</small>-->
-            <!--<span class="align-right">-->
-              <!--<input type="hidden" class="rating"-->
-                     <!--data-filled="material-icons star" data-empty="glyphicon glyphicon-heart-empty"/>-->
-            <!--</span>-->
-            <!--<div class="card-title text-muted">-->
-              <!--<small>{{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-    <div class="row">
-      <!-- movie poster -->
-      <div class="col-xs-4 col-sm-4">
-        <img class="img-fluid" src="{{ movie.poster }}">
+  <div class="col-lg-10 mx-auto">
+
+    <!-- desktop view -->
+    <div class="d-none d-md-block">
+      <div class="row">
+
+        <!-- movie poster -->
+        <div class="col-md-4">
+          <img class="img-fluid" src="{{ movie.poster }}">
+        </div>
+
+        <!-- movie header -->
+        <div class="col-md-8">
+          <div class="card bg-light">
+            <h1 class="card-header">
+              <span class="text-left">{{ movie.title }}</span>
+              <span class="text-right">{{ movie.rating }} / 10</span>
+            </h1>
+            <div class="card-title text-muted m-1">
+              <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
+              <br/>
+
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary">
+                  <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Playlist</small>
+                </button>
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#addRating">
+                  <i class="material-icons">star</i>  <small class="st-movie-btn-label">Add Rating</small>
+                </button>
+                <button type="button" class="btn btn-primary"
+                        data-toggle="modal" data-target="#suggestToFriend">
+                  <i class="material-icons">share</i>  <small class="st-movie-btn-label">Suggest to a Friend</small>
+                </button>
+              </div>
+
+            </div>
+
+            <div class="card-body">
+              <p>{{ movie.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile view -->
+    <div class="d-xs-block d-md-none">
+      <div class="row">
+
+        <!-- movie poster -->
+        <div class="col-xs-6 col-sm-6">
+          <div class="">
+            <img id="mobile-movie-poster" src="{{ movie.poster }}">
+          </div>
+        </div>
+        <div class="col-xs-6 col-sm-6">
+          <button type="button" class="btn btn-primary mb-1">
+            <i class="material-icons st-align-btn-icon">add_to_queue</i>  Add to Playlist
+          </button>
+          <br/>
+          <button type="button" class="btn btn-primary mb-1"
+                  data-toggle="modal" data-target="#addRating">
+            <i class="material-icons st-align-btn-icon">star</i>  Add Rating
+          </button>
+          <br/>
+          <button type="button" class="btn btn-primary"
+                  data-toggle="modal" data-target="#suggestToFriend">
+            <i class="material-icons st-align-btn-icon">share</i>  Suggest to a Friend
+          </button>
+        </div>
       </div>
 
       <!-- movie header -->
-      <div class="col-xs-8 col-sm-8">
+      <div class="row">
         <div class="card bg-light">
           <h1 class="card-header">
             <span class="text-left">{{ movie.title }}</span>
@@ -36,24 +82,19 @@
           <div class="card-title text-muted m-1">
             <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
             <br/>
-            <button class="btn btn-primary m-3">
-              <i class="material-icons">add_to_queue</i>  Add to Playlist
-            </button>
-            <button class="btn btn-primary m-3">
-              <i class="material-icons">star</i>  Add Rating
-            </button>
-            <button class="btn btn-primary m-3">
-              <i class="material-icons">share</i>  Suggest to a Friend
-            </button>
           </div>
 
           <div class="card-body">
-            <p>{{ movie.description }}</p>
+            <div class="col-xs-12">
+              <p>{{ movie.description }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+
+    <!-- reviews (desktop and mobile) -->
     <div class="card bg-light mt-3">
       <h4 class="card-header">Reviews</h4>
       <div class="card-body">
@@ -65,6 +106,66 @@
         <div class="text-right">
           <a routerLink="reviews"><small class="text-muted">View all >></small></a>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- add rating modal -->
+<div class="modal fade" id="addRating" tabindex="-1" role="dialog" aria-labelledby="addRatingLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addRatingLabel">Add Rating</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="rating">Rating</label>
+            <input class="form-control" type="number" id="rating" min="1" max="5"/>
+
+            <label for="review">Review (optional)</label>
+            <textarea class="form-control" id="review" rows="6"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- suggest to friend modal -->
+<div class="modal fade" id="suggestToFriend" tabindex="-1" role="dialog" aria-labelledby="addRatingLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="suggestToFriendLabel">Suggest to a Friend</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- TODO: display list of friends -->
+
+
+          <!-- optional message -->
+          <label for="message">Message (optional)</label>
+          <textarea class="form-control" id="message" rows="3"></textarea>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Send Movie Suggestion</button>
       </div>
     </div>
   </div>
