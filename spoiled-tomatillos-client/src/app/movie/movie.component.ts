@@ -1,5 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-movie',
@@ -10,9 +9,6 @@ export class MovieComponent implements OnInit {
 
   private movie: any;
   private reviews: any;
-
-  @ViewChild('reviewsList')
-  private reviewsListTemplate: TemplateRef<any>;
 
   constructor() {
     this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 10,
@@ -36,9 +32,6 @@ export class MovieComponent implements OnInit {
       }}];
   }
 
-  ngOnInit() {
-    console.log(this.reviewsListTemplate)
-
-  }
+  ngOnInit() { }
 
 }
