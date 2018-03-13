@@ -6,8 +6,21 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { HomeComponent } from './home/home.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { LoginComponent } from './login/login.component';
+import { PlaylistComponent } from './playlist/playlist.component';
+import { AdminRegisterComponent } from './admin-register/admin-register.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchComponent } from './search/search.component';
 import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AddMovieComponent } from './add-movie/add-movie.component';
+import { EditMovieComponent } from './edit-movie/edit-movie.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { MovieComponent } from './movie/movie.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { AdminSearchComponent } from './admin-search/admin-search.component';
+import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
+import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -18,9 +31,22 @@ const routes = [
   { path: 'notifications', component: NotificationsComponent },
   { path: 'home', component: HomeComponent },
   { path: 'settings', component: AccountSettingsComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
-  { path: 'admin/login', component: AdminLoginComponent}
+  { path: 'login', component: LoginComponent},
+  { path: 'user/:uid/playlist', component: PlaylistComponent },
+  { path: 'admin/create', component: AdminRegisterComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'search', component: SearchComponent },
+  { path: 'admin/login', component: AdminLoginComponent },
+  { path: 'admin/movie/add', component: AddMovieComponent },
+  { path: 'admin/movie/edit/:movie', component: EditMovieComponent },
+  { path: 'admin/user/:uid', component: AdminUserDetailComponent },
+  { path: 'admin/home', component: AdminHomeComponent },
+  { path: 'user/:uid/:listType', component: UsersListComponent },
+  { path: 'user/:uid', component: UserProfileComponent },
+  { path: 'movie/:id', component: MovieComponent },
+  { path: 'movie/:id/reviews', component: ReviewsComponent },
+  { path: 'admin/search', component: AdminSearchComponent },
+  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent }
 ];
 
 @NgModule({

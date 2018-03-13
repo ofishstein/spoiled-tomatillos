@@ -11,15 +11,15 @@ router.get('/', function(req, res) {
 router.post('/create', function(req, res) {
 // you can also build, save and access the object with chaining:
   User
-  .build(req.params.user)
-  .save()
-  .then(() => {
-    res.sendStatus(200);
-  })
-  .catch(error => {
-    console.log(error)
-    res.sendStatus(500);
-  })
+    .build(req.body)
+    .save()
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = router;

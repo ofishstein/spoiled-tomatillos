@@ -1,17 +1,15 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
-const Movie = require('Movie');
+const Movie = require('./Movie.js');
 
-session = db.get_session();
-
-const AffiliateCode = session.define('affiliate_codes', {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }
-  movieId: {
-    type: Sequelize.INTEGER,
-    references: {model: Movie, key: 'id'},
+module.exports = (session, DataTypes) => {
+  const AffiliateCode = session.define('affiliate_codes', {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    movie_id: {
+      type: DataTypes.INTEGER,
+      references: {model: Movie, key: 'id'},
+    },
+    code: DataTypes.STRING(255),
+    provider: DataTypes.STRING(255),
   },
-  code: Sequelize.STRING(255),
-  provider: Sequelize.STRING(255),
-});
-
-module.exports = AffiliateCode;
+  { underscored: true, timestamps: false});
+  return AffiliateCode;
+};

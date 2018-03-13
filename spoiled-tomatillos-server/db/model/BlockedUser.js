@@ -1,20 +1,19 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const User = require('./User.js');
 
-const User = require('User');
+module.exports = (session, DataTypes) => {
 
-const session = db.get_session();
-
-const BlockedUser = session.define('blocked_users', {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }
-  blockerId: {
-    type: Sequelize.INTEGER,
-    references: {model: User, key: 'id'},
+  const BlockedUser = session.define('blocked_users', {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    blocker_id: {
+      type: DataTypes.INTEGER,
+      references: {model: User, key: 'id'},
+    },
+    blockee_id: {
+      type: DataTypes.INTEGER,
+      references: {model: User, key: 'id'},
+    },
   },
-  blockeeId: {
-    type: Sequelize.INTEGER,
-    references: {model: User, key: 'id'},
-  },
-});
+  { underscored: true, timestamps: false});
+  return BlockedUser;
+};
 
-module.exports = BlockedUser;

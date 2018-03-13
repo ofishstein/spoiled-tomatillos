@@ -1,22 +1,19 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+module.exports = (session, DataTypes) => {
+  const User = session.define('users', {
 
-const session = db.get_session();
-
-const User = session.define('users', {
-
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true },
-  isAdmin: { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false, field: 'is_admin'},
-  username: { type: Sequelize.STRING(255), unique: true },
-  email: { type: Sequelize.STRING(255), unique: true },
-  password: Sequelize.STRING(255),
-  first: { type: Sequelize.STRING(63), field: 'first_name' },
-  last: { type: Sequelize.STRING(63), field: 'last_name' },
-  preferences: Sequelize.TEXT,
-},
-{// don't forget to enable timestamps!
-   createdAt: 'create_time',
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    is_admin: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false},
+    username: { type: DataTypes.STRING(255), unique: true },
+    email: { type: DataTypes.STRING(255), unique: true },
+    password: DataTypes.STRING(255),
+    first_name: DataTypes.STRING(63),
+    last_name: DataTypes.STRING(63),
+  },
+  {// don't forget to enable timestamps!
+    createdAt: 'create_time',
+    updatedAt: false,
+    underscored: true
+  }
+  );
+  return User;
 }
-);
-
-module.exports = User;
