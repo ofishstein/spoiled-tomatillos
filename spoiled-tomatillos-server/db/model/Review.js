@@ -1,22 +1,18 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
-const User = require('User');
-const Movie = require('Movie');
+const User = require('./User.js');
+const Movie = require('./Movie.js');
 
-const session = db.get_session();
+module.exports = (session, DataTypes) => {
+  const Review = session.define('reviews', {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    users_id: {
+      type: DataTypes.INTEGER,
+    },
+    movies_id: {
+      type: DataTypes.INTEGER,
+    },
+    text: DataTypes.TEXT,
+    rating: DataTypes.INTEGER,
+  }, { timestamps: false, underscored: true});
+  return Review;
+}
 
-const Review = session.define('reviews', {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }
-  userId: {
-    type: Sequelize.INTEGER,
-    references: {model: User, key: 'id'},
-  },
-  movieId: {
-    type: Sequelize.INTEGER,
-    references: {model: Movie, key: 'id'},
-  },
-  text: Sequelize.TEXT,
-  rating: Sequelize.INTEGER,
-});
-
-module.exports = Review;

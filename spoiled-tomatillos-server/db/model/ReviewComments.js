@@ -1,23 +1,28 @@
-const User = require('./User.js');
 const Movie = require('./Movie.js');
+const Review = require('./Review.js');
+const User = require('./User.js');
 
 module.exports = (session, DataTypes) => {
-  const Recommendation = session.define('recommendations', {
+  const ReviewComment = session.define('review_comments', {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    recommender_id: {
+    text: DataTypes.TEXT,
+    commenter_id: {
       type: DataTypes.INTEGER,
       references: {model: User, key: 'id'},
     },
-    recommendee_id: {
+    review_user_id: {
       type: DataTypes.INTEGER,
       references: {model: User, key: 'id'},
+    },
+    review_id: {
+      type: DataTypes.INTEGER,
+      references: {model: Review, key: 'id'},
     },
     movie_id: {
       type: DataTypes.INTEGER,
       references: {model: Movie, key: 'id'},
     },
-    message: DataTypes.TEXT,
-  }, { underscored: true, timestamps: false });
-  return Recommendation;
+  },
+  { underscored: true, timestamps: false});
+  return ReviewComment;
 };
-

@@ -1,16 +1,14 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
-const Movie = require('Movie');
+const Movie = require('./Movie.js');
 
-session = db.get_session();
-
-const DistributionLink = session.define('distribution_links', {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }
-  movieId: {
-    type: Sequelize.INTEGER,
-    references: {model: Movie, key: 'id'},
+module.exports = (session, DataTypes) => {
+  const DistributionLink = session.define('distribution_links', {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    movie_id: {
+      type: DataTypes.INTEGER,
+      references: {model: Movie, key: 'id'},
+    },
+    link: DataTypes.STRING(255),
   },
-  link: Sequelize.STRING(255),
-});
-
-module.exports = DistributionLink;
+  { underscored: true, timestamps: false});
+  return DistributionLink;
+}

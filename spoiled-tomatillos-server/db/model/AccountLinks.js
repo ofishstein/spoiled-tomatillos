@@ -1,16 +1,16 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
-const User = require('User');
+const User = require('./User.js');
 
-const session = db.get_session();
+module.exports = (session, DataTypes) => {
 
-const AccountLink = session.define('account_links', {
-  id: { type: Sequelize.INTEGER, autoIncrement: true, primaryKey: true }
-  userId: {
-    type: Sequelize.INTEGER,
-    references: {model: User, key: 'id'},
+  const AccountLink = session.define('account_links', {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    user_id: {
+      type: DataTypes.INTEGER,
+      references: {model: User, key: 'id'},
+    },
+    link_type: DataTypes.STRING(255),
   },
-  linkType: Sequelize.STRING(255),
-});
+  { underscored: true, timestamps: false});
+  return AccountLink;
+};
 
-module.exports = AccountLink;
