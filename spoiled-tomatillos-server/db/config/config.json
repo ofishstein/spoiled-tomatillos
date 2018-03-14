@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "ofishstein",
+    "password": "cs4500db",
+    "database": "cs4500_spring2018_fishstein",
+    "host": "cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "ofishstein",
+    "password": "cs4500db",
+    "database": "cs4500_spring2018_fishstein",
+    "host": "cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "ofishstein",
+    "password": "cs4500db",
+    "database": "cs4500_spring2018_fishstein",
+    "host": "cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com",
+    "dialect": "mysql"
+  }
+}

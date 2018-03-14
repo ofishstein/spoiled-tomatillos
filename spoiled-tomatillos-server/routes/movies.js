@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const db = require('../db/db.js')
-const session = db.get_session()
+const db = require('../db/db.js');
+const session = db.get_session();
 
 /* GET users listing. */
 router.get('/:movie_id', function(req, res) {
-  session.movies
+  session.Movie
     .findAll({
       where: {id: req.params['movie_id']},
-      include: [{model: session.reviews}]
+      include: ['Reviews']
     })
     .then(movie => {
-      res.send(movie)
-    })
+      res.send(movie);
+    });
 
 });
 
