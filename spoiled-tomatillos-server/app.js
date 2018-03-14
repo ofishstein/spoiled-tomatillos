@@ -13,6 +13,7 @@ const movies  = require('./routes/movies');
 const login   = require('./routes/login');
 const profile = require('./routes/profile');
 const api     = require('./routes/api');
+const search  = require('./routes/search');
 const cors    = require('cors');
 
 
@@ -44,6 +45,7 @@ app.use('/api', api);
 app.use('/movies', movies);
 app.use('/login', login);
 app.use('/profile', profile);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
