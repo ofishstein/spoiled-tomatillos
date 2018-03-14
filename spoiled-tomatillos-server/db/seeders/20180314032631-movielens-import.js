@@ -6,9 +6,12 @@ const parse = require('csv-parse/lib/sync');
 module.exports = {
   up: (queryInterface, Sequelize) => {
     const movies = parse(fs.readFileSync('movies.csv', 'utf8'), {from: 2});
-    const moviesToInsert = movies.map((line) => {
+    const links  = parse(fs.readFileSync('links.csv', 'utf8'), {from: 2});
+    const moviesToInsert = movies.map((line, i) => {
       let movie = {};
       movie.id = line[0];
+      movie.imdbId = links[i][1];
+      movie.tmdbId = links[i][2];
       movie.title = line[1];
       return movie;
     });
@@ -23,25 +26,9 @@ module.exports = {
     }, []);
     return Promise.all([queryInterface.bulkInsert('Movies', moviesToInsert),
       queryInterface.bulkInsert('Genres', genresToInsert)]);
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('Person', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+    // TODO: Add removal for this seed
   }
 };
