@@ -1,7 +1,13 @@
-/* All database interaction handled here. */
+'use strict';
 
+const fs        = require('fs');
+const path      = require('path');
 const Sequelize = require('sequelize');
+const basename  = path.basename(__filename);
+const env       = process.env.NODE_ENV || 'development';
+const db        = {};
 
+let config = require(__dirname + '/config/config.json')[env];
 const Op = Sequelize.Op;
 const operatorsAliases = {
   $eq: Op.eq,
@@ -40,21 +46,37 @@ const operatorsAliases = {
   $col: Op.col,
 };
 
-const sequelize = new Sequelize(
-  'cs4500_spring2018_fishstein',
-  'ofishstein',
-  'cs4500db',
-  {
-    host: 'cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com',
-    dialect: 'mysql',
-    operatorsAliases,
+config = {...config, operatorsAliases, pool: {
+  max: 5,
+  min: 0,
+  acquire: 30000,
+  idle: 10000
+}};
 
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
+let sequelize;
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
+}
+
+fs
+  .readdirSync(__dirname + '/models')
+  .filter(file => {
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+  })
+  .forEach(file => {
+    const model = sequelize['import'](path.join(__dirname + '/models', file));
+    db[model.name] = model;
   });
 
-exports.get_session = () => {return sequelize;};
+Object.keys(db).forEach(modelName => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
+
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports.get_session = () => db;

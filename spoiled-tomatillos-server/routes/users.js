@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const User = require('../db/model/User');
+const db = require('../db/db.js');
+const session = db.get_session();
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -10,7 +11,7 @@ router.get('/', function(req, res) {
 
 router.post('/create', function(req, res) {
 // you can also build, save and access the object with chaining:
-  User
+  session.User
     .build(req.body)
     .save()
     .then(() => {
