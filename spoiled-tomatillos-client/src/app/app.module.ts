@@ -29,7 +29,6 @@ import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ResetSuccessComponent } from './reset-success/reset-success.component';
 
 
 @NgModule({
@@ -55,8 +54,7 @@ import { ResetSuccessComponent } from './reset-success/reset-success.component';
     AdminSearchComponent,
     AdminUserDetailComponent,
     AdminCaseReviewComponent,
-    ForgotPasswordComponent,
-    ResetSuccessComponent
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
