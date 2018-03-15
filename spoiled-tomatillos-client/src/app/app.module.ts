@@ -29,6 +29,7 @@ import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 import { SearchService } from './services/search.service';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { SearchService } from './services/search.service';
     MovieComponent,
     AdminSearchComponent,
     AdminUserDetailComponent,
-    AdminCaseReviewComponent
+    AdminCaseReviewComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
