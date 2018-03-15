@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import 'rxjs/add/operator/map';
 import { User } from './user';
 
 
@@ -18,6 +21,22 @@ export class UsersService {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text' 
      });
+  }
+
+  public update(user: User) {
+    const endpoint = this.serverBaseUri + '/me';
+    return this.http.put(endpoint, user, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+    });
+  }
+
+  public getUserInfo(): Observable<User>  {
+    const endpoint = this.serverBaseUri + '/me';
+    return this.http.get<Response>(endpoint).map((resp) => {
+      const body: any = resp;
+      return body;
+    });
   }
 
 }
