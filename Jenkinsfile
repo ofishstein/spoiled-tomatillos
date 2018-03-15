@@ -9,6 +9,7 @@ pipeline {
     }
     environment {
         CI = 'true' 
+        scannerHome = tool 'sonarScanner';
     }
     stages {
         stage('Build') { 
@@ -22,6 +23,14 @@ pipeline {
         stage('Test') { 
             steps {
                 sh './jenkins-scripts/test.sh' 
+            }
+        }
+        stage('SonarQube analysis') {
+            steps{
+                def scannerHome = tool 'sonarScanner';
+                withSonarQubeEnv('SonarLinter') {
+                  sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }
         stage('Cleanup') {
