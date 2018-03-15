@@ -3,26 +3,17 @@ const router = express.Router();
 
 const db = require('../db/db.js');
 const session = db.get_session();
+const authCheck = require('./auth');
 
 /* GET user. */
-router.get('/me', (req, res, done) => {
-  if (req.isAuthenticated()) {
-    return done();
-  }
-  res.status(401).send('User not logged in');
-}, function(req, res) {
+router.get('/me', authCheck, function(req, res) {
   let u = req.user.get({plain: true});
   delete u.password;
   res.send(u);
 });
 
 /* PUT user */
-router.put('/me', (req, res, done) => {
-  if (req.isAuthenticated()) {
-    return done();
-  }
-  res.status(401).send('User not logged in');
-}, function(req, res) {
+router.put('/me', authCheck, function(req, res) {
   delete req.body.password;
   req.user.update(req.body).then(() => {
     res.sendStatus(200);
