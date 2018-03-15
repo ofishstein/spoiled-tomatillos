@@ -21,7 +21,7 @@ const app = express();
 app.use(cors({
   origin: ['http://localhost:8080',
     'http://localhost:80',
-    'http://ec2-18-216-127-101.us-east-2.compute.amazonaws.com/'],
+    'http://ec2-18-216-127-101.us-east-2.compute.amazonaws.com'],
   credentials: true
 }));
 

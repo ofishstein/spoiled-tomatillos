@@ -22,5 +22,10 @@ pipeline {
                 sh './jenkins-scripts/test.sh' 
             }
         }
+        stage('Cleanup') {
+            steps {
+                deleteDir()
+            }
+        }
     }
 }
