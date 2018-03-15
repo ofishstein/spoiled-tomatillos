@@ -21,6 +21,7 @@ router.put('/me', (req, res, done) => {
   }
   res.status(401).send('User not logged in');
 }, function(req, res) {
+  delete req.body.password;
   req.user.update(req.body).then(() => {
     res.sendStatus(200);
   });
