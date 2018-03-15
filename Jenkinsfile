@@ -3,7 +3,7 @@
 pipeline {
     agent {
         docker {
-            image 'node:6-alpine' 
+            image 'node:8.10-alpine' 
             args '-p 3000:3000' 
         }
     }
@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh 'apk --no-cache add --virtual builds-deps build-base python'
+                sh 'apk add builds-deps build-base python'
             	sh 'ls'
                 sh 'cd spoiled-tomatillos-server/ && npm install && npm rebuild bcrypt --build-from-source'
             }
