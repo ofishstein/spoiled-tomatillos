@@ -4,9 +4,26 @@ const router = express.Router();
 const db = require('../db/db.js');
 const session = db.get_session();
 
-/* GET users listing. */
-router.get('/', function(req, res) {
-  res.send('respond with a resource');
+/* GET user's profile. */
+router.get('/me', (req, res, done) => {
+  if (req.isAuthenticated()) {
+    return done();
+  }
+  res.status(401).send('User not logged in');
+}, function(req, res) {
+  res.send(req.user);
+});
+
+/* PUT user's profile */
+router.put('/me', (req, res, done) => {
+  if (req.isAuthenticated()) {
+    return done();
+  }
+  res.status(401).send('User not logged in');
+}, function(req, res) {
+  req.user.update(req.body).then(() => {
+    res.sendStatus(200);
+  });
 });
 
 router.post('/create', function(req, res) {

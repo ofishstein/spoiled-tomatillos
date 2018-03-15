@@ -23,7 +23,7 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      is_admin: {
+      isAdmin: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
