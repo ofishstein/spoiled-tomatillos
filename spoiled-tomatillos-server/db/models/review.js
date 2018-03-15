@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     Review.belongsTo(models.User, {foreignKey: 'id', sourceKey: 'userId'});
     Review.belongsTo(models.Movie, {foreignKey: 'id', sourceKey: 'movieId'});
     Review.hasMany(models.ReviewComment,
-      {as: 'Comments', foreignKey: 'id', sourceKey: 'reviewId'});
+      {as: 'Comments', sourceKey: 'id', foreignKey: 'reviewId'});
   };
   return Review;
 };

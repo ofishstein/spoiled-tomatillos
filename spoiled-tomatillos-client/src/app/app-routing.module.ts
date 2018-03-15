@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, Resolve, CanActivate } from '@angular/router';
 
 import { HelloComponent } from './hello/hello.component';
 import { NotificationsComponent } from './notifications/notifications.component';
@@ -17,10 +17,11 @@ import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MovieComponent } from './movie/movie.component';
-import { ReviewsComponent } from './reviews/reviews.component';
+import { ReviewsListComponent } from './reviews-list/reviews-list.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -44,9 +45,10 @@ const routes = [
   { path: 'user/:uid/:listType', component: UsersListComponent },
   { path: 'user/:uid', component: UserProfileComponent },
   { path: 'movie/:id', component: MovieComponent },
-  { path: 'movie/:id/reviews', component: ReviewsComponent },
+  { path: 'movie/:id/reviews', component: ReviewsListComponent },
   { path: 'admin/search', component: AdminSearchComponent },
-  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent }
+  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent },
+  { path: 'reset', component: ForgotPasswordComponent }
 ];
 
 @NgModule({

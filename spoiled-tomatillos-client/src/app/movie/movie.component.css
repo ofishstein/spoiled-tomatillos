@@ -1,0 +1,24 @@
+.btn-group {
+  margin-top: 8px;
+}
+
+.btn-group .btn.btn-primary {
+  height: 34px;
+  margin-right: 3px;
+}
+
+.st-movie-btn-label {
+  position: relative;
+  bottom: 8px;
+}
+
+.st-align-btn-icon {
+  position: relative;
+  top: 5px;
+}
+
+#mobile-movie-poster {
+  max-width: 50%;
+  height: auto;
+  margin: auto;
+}

@@ -1,5 +1,6 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MovieService } from '../services/movie/movie.service';
 
 @Component({
   selector: 'app-movie',
@@ -8,13 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MovieComponent implements OnInit {
 
-  private movie: any;
+  public movie;
   private reviews: any;
 
-  @ViewChild('reviewsList')
-  private reviewsListTemplate: TemplateRef<any>;
-
-  constructor() {
+  constructor(private _movieService: MovieService, private route: ActivatedRoute) {
     this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 10,
       genre: 'Animation, Adventure, Comedy', runtime: '90 min',
       description: 'When a green ogre named Shrek discovers his swamp has been "swamped" with all sorts of fairytale creatures by the scheming Lord Farquaad, Shrek sets out with a very loud donkey by his side to "persuade" Farquaad to give Shrek his swamp back. Instead, a deal is made. Farquaad, who wants to become the King, sends Shrek to rescue Princess Fiona, who is awaiting her true love in a tower guarded by a fire-breathing dragon. But once they head back with Fiona, it starts to become apparent that not only does Shrek, an ugly ogre, begin to fall in love with the lovely princess, but Fiona is also hiding a huge secret.',
@@ -37,8 +35,12 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.reviewsListTemplate)
-
+    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
+      data => {
+        console.log(data);
+        this.movie = data[0] },
+      err => console.error(err)
+    );
   }
 
 }

@@ -4,16 +4,21 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+const session  = require('express-session');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
-const movies = require('./routes/movies')
-const api = require('./routes/api');
-const cors = require('cors')
+const index   = require('./routes/index');
+const users   = require('./routes/users');
+const movies  = require('./routes/movies');
+const login   = require('./routes/login');
+const profile = require('./routes/profile');
+const api     = require('./routes/api');
+const search  = require('./routes/search');
+const cors    = require('cors');
 
 
 const app = express();
-app.use(cors())
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,12 +30,22 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({
+  secret: 'this is supposed to be a secret',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
-app.use('/movies', movies)
+app.use('/movies', movies);
+app.use('/login', login);
+app.use('/profile', profile);
+app.use('/search', search);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { SearchService } from '../services/search.service';
 
 @Component({
   selector: 'app-search',
@@ -9,26 +9,37 @@ import { NgForm } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
 
-  private _omdbBasePath: string;
-  private _apiKey: string;
-  public results;
+  public movieResults;
+  public userResults;
+  public displayMovies: boolean;
+  public buttonText: string;
 
-  constructor(private http: HttpClient) {
-    this._apiKey = '4a249f8d';
-    this._omdbBasePath = 'http://www.omdbapi.com/?apikey=' + this._apiKey;
+  constructor(private http: HttpClient, private _searchService: SearchService) {
+    this.displayMovies = true;
+    this.buttonText = 'Users';
   }
 
   ngOnInit() {
+    this._searchService.searchChange.subscribe((successful) => {
+      if (successful) {
+        const searchResults = this._searchService.getResults();
+        this.movieResults = searchResults.movieResults;
+        this.userResults = searchResults.userResults;
+      }
+    });
   }
 
-  public searchByKeyword(searchForm: NgForm, event: Event): void {
-    event.preventDefault();
-    const searchText: string = searchForm.value.search;
-    searchForm.resetForm();
+  /**
+   * Switch view between the retrieved movie-results and the user results.
+  */
+  public toggleResults() {
+    this.displayMovies = !this.displayMovies;
 
-    this.http.get(this._omdbBasePath + '&s=' + searchText).subscribe((res: any) => {
-      this.results = res.Search;
-    });
+    if (this.displayMovies) {
+      this.buttonText = 'Users';
+    } else {
+      this.buttonText = 'Movies';
+    }
   }
 
 }
