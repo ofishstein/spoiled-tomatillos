@@ -13,7 +13,7 @@ export class SearchService {
   constructor(private http: HttpClient) {
     this._apiKey = '4a249f8d';
     this._omdbBasePath = 'http://www.omdbapi.com/?apikey=' + this._apiKey;
-    this._userSearchBasePath = 'http://something.elasticbeanstalk.com/some/path=';
+    this._userSearchBasePath = 'http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000/search/users';
     this.results = { movieResults: [], userResults: [] };
 
   }
@@ -28,25 +28,22 @@ export class SearchService {
   public searchByKeyword(keyword: string): void {
     let successful = false;
 
-    // Add the movie search results as the first array in the return array
     this.http.get(this._omdbBasePath + '&s=' + keyword).toPromise().then((res: any) => {
       this.results.movieResults = res.Search;
 
-      this.results.userResults = [];
-      successful = true;
-      this.searchChange.emit(successful);
-
-      // Add the user search results as the second array in the return array
-      // TODO: perform user search once endpoint is live
-      // return this.http.get(this._userSearchBasePath + keyword).toPromise();
+      return this.http.get(this._userSearchBasePath + '?firstName=' + keyword).toPromise();
     })
-    /*.then((res: any) => {
-      compiledResults.push(res);
+    .then((res: any) => {
+      this.results.userResults = res;
       // if the data looks good, send it
-      if (compiledResults.length === 2) {
-        this.searchChange.emit(compiledResults);
+      if (this.results.userResults && this.results.movieResults) {
+        successful = true;
+        this.searchChange.emit(successful);
+      } else {
+        successful = false;
+        this.searchChange.emit(successful);
       }
-    })*/
+    })
     .catch((err) => {
       this.results.movieResults = [];
       this.results.userResults = [];
