@@ -7,12 +7,13 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const session  = require('express-session');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
-const movies = require('./routes/movies');
-const login = require('./routes/login');
-const api = require('./routes/api');
-const cors = require('cors');
+const index   = require('./routes/index');
+const users   = require('./routes/users');
+const movies  = require('./routes/movies');
+const login   = require('./routes/login');
+const profile = require('./routes/profile');
+const api     = require('./routes/api');
+const cors    = require('cors');
 
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/users', users);
 app.use('/api', api);
 app.use('/movies', movies);
 app.use('/login', login);
+app.use('/profile', profile);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

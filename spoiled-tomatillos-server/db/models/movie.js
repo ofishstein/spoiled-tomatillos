@@ -7,13 +7,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Movie.associate = function(models) {
     Movie.hasMany(models.Genre,
-      {as: 'Genres', foreignKey: 'id', sourceKey: 'movieId'});
+      {as: 'Genres', sourceKey: 'id', foreignKey: 'movieId'});
     Movie.hasMany(models.Review,
-      {as: 'Reviews', foreignKey: 'id', sourceKey: 'movieId'});
+      {as: 'Reviews', sourceKey: 'id', foreignKey: 'movieId'});
     Movie.hasMany(models.DistributionLink,
-      {as: 'DistributionLinks', foreignKey: 'id', sourceKey: 'movieId'});
+      {as: 'DistributionLinks', sourceKey: 'id', foreignKey: 'movieId'});
     Movie.hasMany(models.AffiliateCode,
-      {as: 'AffiliateCodes', foreignKey: 'id', sourceKey: 'movieId'});
+      {as: 'AffiliateCodes', sourceKey: 'id', foreignKey: 'movieId'});
   };
   return Movie;
 };
