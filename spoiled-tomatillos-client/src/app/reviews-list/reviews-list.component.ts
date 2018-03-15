@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-reviews',
-  templateUrl: './reviews.component.html',
-  styleUrls: ['./reviews.component.css']
+  selector: 'app-reviews-list',
+  templateUrl: './reviews-list.component.html',
+  styleUrls: ['./reviews-list.component.css']
 })
-export class ReviewsComponent implements OnInit {
+export class ReviewsListComponent implements OnInit {
 
   // path params specify reviews for either movie or user
   private movieId: number;

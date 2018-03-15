@@ -23,7 +23,7 @@ import { SearchComponent } from './search/search.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { ReviewsComponent } from './reviews/reviews.component';
+import { ReviewsListComponent } from './reviews-list/reviews-list.component';
 import { MovieComponent } from './movie/movie.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
@@ -31,6 +31,7 @@ import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.
 import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginService } from './services/login.service';
+import { ReviewComponent } from './review/review.component';
 
 
 @NgModule({
@@ -51,12 +52,13 @@ import { LoginService } from './services/login.service';
     AdminHomeComponent,
     UsersListComponent,
     UserProfileComponent,
-    ReviewsComponent,
+    ReviewsListComponent,
     MovieComponent,
     AdminSearchComponent,
     AdminUserDetailComponent,
     AdminCaseReviewComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,
