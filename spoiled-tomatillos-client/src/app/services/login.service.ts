@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class LoginService {
@@ -12,7 +12,10 @@ export class LoginService {
     let body = {username: username, password: password};
     console.log(body);
     return this.http.post(this.baseUri + '/login',
-      body);
+      body, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+        responseType: 'text'
+      });
   }
 
   logout() {

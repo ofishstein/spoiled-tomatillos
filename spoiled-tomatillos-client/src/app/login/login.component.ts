@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     }
     else {
       this._loginService.userLogin(form.value.username, form.value.password).subscribe(
-        success => { router.navigate(['home'], {relativeTo: route});
+        success => { this.router.navigate(['/home']);
         },
         error => {
           console.log(error);
