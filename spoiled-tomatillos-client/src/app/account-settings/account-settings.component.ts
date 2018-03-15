@@ -33,10 +33,9 @@ export class AccountSettingsComponent implements OnInit {
     }, error => {
       //todo
       console.log(error);
-      this.loading = false;
+      
     });
-
-    
+    this.loading = false;
   }
 
   update() {
@@ -44,13 +43,16 @@ export class AccountSettingsComponent implements OnInit {
     this.userService.update(this.user)
         .subscribe(
             data => {
-                // redirect to the login page
+          
             },
             error => {
             	//todo
               console.log(error);
-            	this.loading = false;
+            
             });
-    }
+    this.loading = false;
+  }
+
+    
 
 }
