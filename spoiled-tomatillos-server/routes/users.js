@@ -4,17 +4,19 @@ const router = express.Router();
 const db = require('../db/db.js');
 const session = db.get_session();
 
-/* GET user's profile. */
+/* GET user. */
 router.get('/me', (req, res, done) => {
   if (req.isAuthenticated()) {
     return done();
   }
   res.status(401).send('User not logged in');
 }, function(req, res) {
-  res.send(req.user);
+  let u = req.user.get({plain: true});
+  delete u.password;
+  res.send(u);
 });
 
-/* PUT user's profile */
+/* PUT user */
 router.put('/me', (req, res, done) => {
   if (req.isAuthenticated()) {
     return done();

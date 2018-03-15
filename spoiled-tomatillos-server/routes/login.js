@@ -38,7 +38,7 @@ passport.use(new LocalStrategy((username, password, done) => {
     });
 }));
 
-/* GET users listing. */
+/* Post to login user. */
 router.post('/', passport.authenticate('local', {}), function(req, res) {
   res.sendStatus(200);
 });
