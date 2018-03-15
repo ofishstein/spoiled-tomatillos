@@ -9,7 +9,7 @@ import { LoginService } from '../services/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  private missingRequired: string;
+  private missingRequired: boolean;
   private comboNotFound: string;
 
   constructor(private _loginService: LoginService, private router: Router) { }
