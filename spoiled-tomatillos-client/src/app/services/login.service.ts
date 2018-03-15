@@ -16,7 +16,8 @@ export class LoginService {
     return this.http.post(this.baseUri + '/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
-        responseType: 'text'
+        responseType: 'text',
+        withCredentials: true
       });
   }
 
