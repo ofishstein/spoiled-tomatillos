@@ -23,9 +23,9 @@
                 <td class="col-2">{{ formatDateStr(row.date) }}</td>
                 <!--<td class="col-2">{{ row.username }}</td>-->
                 <td class="col-2">{{ row.status }}</td>
-                <td class="col-2"><a [routerLink]="['/admin/user/:uid']">{{ row.userId }}</a></td>
+                <td class="col-2"><a [routerLink]="['/admin/user/row.userId']">{{ row.userId }}</a></td>
                 <td class="col-2">{{ row.flagCount }}</td>
-                <td class="col-2"><button type="button" class="btn btn-sm btn-outline-info" [routerLink]="['/admin/user/:uid/flagged/:caseId']">Action</button></td>
+                <td class="col-2"><button type="button" class="btn btn-sm btn-outline-info" [routerLink]="['/admin/user/row.userId/flagged/row.id']">Action</button></td>
               </tr>
             </tbody>
           </table>
