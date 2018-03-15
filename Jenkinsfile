@@ -16,6 +16,7 @@ pipeline {
                 sh 'apk --no-cache add --virtual builds-deps build-base python'
             	sh 'ls'
                 sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
+                sh 'cd spoiled-tomatillos-client/ && npm install'
             }
         }
         stage('Test') { 
