@@ -23,12 +23,17 @@ export class AccountSettingsComponent implements OnInit {
   constructor(private userService: UsersService) { }
 
   ngOnInit() {
+    this.loading = true;
     this.userService.getUserInfo().subscribe((userData) => {
       this.user.username = userData.username;
       this.user.email = userData.email;
       this.user.firstName = userData.firstName;
       this.user.lastName = userData.lastName;
       this.user.isAdmin = userData.isAdmin;
+    }, error => {
+      //todo
+      console.log(error);
+      this.loading = false;
     });
 
     
