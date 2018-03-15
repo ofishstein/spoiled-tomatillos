@@ -30,6 +30,7 @@ import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.
 import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
 import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { LoginService } from './services/login.service';
 
 
 @NgModule({
@@ -63,7 +64,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     HttpClientModule,
     FormsModule
   ],
-  providers: [HelloService, UsersService, SearchService],
+  providers: [HelloService, UsersService, SearchService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
