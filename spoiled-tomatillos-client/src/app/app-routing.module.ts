@@ -21,6 +21,7 @@ import { ReviewsListComponent } from './reviews-list/reviews-list.component';
 import { AdminSearchComponent } from './admin-search/admin-search.component';
 import { AdminUserDetailComponent } from './admin-user-detail/admin-user-detail.component';
 import { AdminCaseReviewComponent } from './admin-case-review/admin-case-review.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes = [
   { path: 'api/hello/string', component: HelloComponent, data: [{specificPath: 'api/hello/string'}] },
@@ -46,7 +47,8 @@ const routes = [
   { path: 'movie/:id', component: MovieComponent },
   { path: 'movie/:id/reviews', component: ReviewsListComponent },
   { path: 'admin/search', component: AdminSearchComponent },
-  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent }
+  { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent },
+  { path: 'reset', component: ForgotPasswordComponent }
 ];
 
 @NgModule({
