@@ -18,6 +18,8 @@ export class AccountSettingsComponent implements OnInit {
       isAdmin: false
     };
 
+  loading = false;
+
   constructor(private userService: UsersService) { }
 
   ngOnInit() {
@@ -28,6 +30,22 @@ export class AccountSettingsComponent implements OnInit {
       this.user.lastName = userData.lastName;
       this.user.isAdmin = userData.isAdmin;
     });
+
+    
   }
+
+  update() {
+  	this.loading = true;
+    this.userService.update(this.user)
+        .subscribe(
+            data => {
+                // redirect to the login page
+            },
+            error => {
+            	//todo
+              console.log(error);
+            	this.loading = false;
+            });
+    }
 
 }
