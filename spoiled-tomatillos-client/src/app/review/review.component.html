@@ -1,0 +1,19 @@
+<div class="media">
+  <div class="card ml-2 mr-2 mb-2">
+    <a routerLink="/user/{{ review.user.userId }}">
+      <div class="card-img-top">
+        <img class="rounded mx-auto img-thumbnail" src="{{ review.user.profileImageUrl }}"
+             width="150px" height="auto"/>
+      </div>
+      <div class="card-title mb-0 text-center">
+        <small>{{ review.user.username }}</small>
+      </div>
+    </a>
+  </div>
+
+  <div class="media-body">
+    <h5 class="mt-0">{{ review.title }}</h5>
+    <h6>{{ review.rating }} / 10</h6>
+    <p>{{ review.text }}</p>
+  </div>
+</div>
