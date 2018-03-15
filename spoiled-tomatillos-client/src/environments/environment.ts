@@ -4,5 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  envName: 'dev',
+  serverBaseUri: 'http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000'
 };
