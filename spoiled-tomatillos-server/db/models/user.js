@@ -1,4 +1,6 @@
 'use strict';
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: DataTypes.STRING,
@@ -7,7 +9,19 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     is_admin: DataTypes.BOOLEAN
-  }, {});
+  }, {
+    hooks: {
+      beforeCreate: (user, options) => {
+        return new Promise(((resolve, reject) => {
+          bcrypt.hash(user.password, 10, (err, hash) => {
+            if (err) return reject(err);
+            user.password = hash;
+            resolve(hash);
+          });
+        }));
+      }
+    }
+  });
   User.associate = function(models) {
     User.hasMany(models.Review,
       {as: 'Reviews', foreignKey: 'id', sourceKey: 'userId'});
@@ -25,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'BlockedUsers', foreignKey: 'id', sourceKey: 'blockerId'});
     User.hasMany(models.BlockedUser,
       {as: 'BlockedByUsers', foreignKey: 'id', sourceKey: 'blockeeId'});
+  };
+  User.prototype.validatePassword = (suppliedPassword, userPassword) => {
+    return new Promise(((resolve, reject) => {
+      bcrypt.compare(suppliedPassword, userPassword, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    }));
   };
   return User;
 };
