@@ -24,21 +24,21 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function(models) {
     User.hasMany(models.Review,
-      {as: 'Reviews', foreignKey: 'id', sourceKey: 'userId'});
+      {as: 'Reviews', sourceKey: 'id', foreignKey: 'userId'});
     User.hasMany(models.Playlist,
-      {as: 'Playlists', foreignKey: 'id', sourceKey: 'userId'});
+      {as: 'Playlists', sourceKey: 'id', foreignKey: 'userId'});
     User.hasMany(models.PlaylistComment,
-      {as: 'PlaylistComments', foreignKey: 'id', sourceKey: 'commenterId'});
+      {as: 'PlaylistComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.ReviewComment,
-      {as: 'ReviewComments', foreignKey: 'id', sourceKey: 'commenterId'});
+      {as: 'ReviewComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.Recommendation,
-      {as: 'RecommendationsSent', foreignKey: 'id', sourceKey: 'recommenderId'});
+      {as: 'RecommendationsSent', sourceKey: 'id', foreignKey: 'recommenderId'});
     User.hasMany(models.Recommendation,
-      {as: 'RecommendationsReceived', foreignKey: 'id', sourceKey: 'recommendeeId'});
+      {as: 'RecommendationsReceived', sourceKey: 'id', foreignKey: 'recommendeeId'});
     User.hasMany(models.BlockedUser,
-      {as: 'BlockedUsers', foreignKey: 'id', sourceKey: 'blockerId'});
+      {as: 'BlockedUsers', sourceKey: 'id', foreignKey: 'blockerId'});
     User.hasMany(models.BlockedUser,
-      {as: 'BlockedByUsers', foreignKey: 'id', sourceKey: 'blockeeId'});
+      {as: 'BlockedByUsers', sourceKey: 'id', foreignKey: 'blockeeId'});
   };
   User.prototype.validatePassword = (suppliedPassword, userPassword) => {
     return new Promise(((resolve, reject) => {
