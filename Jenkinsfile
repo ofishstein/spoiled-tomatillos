@@ -13,8 +13,9 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
+                sh 'apk --no-cache add --virtual builds-deps build-base python'
             	sh 'ls'
-                sh 'cd spoiled-tomatillos-server/ && npm install' 
+                sh 'cd spoiled-tomatillos-server/ && npm install && npm rebuild bcrypt --build-from-source'
             }
         }
         stage('Test') { 
