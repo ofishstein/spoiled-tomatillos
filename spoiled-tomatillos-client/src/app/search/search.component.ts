@@ -9,17 +9,37 @@ import { SearchService } from '../services/search.service';
 })
 export class SearchComponent implements OnInit {
 
-  public results;
+  public movieResults;
+  public userResults;
+  public displayMovies: boolean;
+  public buttonText: string;
 
   constructor(private http: HttpClient, private _searchService: SearchService) {
+    this.displayMovies = true;
+    this.buttonText = 'Users';
   }
 
   ngOnInit() {
     this._searchService.searchChange.subscribe((successful) => {
       if (successful) {
-        this.results = this._searchService.getResults().movieResults;
+        const searchResults = this._searchService.getResults();
+        this.movieResults = searchResults.movieResults;
+        this.userResults = searchResults.userResults;
       }
     });
+  }
+
+  /**
+   * Switch view between the retrieved movie-results and the user results.
+  */
+  public toggleResults() {
+    this.displayMovies = !this.displayMovies;
+
+    if (this.displayMovies) {
+      this.buttonText = 'Users';
+    } else {
+      this.buttonText = 'Movies';
+    }
   }
 
 }

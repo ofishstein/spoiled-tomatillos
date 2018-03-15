@@ -49,7 +49,6 @@ const routes = [
   { path: 'admin/search', component: AdminSearchComponent },
   { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent },
   { path: 'reset', component: ForgotPasswordComponent }
-
 ];
 
 @NgModule({
