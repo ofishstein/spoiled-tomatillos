@@ -32,6 +32,7 @@ import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginService } from './services/login.service';
 import { ReviewComponent } from './review/review.component';
+import { MovieService } from './services/movie/movie.service';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { ReviewComponent } from './review/review.component';
     HttpClientModule,
     FormsModule
   ],
-  providers: [HelloService, UsersService, SearchService, LoginService],
+  providers: [HelloService, UsersService, SearchService, LoginService, MovieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
