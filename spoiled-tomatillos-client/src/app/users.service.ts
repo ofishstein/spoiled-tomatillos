@@ -27,13 +27,16 @@ export class UsersService {
     const endpoint = this.serverBaseUri + '/me';
     return this.http.put(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
     });
   }
 
   public getUserInfo(): Observable<User>  {
     const endpoint = this.serverBaseUri + '/me';
-    return this.http.get<Response>(endpoint).map((resp) => {
+    return this.http.get<Response>(endpoint, {
+      withCredentials: true 
+    }).map((resp) => {
       const body: any = resp;
       return body;
     });
