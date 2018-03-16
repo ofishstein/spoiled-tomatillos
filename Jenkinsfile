@@ -27,7 +27,8 @@ pipeline {
         stage('SonarQube analysis') {
             steps{
                 withSonarQubeEnv('SonarQube') {
-                  sh "sonar-scanner"
+                  sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
+                  sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
                 }
             }
         }
