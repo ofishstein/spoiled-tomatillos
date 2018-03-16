@@ -5,7 +5,7 @@ FROM node:8.10-alpine
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 
-# Add a simple script that can auto-detect the appropriate JAVA_HOME value
+# add a simple script that can auto-detect the appropriate JAVA_HOME value
 # based on whether the JDK or only the JRE is installed
 RUN { \
 		echo '#!/bin/sh'; \
@@ -17,8 +17,8 @@ RUN { \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/jre
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
-ENV JAVA_VERSION 8u151
-ENV JAVA_ALPINE_VERSION 8.151.12-r0
+ENV JAVA_VERSION 8u131
+ENV JAVA_ALPINE_VERSION 8.131.11-r2
 
 RUN set -x \
 	&& apk add --no-cache \
