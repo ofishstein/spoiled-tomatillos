@@ -13,6 +13,7 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
+                sh 'java -version'
                 sh 'apk --no-cache add --virtual builds-deps build-base python make gcc g++'
             	sh 'ls'
                 sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
