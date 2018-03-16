@@ -9,7 +9,6 @@ pipeline {
     }
     environment {
         CI = 'true' 
-        scannerHome = tool 'sonarScanner';
     }
     stages {
         stage('Build') { 
@@ -27,8 +26,23 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps{
-                withSonarQubeEnv('SonarLinter') {
-                  sh "${scannerHome}/bin/sonar-scanner"
+                withSonarQubeEnv('SonarQube') {
+                  sh "sonar-scanner"
+                }
+            }
+        }
+        stage('Quality') {
+            steps {
+                sh 'sleep 30'
+                timeout(time: 10, unit: 'SECONDS')
+                retry(5) {
+                    script {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate error ${qg.status}"
+                        }
+                    }
+
                 }
             }
         }
