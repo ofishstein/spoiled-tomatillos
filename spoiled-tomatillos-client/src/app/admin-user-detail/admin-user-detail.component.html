@@ -20,7 +20,7 @@
     <h4>Case Listing</h4>
     <div class="col-12">
       <div *ngFor="let case of cases" class="row border mb-3 aCase">
-        <div *ngFor="let propertyName of getOwnPropertyNames(case)" class="col-12">
+        <div *ngFor="let propertyName of getOwnPropertyNames(case)" class="col-12" [routerLink]="['/admin/user/:uid/flagged/:caseId']">
           <div class="row">
           <div class="col-3 border">{{ propertyName | titlecase }}</div>
           <div *ngIf="!isDate(case[propertyName])" class="col-9 border">{{ case[propertyName] }}</div>

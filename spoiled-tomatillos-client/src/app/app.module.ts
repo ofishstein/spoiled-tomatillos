@@ -32,7 +32,6 @@ import { ReviewComponent } from './review/review.component';
 import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginService } from './services/login.service';
-import { ReviewComponent } from './review/review.component';
 import { MovieService } from './services/movie/movie.service';
 
 

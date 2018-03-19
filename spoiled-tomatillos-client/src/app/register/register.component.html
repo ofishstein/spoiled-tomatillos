@@ -18,12 +18,12 @@
                 <div class="form-row form-group">
                     <div class="col-6" [ngClass]="{ 'has-error': f.submitted && !first.valid }">
                         <label for="firstName">First</label>
-                        <input type="text" class="form-control" name="firstName" [(ngModel)]="user.first" #first="ngModel" required >
+                        <input type="text" class="form-control" name="firstName" [(ngModel)]="user.firstName" #first="ngModel" required >
                         <div *ngIf="f.submitted && !first.valid" class="help-block">First is required</div>
                     </div>
                     <div class="col-6" [ngClass]="{ 'has-error': f.submitted && !last.valid }">
                         <label for="lastName">Last</label>
-                        <input type="text" class="form-control" name="lastName" [(ngModel)]="user.last" #last="ngModel" required>
+                        <input type="text" class="form-control" name="lastName" [(ngModel)]="user.lastName" #last="ngModel" required>
                         <div *ngIf="f.submitted && !last.valid" class="help-block">Last is required</div>
                     </div>
                 </div>

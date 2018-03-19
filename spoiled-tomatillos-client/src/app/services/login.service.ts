@@ -4,6 +4,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class LoginService {
 
+  baseUri: string;
+
   constructor(private http: HttpClient) {
     this.baseUri = 'http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000';
   }
@@ -14,12 +16,13 @@ export class LoginService {
     return this.http.post(this.baseUri + '/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
-        responseType: 'text'
+        responseType: 'text',
+        withCredentials: true
       });
   }
 
   logout() {
-    return this.http.post(this.baseUri + '/logout');
+    //return this.http.post(this.baseUri + '/logout');
   }
 
   /**

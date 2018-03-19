@@ -13,8 +13,8 @@ export class AdminRegisterComponent implements OnInit {
   	username: null,
     email: null,
     password: null,
-    first: null,
-    last: null,
+    firstName: null,
+    lastName: null,
     isAdmin: true
   };
 
