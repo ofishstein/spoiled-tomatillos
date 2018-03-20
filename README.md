@@ -13,4 +13,4 @@ Team includes Campbell Alden, Spencer Podzer, Oli Fishstein, Lexy Brooks, Onajé
 
 [Server](http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000)
 
-[Jenkins Server](http://ec2-54-187-255-233.us-west-2.compute.amazonaws.com:8080/)
+[Jenkins Server](http://ec2-34-218-211-163.us-west-2.compute.amazonaws.com:8080/)
