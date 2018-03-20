@@ -34,4 +34,16 @@ router.post('/create', function(req, res) {
     });
 });
 
+router.get('/isLoggedIn', function(req, res) {
+  if (req.isAuthenticated()) {
+    var response = req.user;
+    response.loggedIn = true;
+    res.json(response);
+  } else {
+    res.json({loggedIn: false});
+    //   var respons = {username: 'test', isAdmin: true, loggedIn: true};
+    //   res.json(respons);
+  }
+});
+
 module.exports = router;
