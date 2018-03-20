@@ -10,7 +10,7 @@ import { LoginService } from '../services/login.service';
 export class LoginComponent implements OnInit {
 
   private missingRequired: boolean;
-  private comboNotFound: string;
+  private comboNotFound: boolean;
 
   constructor(private _loginService: LoginService, private router: Router) { }
 
@@ -18,17 +18,19 @@ export class LoginComponent implements OnInit {
   }
 
   userLogin(form) {
-    if (form.username == '' || form.password == '') {
+    if (form.value.username == '' || form.value.password == '') {
+      this.comboNotFound = false;
       this.missingRequired = true;
       return;
     }
     else {
+      this.missingRequired = false;
       this._loginService.userLogin(form.value.username, form.value.password).subscribe(
         success => { this.router.navigate(['/home']);
         },
         error => {
           console.log(error);
-          this.comboNotFound = 'Username and password combination not found';
+          this.comboNotFound = false;
         }
       );
     }
