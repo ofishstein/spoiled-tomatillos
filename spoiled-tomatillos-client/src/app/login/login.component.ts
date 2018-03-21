@@ -38,10 +38,10 @@ export class LoginComponent implements OnInit {
           this.comboNotFound = false;
         }
       );
-    }
 
-    // update currentUser
-    this._authService.isLoggedIn();
+      // update currentUser
+      this._authService.getCurrentUser();
+    }
   }
 
 }

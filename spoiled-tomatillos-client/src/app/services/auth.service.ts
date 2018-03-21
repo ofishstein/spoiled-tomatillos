@@ -1,10 +1,12 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { isUndefined } from "util";
 
 @Injectable()
 export class AuthService {
 
   public currentUser: EventEmitter<any>;
+  private currentUserObj: any;
 
   constructor(private http: HttpClient) {
     this.currentUser = new EventEmitter();
@@ -29,23 +31,40 @@ export class AuthService {
   /**
    * returns the current user if logged in; otherwise 'false'
    */
-  isLoggedIn(): Promise<any> {
+  getCurrentUser(): Promise<any> {
     return new Promise(resolve => {
       let res;
-      this.http.get('/users/is-logged-in', {withCredentials: true})
+      this.http.get('/users/get-current-user', {withCredentials: true})
         .subscribe(user => {
           if (user === 'false') {
             this.currentUser.emit(false);
+            this.currentUserObj = false;
             res = false;
           } else {
             this.currentUser.emit(user);
+            this.currentUserObj = user;
             res = user;
           }
       },
-        err => { console.log('isLoggedIn err: ' + err); });
+        err => { console.log('getCurrentUser err: ' + err); });
 
       resolve(res);
     });
+  }
+
+  /**
+   * returns true if logged in; otherwise false
+   */
+  isLoggedIn(): boolean {
+    return !isUndefined(this.currentUserObj.username);
+  }
+
+
+  /**
+   * returns true if logged in and admin; otherwise false
+   */
+  isAdmin(): boolean {
+    return this.currentUserObj.isAdmin === true;
   }
 
 }

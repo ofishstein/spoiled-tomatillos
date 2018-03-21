@@ -34,7 +34,7 @@ router.post('/create', function(req, res) {
     });
 });
 
-router.get('/is-logged-in', function(req, res) {
+router.get('/get-current-user', function(req, res) {
   if (req.isAuthenticated()) {
     var response = req.user;
     response.loggedIn = true;
