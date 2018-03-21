@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
-export class LoginService {
+export class AuthService {
 
   public currentUser: EventEmitter<any>;
 
@@ -32,7 +32,7 @@ export class LoginService {
   isLoggedIn(): Promise<any> {
     return new Promise(resolve => {
       let res;
-      this.http.get('/users/isLoggedIn', {withCredentials: true})
+      this.http.get('/users/is-logged-in', {withCredentials: true})
         .subscribe(user => {
           if (user === 'false') {
             this.currentUser.emit(false);

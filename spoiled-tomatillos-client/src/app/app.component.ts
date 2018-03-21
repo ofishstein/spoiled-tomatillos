@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SearchService } from './services/search.service';
 import { Router } from '@angular/router';
-import { LoginService } from './services/login.service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +14,9 @@ export class AppComponent implements OnInit {
   private currentUser: any;
 
   constructor(private _searchService: SearchService, private _router: Router,
-              private _loginService: LoginService) {
+              private _authService: AuthService) {
     this.title = 'Spoiled Tomatillos';
-    _loginService.currentUser.subscribe(isLoggedIn => {
+    _authService.currentUser.subscribe(isLoggedIn => {
       this.currentUser = isLoggedIn;
     });
   }
