@@ -16,10 +16,12 @@ Profile:
 ## API
 
 ### Login
-####POST 
+
+#### POST
+
 | Route       | Description                                                                                   |
-| ----        | ---                                                                                           |
-| /api/login  | Login to an account {username, password, isAdmin} -- isAdmin flag for logging in as an admin. |
+|-------------| ----------------------------------------------------------------------------------------------|
+| /api/login  | Login to an account `{username, password, isAdmin}` -- isAdmin flag for logging in as an admin. |
 | /api/logout | Logout of an account.                                                                         |
 
 ### User Routes
