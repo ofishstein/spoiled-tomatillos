@@ -3,10 +3,38 @@
 ## Profile Definition
 ```
 Profile:
-{'user': {username, email, first, last, pic},
- 'watchlists': [first 8 watchlists],
- 'recommendations': [first n recommendations]
- 'activity': [last n  actions]}
+{'user':
+    {'user_id': '',
+     'username': 'username',
+     'email': 'email@example.com',
+     'first': 'John',
+     'last': 'Smith',
+     'is_admin': false,
+     'pic': 's3.garbage.com/xx4ifds.jpg',
+     'create_date': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
+     'update_date': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
+     },
+ 'watchlists': [{'watchlist_id': 13,
+                 'create_date': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
+                 'update_date': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
+                 'title': 'My Watchlist',
+                 'items': [{movie_id: 12, title: "Shrek 2", poster: 'omdb.com/img1'}, ...]}],
+ 'recommendations': [{recommendation_id: 23, }]
+ 'activity': [Activity ...]
+```
+
+## Activity Definition
+```
+Activity:
+{'type': 'review',
+ 'timestamp': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
+ 'img': 's3.garbage.com/43fjsalkdsf.jpg',
+ 'content': {REVIEW FIELDS HERE}
+}
+
+The possible types are 'review', 'comment', 'recommendation', 'watchlist'.
+We will return all of the respective fields for each type.
+
 ```
 
 #### Notes
