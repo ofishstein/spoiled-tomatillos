@@ -19,7 +19,8 @@ Profile:
                  'update_date': {'month': 12, 'day': 25, 'year': 2018, 'hour': 12, 'min': 65, 'sec': 12.043043}
                  'title': 'My Watchlist',
                  'items': [{movie_id: 12, title: "Shrek 2", poster: 'omdb.com/img1'}, ...]}],
- 'recommendations': [{recommendation_id: 23, }]
+ 'recommendations': [{recommendation_id: 23, }],
+ 'reviews': [{REVIEW FIELDS HERE} ...],
  'activity': [Activity ...]
 ```
 
@@ -32,7 +33,7 @@ Activity:
  'content': {REVIEW FIELDS HERE}
 }
 
-The possible types are 'review', 'comment', 'recommendation', 'watchlist'.
+The possible types are 'review', 'comment', 'recommendation', 'watchlist', and 'follow'
 We will return all of the respective fields for each type.
 
 ```
