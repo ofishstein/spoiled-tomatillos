@@ -10,6 +10,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     this.currentUser = new EventEmitter();
+    this.currentUserObj = false;
   }
 
   userLogin(username: string, password: string) {
@@ -24,7 +25,8 @@ export class AuthService {
   }
 
   logout() {
-    // this.currentUser.emit(false);
+    this.currentUser.emit(false);
+    this.currentUserObj = false;
     //return this.http.post('/logout');
   }
 

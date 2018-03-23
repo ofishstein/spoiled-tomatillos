@@ -54,7 +54,6 @@
       </form>
       <ul class="navbar-nav ml-auto">
         <ng-container *ngIf="currentUser && currentUser.username; else loginDropdown">
-          {{loggedInUser}}
           <li class="nav-item">
             <a class="nav-link" routerLink="/home">
               <i class="material-icons">home</i>
@@ -76,7 +75,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" routerLink="/settings">Account Settings</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" routerLink="/login">Sign Out</a>
+              <a class="dropdown-item" (click)="logout()">Sign Out</a>
             </div>
           </li>
         </ng-container>

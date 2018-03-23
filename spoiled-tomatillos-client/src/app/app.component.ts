@@ -44,4 +44,9 @@ export class AppComponent implements OnInit {
 
     this._searchService.searchByKeyword(searchText);
   }
+
+  public logout(): void {
+    this._authService.logout();
+    this._router.navigate(['/login']);
+  }
 }
