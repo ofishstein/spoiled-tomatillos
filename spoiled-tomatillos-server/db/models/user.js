@@ -26,10 +26,10 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.Review,
       {as: 'Reviews', sourceKey: 'id', foreignKey: 'userId'});
-    User.hasMany(models.Playlist,
-      {as: 'Playlists', sourceKey: 'id', foreignKey: 'userId'});
-    User.hasMany(models.PlaylistComment,
-      {as: 'PlaylistComments', sourceKey: 'id', foreignKey: 'commenterId'});
+    User.hasMany(models.Watchlist,
+      {as: 'Watchlists', sourceKey: 'id', foreignKey: 'userId'});
+    User.hasMany(models.WatchlistComment,
+      {as: 'WatchlistComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.ReviewComment,
       {as: 'ReviewComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.Recommendation,

@@ -5,15 +5,34 @@ const db = require('../db/db.js');
 const session = db.get_session();
 const authCheck = require('./auth');
 
-/* GET user. */
-router.get('/me', authCheck, function(req, res) {
+/* GET user.
+ * Return the profile information for the user at the given id.*/
+router.get('/:user_id', function(req, res) {
+  session.User
+    .findAll({
+      where: {id: req.params['user_id']},
+      include: ['Reviews',
+                'ReviewComments',
+                'Watchlists',
+                'WatchlistComments',
+                'RecommendationsSent',
+                'RecommendationsReceived']
+    })
+    .then(profile => {
+      res.send(profile);
+    });
+
+});
+
+router.get('/:user_id/settings', authCheck, function(req, res) {
   let u = req.user.get({plain: true});
   delete u.password;
   res.send(u);
 });
 
+
 /* PUT user */
-router.put('/me', authCheck, function(req, res) {
+router.put('/:user_id', authCheck, function(req, res) {
   delete req.body.password;
   req.user.update(req.body).then(() => {
     res.sendStatus(200);
