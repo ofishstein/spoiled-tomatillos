@@ -62,7 +62,7 @@ We will return all of the respective fields for each type.
 | /api/users/:id/following?limit=8 | Get the user's followers (with optional limit); followers should be list of `{id, username, profileImage}`|
 | /api/users/:id/followers?limit=8 | Get the user's following (with optional limit); following should be list of `{id, username, profileImage}`|
 | /api/users/:id/is-following      | Is the currently logged in user following the user? (Return false if not logged in)|
-| /api/users/:id/watchlist?limit=8 | Get the user's watchlist (with optional limit); watchlist should be a list of `{movie id, poster image}`|
+| /api/users/:id/watchlists?limit=8 | Get the user's watchlist (with optional limit); watchlist should be a list of `{movie id, poster image}`|
 | /api/users/:id/reviews?limit=8   | Get the user's reviews; `{reviewId, uid, movieId, username, profileImage, reviewText, rating, createdDate}`|
 | /api/users/settings              | Get the currently logged in user's settings (must be logged in to view) The 'user' field from the Profile|
 | /api/user?q=searchKeyword        | Search for users using given keyword|
@@ -77,7 +77,7 @@ We will return all of the respective fields for each type.
 #### PUT
 | Route                   | Description                                                                                                   |
 |-------------------------|---------------------------------------------------------------------------------------------------------------|
-| /api/users/settings     | Update user settings (login required) PUT a subset of the user info for example `{'username': 'MyNewCoolName'}` |
+| /api/users/settings     | Update user settings (login required) |
 | /api/users/:id/follow   | Follow the user (login required)                                                                              |
 | /api/users/:id/unfollow | Unfollow (login required)                                                                                     |
 
@@ -100,22 +100,16 @@ We will return all of the respective fields for each type.
 | -------                            | --------------                    |
 | /api/movies                        | Create new movie (admin)          |
 | /api/movies/:id/review             | Create a new review for the movie |
-| /api/movies/:id/reviews/:id/flag   | Flag given review (admin)         |
-| /api/movies/:id/reviews/:id/unflag | Unflag a given review (admin)     |
 
 #### PUT
 | Route                                 | Description                                                                              |
 |---------------------------------------|------------------------------------------------------------------------------------------|
 | /api/movies/:id                       | Must be admin                                                                            |
-| /api/movies/:id/reviews/:id           | Edit a review/add a text review to a rating, etc.; current user must match review's user |
-| /api/movies/:id/add-to-watchlist      | Add movie to watchlist                                                                   |
-| /api/movies/:id/remove-from-watchlist | Remove movie from watchlist                                                              |
 
 #### DELETE
 | Route                       | Description           |
 |-----------------------------|-----------------------|
 | /api/movies/:id             | Must be admin         |
-| /api/movies/:id/reviews/:id | Must be review's user |
 
 ### Review Routes
 #### GET
