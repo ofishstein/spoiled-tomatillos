@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 
@@ -33,7 +33,7 @@ import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { LoginService } from './services/login.service';
 import { MovieService } from './services/movie/movie.service';
-
+import { ApiInterceptor } from './api-interceptor';
 
 @NgModule({
   declarations: [
@@ -61,13 +61,26 @@ import { MovieService } from './services/movie/movie.service';
     ForgotPasswordComponent,
     ReviewComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule
   ],
-  providers: [HelloService, UsersService, SearchService, LoginService, MovieService],
+
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: ApiInterceptor,
+    multi: true,
+  },
+    HelloService,
+    UsersService,
+    SearchService,
+    LoginService,
+    MovieService
+  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
