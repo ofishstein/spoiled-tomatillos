@@ -96,10 +96,11 @@ We will return all of the respective fields for each type.
 | /api/movies/:id/review   | Get all reviews for given movie; `{reviewId, uid, movieId, username, profileImage, reviewText, ratin  g, createdDate}` |
 
 #### POST
-| Route                              | Description                       |
-| -------                            | --------------                    |
-| /api/movies                        | Create new movie (admin)          |
-| /api/movies/:id/review             | Create a new review for the movie |
+| Route                            | Description                       |
+| -------                          | --------------                    |
+| /api/movies                      | Create new movie (admin)          |
+| /api/movies/:id/review           | Create a new review for the movie |
+| /api/movies/:id/add-to-watchlist | Add a movie to a watchlist        |
 
 #### PUT
 | Route                                 | Description                                                                              |
@@ -113,7 +114,24 @@ We will return all of the respective fields for each type.
 
 ### Review Routes
 #### GET
-| Route                | Description                          |
-|----------------------|--------------------------------------|
-| /api/reviews/:id     | Get a review by ID                   |
-| /api/reviews/flagged | Get all flagged reviews (admin only) |
+| Route                  | Description                            |
+| ---------------------- | -------------------------------------- |
+| /api/reviews/:id       | Get a review by ID                     |
+| /api/reviews/flagged   | Get all flagged reviews (admin only)   |
+
+#### POST
+| Route                   | Description                                   |
+| -----                   | -----------                                   |
+| /api/reviews/:id/flag   | Flag a review (anyone)                        |
+| /api/reviews/:id/unflag | Unflag a review (admin or person who flagged) |
+
+### Watchlist Routes
+#### GET
+| Route                  | Description                            |
+| ---------------------- | -------------------------------------- |
+| /api/watchlists/:id    | Get a watchlist by ID                  |
+
+#### POST
+| Route                   | Description                                   |
+| -----                   | -----------                                   |
+| /api/watchlists/        | Create a new watchlist for the logged in user |

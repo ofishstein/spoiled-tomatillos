@@ -6,7 +6,6 @@ const session = db.get_session();
 
 // GET METHODS
 
-/* GET users listing. */
 router.get('/flagged', authCheck, function(req, res) {
  // TODO: get all flagged reviews (admin only)
 });

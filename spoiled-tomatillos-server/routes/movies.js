@@ -37,6 +37,10 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
  // TODO: Post a new review of the movie at movie_id
 });
 
+router.post('/:movie_id/add-to-watchlist', authCheck, function(req, res) {
+  // TODO: Add the movie to a watchlist (given in the body)
+});
+
 // PUT METHODS
 
 router.put('/:movie_id', authCheck, function(req, res) {
