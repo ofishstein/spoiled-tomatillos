@@ -3,12 +3,12 @@ const router = express.Router();
 
 const db = require('../db/db.js');
 const session = db.get_session();
-const search = require('search.js')
+const search = require('./search');
 
 // GET METHODS
 // Handle searching for movies
 router.get('/', authCheck, function(req, res) {
-  handleSearch(req.query, session.Movie, session, (result) => {
+  search.handleSearch(req.query, session.Movie, session, (result) => {
     res.send(result);
   });
 });
@@ -28,7 +28,7 @@ router.get('/:movie_id', function(req, res) {
 router.get('/:movie_id/reviews', authCheck, function(req, res) {
   session.Review
     .findAll({
-      where: {movieId: req.params['movie_id']}
+      where: {movieId: req.params['movie_id']},
       include: ['Comments']
     })
     .then(reviews => {
@@ -53,6 +53,9 @@ router.post('/', authCheck, function(req, res) {
 });
 
 router.post('/:movie_id/review', authCheck, function(req, res) {
+  review = req.body // TODO: Validate fields
+  review['movieId'] = req.params['movie_id'];
+  review['userId'] = req.user.id;
   session.Review
     .build(req.body)
     .save()

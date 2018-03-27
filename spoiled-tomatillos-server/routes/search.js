@@ -18,6 +18,6 @@ function handleSearch(queries, model, session, callBack) {
   .then(results => {
     callBack(results);
   });
-}
+};
 
-export default handleSearch;
+module.exports = { handleSearch };
