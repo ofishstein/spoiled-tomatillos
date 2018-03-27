@@ -3,22 +3,41 @@ const router = express.Router();
 
 const db = require('../db/db.js');
 const session = db.get_session();
-const authCheck = require('./auth');
+const op = session.Sequelize.Op;
 
-/* GET user.
- * Return the profile information for the user at the given id.*/
-router.get('/', authCheck, function(req, res) {
-  // TODO handle searching here.
+const authCheck = require('./auth');
+const omdb = require('./omdb.service');
+
+// search for users with given 'q'
+router.get('/', function(req, res) {
+    let keyword = req.query['q'];
+    session.User.findAll({
+        where: {
+            [op.or]: [
+                { username: {[op.like]: '%'+keyword+'%'} },
+                { firstName: {[op.like]: keyword+'%'} },
+                { lastName: {[op.like]: keyword+'%'} },
+                { email: {[op.like]: '%'+keyword+'%'} }
+            ]
+        }
+    })
+        .then(users => {
+            res.json(users);
+        });
 });
 
 router.get('/settings', authCheck, function(req, res) {
-  let u = req.user.get({plain: true});
-  delete u.password;
-  res.send(u);
+    session.User.findOne({
+        where: {id: req.user.id}
+    })
+        .then(user => {
+            delete user.password;
+            res.json(user);
+        });
 });
 
 
-router.get('/:user_id', authCheck, function(req, res) {
+router.get('/:user_id', function(req, res) {
   session.User
     .findAll({
       where: {id: req.params['user_id']},
@@ -62,7 +81,7 @@ router.get('/:user_id/followers', function(req, res) {
 });
 
 router.get('/:user_id/is-following', function(req, res) {
-  // Is the logged in user following the user at the given ID.
+    // Is the logged in user following the user at the given ID.
     if (req.isAuthenticated()) {
         session.Follower
             .findOne({
@@ -83,39 +102,98 @@ router.get('/:user_id/is-following', function(req, res) {
     }
 });
 
-router.get('/:user_id/watchlists', authCheck, function(req, res) {
-  // TODO: Get users watchlist
+router.get('/:user_id/watchlists', function(req, res) {
+    // Get users watchlist
+    session.Watchlist.findAll({
+        where: {userId: req.params['user_id']},
+        include: ['Movie']
+    })
+        .then(watchlists => {
+            // check for any movies in watchlists with imdbId and null poster
+            watchlists.forEach(watchlist => {
+                watchlist.forEach(movie => {
+                    if (movie['poster'] === null) {
+                        movie['poster'] = omdb.getPosterById(movie['imdbId']);
+                    }
+                })
+            });
+            res.json(watchlists);
+        });
 });
 
-router.get('/:user_id/reviews', authCheck, function(req, res) {
-  // TODO: Get users reviews
-});
-
-
-
-
-/* PUT user */
-router.put('/:user_id', authCheck, function(req, res) {
-  delete req.body.password;
-  req.user.update(req.body).then(() => {
-    res.sendStatus(200);
-  });
+router.get('/:user_id/reviews', function(req, res) {
+    // Get user's reviews
+    session.Review.findAll({
+        where: {userId: req.params['user_id']},
+        include: ['Movie']
+    })
+        .then(reviews => {
+            // check for any movies in watchlists with null poster
+            reviews.forEach(review => {
+                if (review['Movie']['poster'] === null) {
+                    review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
+                }
+            });
+            res.json(reviews);
+        });
 });
 
 router.put('/settings', authCheck, function(req, res) {
-  //TODO: Handle putting user settings.
+  // Handle putting user settings.
+    session.User.update(req.body, {
+        where: { id: req.user.id }
+    })
+        .then(updated => {
+            if (updated === 0) {
+                res.sendStatus(500);
+            } else {
+                session.User.findOne({
+                    where: {id: req.user.id}
+                })
+                    .then(user => {
+                        delete user.password;
+                        res.json(user);
+                    });
+            }
+        });
 });
 
 router.put('/:user_id/follow', authCheck, function(req, res) {
-  //TODO: Current logged in user follows user at user_id
-});
-
-router.put('/:user_id/unfollow', authCheck, function(req, res) {
-  //TODO: Current logged in user unfollows user at user_id
+    // Current logged in user follows user at user_id
+    // sends updated is-following status
+    if (req.body.follow) {
+        session.Follower.findOrCreate({
+            where: {
+                followerId: req.user.id,
+                followeeId: req.params['user_id']
+            }
+        }).spread((follower, created) => {
+            res.json(true);
+        });
+    } else {
+        session.Follower.destroy({
+            where: {
+                followerId: req.user.id,
+                followeeId: req.params['user_id']
+            }
+        }).then(() => {
+            res.json(false);
+        });
+    }
 });
 
 router.delete('/:user_id', authCheck, function(req, res) {
-  // TODO: delete the user iff user_id == logged in user or logged in user is admin
+    // delete the user iff user_id == logged in user or logged in user is admin
+    if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
+        res.sendStatus(401);
+    } else {
+        session.User.destroy({
+            where: {id: req.params['user_id']}
+        })
+            .then(() => {
+            res.sendStatus(200);
+        });
+    }
 });
 
 
