@@ -52,23 +52,23 @@ export class MovieComponent implements OnInit {
   addToWatchlist() {
     console.log("adding to watchlist");
     this.addToWatchlistButton = false;
-    /**this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
       data => {
-        this.inWatchlist = true;
+        this.addToWatchlistButton = false;
       },
       err => console.error(err)
-    );*/
+    );
   }
 
   removeFromWatchlist() {
     console.log("removing from watchlist");
     this.addToWatchlistButton = true;
-    /**this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
       data => {
-        this.inWatchlist = false;
+        this.addToWatchlistButton = true;
       },
       err => console.error(err)
-    );*/
+    );
   }
 
 

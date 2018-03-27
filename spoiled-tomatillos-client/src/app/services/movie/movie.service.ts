@@ -30,7 +30,7 @@ export class MovieService {
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.http.post(this.serverBaseUri + '/movies/', movieId,  {
+    return this.http.put(this.serverBaseUri + '/movies/' + movieId + '/add-to-watchlist', {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
@@ -38,7 +38,7 @@ export class MovieService {
 
   // remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.post(this.serverBaseUri + '/movies/', movieId,  {
+    return this.http.put(this.serverBaseUri + '/movies/' + movieId + '/remove-from-watchlist',  {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
