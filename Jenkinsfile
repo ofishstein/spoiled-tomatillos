@@ -16,7 +16,7 @@ node {
 			def nodeImage = docker.build("node-image")
 			nodeImage.inside("--link ${c.id}:db") {
                 sh 'java -version'
-                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
+                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-test-db && npm start'
                 sh 'cd spoiled-tomatillos-client/ && npm install && npm start'
 			}
 		}
@@ -24,6 +24,13 @@ node {
 		stage('Test') {
 			sh './jenkins-scripts/test.sh'
 		}
+
+		stage('Test Cleanup') {
+			nodeImage.inside("--link ${c.id}:db") {
+				sh 'cd spoiled-tomatillos-server/ && npm run cleanup-dev-db'
+			}
+		}
+
         stage('SonarQube analysis') {
             steps{
                 withSonarQubeEnv('SonarQube') {
