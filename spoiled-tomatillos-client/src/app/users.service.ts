@@ -42,4 +42,14 @@ export class UsersService {
     });
   }
 
+  public follow(userId: string) {
+    const endpoint = this.serverBaseUri + userId + '/follow';
+    return this.http.put(endpoint, null);
+  }
+
+  public unfollow(userId: string) {
+    const endpoint = this.serverBaseUri + userId + '/unfollow';
+    return this.http.put(endpoint, null);
+  }
+
 }
