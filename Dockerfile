@@ -30,6 +30,9 @@ RUN apk --no-cache add --virtual builds-deps build-base python make gcc g++
 
 # Enable postgres see: https://github.com/docker-library/postgres/blob/f7f1e59c55bcce36cfbe7ab4604f439eb8721611/10/alpine/Dockerfile
 
+# Install sudo
+RUN apk --no-cache add --virtual sudo
+
 # alpine includes "postgres" user/group in base install
 #   /etc/passwd:22:postgres:x:70:70::/var/lib/postgresql:/bin/sh
 #   /etc/group:34:postgres:x:70:
