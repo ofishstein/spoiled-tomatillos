@@ -11,12 +11,12 @@ node {
 		docker.image('postgres:alpine').withRun('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
 			docker.image('postgres:alpine').inside("--link ${c.id}:db") {
 				// Wait until postgres service is up (could be more graceful)
-				sh 'sleep 30'
+				sh 'sleep 15'
 			}
 			def nodeImage = docker.build("node-image")
 			nodeImage.inside("--link ${c.id}:db") {
                 sh 'java -version'
-                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-test-db && npm start'
+                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
                 sh 'cd spoiled-tomatillos-client/ && npm install && npm start'
 			}
 		}
