@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('app');
+const app = require('../app');
 const apiKey = app.omdbApiKey;
 
 const omdbBase = 'http://www.omdbapi.com/?apikey=' + apiKey + '&';
@@ -30,4 +30,4 @@ omdb.getPosterById = (id) => {
         });
 };
 
-module.exports(omdb);
+module.exports.omdb = () => omdb;
