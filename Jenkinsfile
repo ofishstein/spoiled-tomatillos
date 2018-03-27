@@ -55,8 +55,6 @@ node {
 	}
 	finally {
 	    stage('Cleanup') {
-	        nodeContainer.stop
-        	pgContainer.stop
             deleteDir()
     	}
 	}
