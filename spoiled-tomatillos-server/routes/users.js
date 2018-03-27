@@ -35,16 +35,52 @@ router.get('/:user_id', authCheck, function(req, res) {
 
 });
 
-router.get('/:user_id/following', authCheck, function(req, res) {
-  // TODO: Get users that the user at the id follows
+router.get('/:user_id/following', function(req, res) {
+  // Get users that the user at the id follows
+    session.Follower
+        .findAll({
+            attributes: ['followeeId'],
+            where: {followerId: req.params['user_id']},
+            include: ['FolloweeUser']
+        })
+        .then(following => {
+            res.json(following);
+    });
 });
 
-router.get('/:user_id/followers', authCheck, function(req, res) {
-  // TODO: Get users that the user at the id is followed by
+
+router.get('/:user_id/followers', function(req, res) {
+  // Get users that the user at the id is followed by
+    session.Follower.findAll({
+        attributes: ['followerId'],
+        where: {followeeId: req.params['user_id']},
+        include: ['FollowerUser']
+    })
+        .then(followers => {
+            res.json(followers);
+    });
 });
 
-router.get('/:user_id/is-following', authCheck, function(req, res) {
-  // TODO: Is the logged in user following the user at the given ID.
+router.get('/:user_id/is-following', function(req, res) {
+  // Is the logged in user following the user at the given ID.
+    if (req.isAuthenticated()) {
+        session.Follower
+            .findOne({
+                where: {
+                    followerId: req.user.id,
+                    followeeId: req.params['user_id']
+                }
+            })
+            .then(isFollowing => {
+                if (isFollowing) {
+                    res.json(true);
+                } else {
+                    res.json(false);
+                }
+            })
+    } else {
+        res.json(false);
+    }
 });
 
 router.get('/:user_id/watchlists', authCheck, function(req, res) {
