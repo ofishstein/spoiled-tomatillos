@@ -22,13 +22,18 @@
               <br/>
 
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary" *ngIf="inWatchlist; else elseBlock" (click)="removeFromWatchlist()">
-                  <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
-                </button>
-                <ng-template #elseBlock>
+                <ng-container
+                  *ngIf="addToWatchlistButton; then add; else remove">
+                </ng-container>
+                <ng-template #add>
                   <button type="button" class="btn btn-primary" (click)="addToWatchlist()">
-                    <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
+                      <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
                   </button>
+                </ng-template>
+                <ng-template #remove>
+                  <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()">
+                      <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
+                    </button>
                 </ng-template>
                 <button type="button" class="btn btn-primary"
                         data-toggle="modal" data-target="#addRating">

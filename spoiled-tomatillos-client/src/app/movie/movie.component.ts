@@ -12,7 +12,7 @@ export class MovieComponent implements OnInit {
 
   public movie;
   private reviews: any;
-  private inWatchlist: boolean; 
+  public addToWatchlistButton: boolean; 
 
   constructor(private _movieService: MovieService, private route: ActivatedRoute) {
     this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 10,
@@ -46,12 +46,12 @@ export class MovieComponent implements OnInit {
       err => console.error(err)
     );
 
-    this.inWatchlist = false;
+    this.addToWatchlistButton = true;
   }
 
   addToWatchlist() {
     console.log("adding to watchlist");
-    this.inWatchlist = true;
+    this.addToWatchlistButton = false;
     /**this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
       data => {
         this.inWatchlist = true;
@@ -62,7 +62,7 @@ export class MovieComponent implements OnInit {
 
   removeFromWatchlist() {
     console.log("removing from watchlist");
-    this.inWatchlist = false;
+    this.addToWatchlistButton = true;
     /**this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
       data => {
         this.inWatchlist = false;
