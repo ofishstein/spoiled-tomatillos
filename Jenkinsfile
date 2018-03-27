@@ -1,28 +1,29 @@
+node {
+	stage('Checkout') {
+		checkout scm
+	}
 
-// init jenkinsfile
-pipeline {
-    agent {
-        dockerfile {
-            args '-p 3000:3000 -e POSTGRES_PASSWORD=cs4500team22' 
-        }
-    }
-    environment {
-        CI = 'true' 
-    }
-    stages {
-        stage('Build') { 
-            steps {
-                sh "sudo -u postgres pg_ctl -D /var/lib/postgresql/data -o \"-c listen_addresses='localhost'\" -w start"
+	stage('Build') {
+		env.NODE_ENV = "jenkins"
+
+		print "Node environment is: ${env.NODE_ENV}"
+
+		docker.image('postgres:alpine').withRun('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
+			docker.image('postgres:alpine').inside("--link ${c.id}:db") {
+				// Wait until postgres service is up (could be more graceful)
+				sh 'sleep 30'
+			}
+			def nodeImage = docker.build()
+			nodeImage.inside("--link ${c.id}:db") {
                 sh 'java -version'
                 sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
                 sh 'cd spoiled-tomatillos-client/ && npm install && npm start'
-            }
-        }
-        stage('Test') { 
-            steps {
-                sh './jenkins-scripts/test.sh' 
-            }
-        }
+			}
+		}
+
+		stage('Test') {
+			sh './jenkins-scripts/test.sh'
+		}
         stage('SonarQube analysis') {
             steps{
                 withSonarQubeEnv('SonarQube') {
@@ -51,5 +52,5 @@ pipeline {
                 deleteDir()
             }
         }
-    }
+	}
 }

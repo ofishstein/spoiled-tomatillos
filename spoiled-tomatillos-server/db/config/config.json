@@ -19,5 +19,12 @@
     "database": "team22_db",
     "host": "spoiled-tomatillos-team22.czrlmimqysp7.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
+  },
+  "jenkins": {
+    "username": "postgres",
+    "password": "cs4500team22",
+    "database": "team22_db_test",
+    "host": "db",
+    "dialect": "postgres"
   }
 }
