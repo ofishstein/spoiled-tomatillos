@@ -23,7 +23,7 @@
 
               <div class="btn-group" role="group">
                 <div>
-                  <button type="button" class="btn btn-primary" *ngIf="addToWatchlistButton; else remove" (click)="addToWatchlist()">
+                  <button type="button" class="btn btn-primary" *ngIf="!inWatchList; else remove" (click)="addToWatchlist()">
                       <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
                   </button>
                 </div>
@@ -64,7 +64,7 @@
         </div>
         <div class="col-xs-6 col-sm-6">
             <div>
-                <button type="button" class="btn btn-primary" *ngIf="addToWatchlistButton; else remove" (click)="addToWatchlist()">
+                <button type="button" class="btn btn-primary" *ngIf="!inWatchlist; else remove" (click)="addToWatchlist()">
                     <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
                 </button>
               </div>

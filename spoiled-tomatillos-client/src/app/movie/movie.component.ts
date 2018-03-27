@@ -12,7 +12,7 @@ export class MovieComponent implements OnInit {
 
   public movie;
   private reviews: any;
-  public addToWatchlistButton: boolean; 
+  public inWatchList: boolean; 
 
   constructor(private _movieService: MovieService, private route: ActivatedRoute) {
     this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 10,
@@ -35,26 +35,26 @@ export class MovieComponent implements OnInit {
         userId: 123, username: 'this_is_a_long_username', profileImageUrl: 'http://lorempixel.com/400/400/'
       }}];
 
+      this.inWatchList = false;
       
   }
 
   ngOnInit() {
+    this.inWatchList = false;
     this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
       data => {
         console.log(data);
         this.movie = data[0] },
       err => console.error(err)
     );
-
-    this.addToWatchlistButton = true;
   }
 
   addToWatchlist() {
     console.log("adding to watchlist");
-    this.addToWatchlistButton = false;
+    this.inWatchList = true;
     this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
       data => {
-        this.addToWatchlistButton = false;
+        this.inWatchList = true;
       },
       err => console.error(err)
     );
@@ -62,10 +62,10 @@ export class MovieComponent implements OnInit {
 
   removeFromWatchlist() {
     console.log("removing from watchlist");
-    this.addToWatchlistButton = true;
+    this.inWatchList = false;
     this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
       data => {
-        this.addToWatchlistButton = true;
+        this.inWatchList = false;
       },
       err => console.error(err)
     );
