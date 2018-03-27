@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -23,5 +24,8 @@
     "sequelize": "^4.33.4",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "sonar-scanner": "^3.0.3"
   }
 }
