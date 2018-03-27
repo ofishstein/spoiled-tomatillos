@@ -13,9 +13,8 @@ export class AuthService {
     this.currentUserObj = false;
   }
 
-  userLogin(username: string, password: string) {
-    let body = {username: username, password: password};
-    console.log(body);
+  userLogin(username: string, password: string, admin: boolean) {
+    let body = {username: username, password: password, admin: admin};
     return this.http.post('/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),

@@ -30,12 +30,14 @@ export class LoginComponent implements OnInit {
     }
     else {
       this.missingRequired = false;
-      this._authService.userLogin(form.value.username, form.value.password).subscribe(
-        success => { this.router.navigate(['/home']);
+      this._authService.userLogin(form.value.username, form.value.password, false).subscribe(
+        success => {
+          this.router.navigate(['/home'])
+            .then(() => {});
         },
         error => {
           console.log(error);
-          this.comboNotFound = false;
+          this.comboNotFound = true;
         }
       );
 
