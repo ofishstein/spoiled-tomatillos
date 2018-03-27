@@ -3,21 +3,17 @@ node {
 		checkout scm
 	}
 
-	def nodeImage
-	def pgImage
-	def id
-
 	try {
 		env.NODE_ENV = "jenkins"
 
 		print "Node environment is: ${env.NODE_ENV}"
 
-		pgImage = docker.image('postgres:alpine')
+		def pgImage = docker.image('postgres:alpine')
 		pgImage.run('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
-			id = c.id
+			def id = c.id
 			// Wait until postgres service is up (could be more graceful)
 			sh 'sleep 15'
-			nodeImage = docker.build("node-image")
+			def nodeImage = docker.build("node-image")
 			nodeImage.inside("--link ${id}:db") {
 				stage('Build') {
 	                sh 'java -version'
@@ -58,12 +54,10 @@ node {
 		}
 	}
 	finally {
-    stage('Cleanup') {
-        steps {
-        	nodeContainer.stop
+	    stage('Cleanup') {
+	        nodeContainer.stop
         	pgContainer.stop
             deleteDir()
-        }
-    }
+    	}
 	}
 }
