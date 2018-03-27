@@ -13,7 +13,7 @@ node {
 				// Wait until postgres service is up (could be more graceful)
 				sh 'sleep 30'
 			}
-			def nodeImage = docker.build()
+			def nodeImage = docker.build("node-image")
 			nodeImage.inside("--link ${c.id}:db") {
                 sh 'java -version'
                 sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
