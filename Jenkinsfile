@@ -3,7 +3,7 @@
 pipeline {
     agent {
         dockerfile {
-            args '-p 3000:3000' 
+            args '-p 3000:3000 -e POSTGRES_PASSWORD=cs4500team22' 
         }
     }
     environment {
@@ -13,8 +13,8 @@ pipeline {
         stage('Build') { 
             steps {
                 sh 'java -version'
-                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
-                sh 'cd spoiled-tomatillos-client/ && npm install'
+                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
+                sh 'cd spoiled-tomatillos-client/ && npm install && npm start'
             }
         }
         stage('Test') { 

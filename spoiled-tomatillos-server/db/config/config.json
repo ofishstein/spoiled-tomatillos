@@ -1,17 +1,17 @@
 {
   "development": {
-    "username": "team22",
+    "username": "postgres",
     "password": "cs4500team22",
-    "database": "team22_db",
-    "host": "spoiled-tomatillos-team22.czrlmimqysp7.us-east-1.rds.amazonaws.com",
-    "dialect": "mysql"
+    "database": "team22_db_dev",
+    "host": "localhost",
+    "dialect": "postgres"
   },
   "test": {
-    "username": "team22",
+    "username": "postgres",
     "password": "cs4500team22",
-    "database": "team22_db",
-    "host": "spoiled-tomatillos-team22.czrlmimqysp7.us-east-1.rds.amazonaws.com",
-    "dialect": "mysql"
+    "database": "team22_db_test",
+    "host": "localhost",
+    "dialect": "postgres"
   },
   "production": {
     "username": "team22",
