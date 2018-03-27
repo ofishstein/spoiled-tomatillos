@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                sh "sudo -u postgres pg_ctl -D \"/var/lib/postgresql/data\" -o \"-c listen_addresses='localhost'\" -w start"
+                sh "sudo -u postgres pg_ctl -D /var/lib/postgresql/data -o \"-c listen_addresses='localhost'\" -w start"
                 sh 'java -version'
                 sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db && npm start'
                 sh 'cd spoiled-tomatillos-client/ && npm install && npm start'
