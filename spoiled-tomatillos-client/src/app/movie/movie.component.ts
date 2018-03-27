@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../services/movie/movie.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-movie',
@@ -11,6 +12,7 @@ export class MovieComponent implements OnInit {
 
   public movie;
   private reviews: any;
+  private inWatchlist: boolean; 
 
   constructor(private _movieService: MovieService, private route: ActivatedRoute) {
     this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 10,
@@ -32,6 +34,8 @@ export class MovieComponent implements OnInit {
         rating: '8', user: {
         userId: 123, username: 'this_is_a_long_username', profileImageUrl: 'http://lorempixel.com/400/400/'
       }}];
+
+      
   }
 
   ngOnInit() {
@@ -41,6 +45,32 @@ export class MovieComponent implements OnInit {
         this.movie = data[0] },
       err => console.error(err)
     );
+
+    this.inWatchlist = false;
   }
+
+  addToWatchlist() {
+    console.log("adding to watchlist");
+    this.inWatchlist = true;
+    /**this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
+      data => {
+        this.inWatchlist = true;
+      },
+      err => console.error(err)
+    );*/
+  }
+
+  removeFromWatchlist() {
+    console.log("removing from watchlist");
+    this.inWatchlist = false;
+    /**this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
+      data => {
+        this.inWatchlist = false;
+      },
+      err => console.error(err)
+    );*/
+  }
+
+
 
 }

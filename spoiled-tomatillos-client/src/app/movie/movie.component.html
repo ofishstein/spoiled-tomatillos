@@ -22,9 +22,14 @@
               <br/>
 
               <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary">
-                  <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Playlist</small>
+                <button type="button" class="btn btn-primary" *ngIf="inWatchlist; else elseBlock" (click)="removeFromWatchlist()">
+                  <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
                 </button>
+                <ng-template #elseBlock>
+                  <button type="button" class="btn btn-primary" (click)="addToWatchlist()">
+                    <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
+                  </button>
+                </ng-template>
                 <button type="button" class="btn btn-primary"
                         data-toggle="modal" data-target="#addRating">
                   <i class="material-icons">star</i>  <small class="st-movie-btn-label">Add Rating</small>

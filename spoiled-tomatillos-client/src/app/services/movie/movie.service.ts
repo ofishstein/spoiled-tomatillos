@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class MovieService {
@@ -26,6 +26,23 @@ export class MovieService {
   public getMovie(movieId: string) {
     console.log('BOOGa BOOGA');
     return this.http.get(this.serverBaseUri + '/movies/' + movieId);
+  }
+
+  // add to watchlist
+  public addToWatchList(movieId: string) {
+    return this.http.post(this.serverBaseUri + '/movies/', movieId,  {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+   });
+  }
+
+  // remove from watchlist
+  public removeFromWatchList(movieId: string) {
+    return this.http.post(this.serverBaseUri + '/movies/', movieId,  {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+   });
+
   }
 
 }
