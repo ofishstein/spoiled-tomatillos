@@ -78,7 +78,7 @@ router.put('/:user_id/unfollow', authCheck, function(req, res) {
   //TODO: Current logged in user unfollows user at user_id
 });
 
-router.delete('/:user_id'. authCheck, function(req, res) {
+router.delete('/:user_id', authCheck, function(req, res) {
   // TODO: delete the user iff user_id == logged in user or logged in user is admin
 });
 
