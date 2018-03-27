@@ -134,7 +134,8 @@ if [ "$1" = 'postgres' ]; then
 		done
 
 		PGUSER="${PGUSER:-postgres}" \
-		pg_ctl -D "$PGDATA" -m fast -w stop
+		# pg_ctl -D "$PGDATA" -m fast -w stop
+		# Do not stop Postgres
 
 		echo
 		echo 'PostgreSQL init process complete; ready for start up.'
