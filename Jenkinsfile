@@ -23,7 +23,9 @@ node {
 	}
 
 	stage('Test') {
-		sh './jenkins-scripts/test.sh'
+		nodeImage.inside("--link ${c.id}:db") {
+			sh './jenkins-scripts/test.sh'
+		}
 	}
 
 	stage('Test Cleanup') {
@@ -34,10 +36,12 @@ node {
 
     stage('SonarQube analysis') {
         steps{
-            withSonarQubeEnv('SonarQube') {
-              sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
-              sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
-            }
+			nodeImage.inside("--link ${c.id}:db") {
+	            withSonarQubeEnv('SonarQube') {
+	              sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
+	              sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
+	            }
+			}
         }
     }
     stage('Quality') {
