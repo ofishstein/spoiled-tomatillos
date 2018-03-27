@@ -9,7 +9,7 @@ node {
 		print "Node environment is: ${env.NODE_ENV}"
 
 		def pgImage = docker.image('postgres:alpine')
-		pgImage.run('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
+		pgImage.withRun('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
 			def id = c.id
 			// Wait until postgres service is up (could be more graceful)
 			sh 'sleep 15'
