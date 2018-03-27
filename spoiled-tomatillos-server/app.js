@@ -68,4 +68,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// TODO: set API key to be env var instead of hardcoded
+app.omdbApiKey = '3f811d1c';
+
 module.exports = app;
