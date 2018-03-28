@@ -15,7 +15,7 @@
           <div class="card bg-light">
             <h1 class="card-header">
               <span class="text-left">{{ movie.title }}</span>
-              <span class="text-right">{{ movie.rating }} / 10</span>
+              <span class="text-right">{{ movie.rating }} / 5</span>
             </h1>
             <div class="card-title text-muted m-1">
               <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
@@ -28,7 +28,7 @@
                   </button>
                 </div>
                 <ng-template #remove>
-                  <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()">
+                  <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()" disabled>
                       <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
                     </button>
                 </ng-template>
@@ -69,7 +69,7 @@
                 </button>
               </div>
               <ng-template #remove>
-                <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()">
+                <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()" disabled>
                     <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
                   </button>
               </ng-template>
@@ -91,7 +91,7 @@
         <div class="card bg-light">
           <h1 class="card-header">
             <span class="text-left">{{ movie.title }}</span>
-            <span class="text-right">{{ movie.rating }} / 10</span>
+            <span class="text-right">{{ movie.rating }} / 5</span>
           </h1>
           <div class="card-title text-muted m-1">
             <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>

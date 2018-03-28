@@ -30,15 +30,15 @@ export class MovieService {
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.http.put(this.serverBaseUri + '/movies/' + movieId + '/add-to-watchlist', {
+    return this.http.post(this.serverBaseUri + '/movies/' + movieId + '/add-to-watchlist', null, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
   }
 
-  // remove from watchlist
+  // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.put(this.serverBaseUri + '/movies/' + movieId + '/remove-from-watchlist',  {
+    return this.http.post(this.serverBaseUri + '/movies/' + movieId + '/remove-from-watchlist',  {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
