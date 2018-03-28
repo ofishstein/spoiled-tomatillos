@@ -16,7 +16,7 @@ export class UsersService {
   }
 
   public create(user: User) {
-  	const endpoint = this.serverBaseUri +'/create';
+  	const endpoint = this.serverBaseUri +'/register';
   	return this.http.post(endpoint, user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text' 
@@ -40,6 +40,15 @@ export class UsersService {
       const body: any = resp;
       return body;
     });
+  }
+
+  public createAdmin(user: User) {
+    const endpoint = '/api/users'
+    return this.http.post(endpoint, user, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text',
+      withCredentials: true 
+   });
   }
 
 }
