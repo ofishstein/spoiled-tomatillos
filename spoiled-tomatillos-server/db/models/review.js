@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const Review = sequelize.define('Review', {
     text: DataTypes.STRING,
-    rating: DataTypes.DOUBLE
+    rating: DataTypes.DOUBLE,
+    flagged: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true}
   }, {});
   Review.associate = function(models) {
     Review.belongsTo(models.User, {foreignKey: 'id', sourceKey: 'userId'});
