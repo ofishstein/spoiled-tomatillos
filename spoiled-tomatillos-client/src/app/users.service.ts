@@ -9,33 +9,27 @@ import { User } from './user';
 @Injectable()
 export class UsersService {
 
-  private serverBaseUri: string;
-
   constructor(private http: HttpClient) {
-  	this.serverBaseUri = 'http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000/users';
   }
 
   public create(user: User) {
-  	const endpoint = this.serverBaseUri +'/create';
-  	return this.http.post(endpoint, user, {
+  	return this.http.post('/users/create', user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
-        responseType: 'text' 
+        responseType: 'text'
      });
   }
 
   public update(user: User) {
-    const endpoint = this.serverBaseUri + '/me';
-    return this.http.put(endpoint, user, {
+    return this.http.put('/users/me', user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
-      withCredentials: true 
+      withCredentials: true
     });
   }
 
   public getUserInfo(): Observable<User>  {
-    const endpoint = this.serverBaseUri + '/me';
-    return this.http.get<Response>(endpoint, {
-      withCredentials: true 
+    return this.http.get<Response>('/users/me', {
+      withCredentials: true
     }).map((resp) => {
       const body: any = resp;
       return body;
