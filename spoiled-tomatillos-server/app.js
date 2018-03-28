@@ -9,11 +9,10 @@ const session  = require('express-session');
 
 const index   = require('./routes/index');
 const users   = require('./routes/users');
+const reviews   = require('./routes/reviews');
 const movies  = require('./routes/movies');
 const login   = require('./routes/login');
-const profile = require('./routes/profile');
 const api     = require('./routes/api');
-const search  = require('./routes/search');
 const cors    = require('cors');
 
 
@@ -48,6 +47,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/api', api);
 app.use('/movies', movies);
+app.use('/reviews', reviews);
 app.use('/login', login);
 
 // catch 404 and forward to error handler
