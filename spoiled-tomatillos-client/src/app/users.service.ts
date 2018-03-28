@@ -44,12 +44,20 @@ export class UsersService {
 
   public follow(userId: string) {
     const endpoint = this.serverBaseUri + userId + '/follow';
-    return this.http.put(endpoint, null);
+    const following = {follow: true};
+    return this.http.post(endpoint, following, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+   });
   }
 
   public unfollow(userId: string) {
-    const endpoint = this.serverBaseUri + userId + '/unfollow';
-    return this.http.put(endpoint, null);
+    const endpoint = this.serverBaseUri + userId + '/follow';
+    const following = {follow: false};
+    return this.http.post(endpoint, following, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+   });
   }
 
 }
