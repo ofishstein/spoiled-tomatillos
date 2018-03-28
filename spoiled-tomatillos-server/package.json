@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "NODE_ENV=development node ./bin/www",
+    "start-prod": "NODE_ENV=production node ./bin/www",
+    "setup-dev-db": "cd db && ../node_modules/.bin/sequelize db:create && ../node_modules/.bin/sequelize db:migrate && ../node_modules/.bin/sequelize db:seed --seed 20180326071657-dev-seed && cd ..",
+    "cleanup-dev-db": "cd db && ../node_modules/.bin/sequelize db:drop",
     "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
   "dependencies": {
@@ -21,6 +24,7 @@
     "mysql2": "^1.5.2",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pg": "^7.4.1",
     "sequelize": "^4.33.4",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "~2.4.5"

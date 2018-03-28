@@ -1,54 +1,59 @@
+node {
+	stage('Checkout') {
+		checkout scm
+	}
 
-// init jenkinsfile
-pipeline {
-    agent {
-        dockerfile {
-            args '-p 3000:3000' 
-        }
-    }
-    environment {
-        CI = 'true' 
-    }
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'java -version'
-                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
-                sh 'cd spoiled-tomatillos-client/ && npm install'
-            }
-        }
-        stage('Test') { 
-            steps {
-                sh './jenkins-scripts/test.sh' 
-            }
-        }
-        stage('SonarQube analysis') {
-            steps{
-                withSonarQubeEnv('SonarQube') {
-                  sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
-                  sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
-                }
-            }
-        }
-        stage('Quality') {
-            steps {
-                sh 'sleep 30'
-                timeout(time: 10, unit: 'SECONDS') {
-                    retry(5) {
-                        script {
-                            def qg = waitForQualityGate()
-                            if (qg.status != 'OK') {
-                                error "Pipeline aborted due to quality gate error ${qg.status}"
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        stage('Cleanup') {
-            steps {
-                deleteDir()
-            }
-        }
-    }
+	try {
+		env.NODE_ENV = "jenkins"
+
+		print "Node environment is: ${env.NODE_ENV}"
+
+		def pgImage = docker.image('postgres:alpine')
+		pgImage.withRun('-e "POSTGRES_PASSWORD=cs4500team22"') { c ->
+			def id = c.id
+			// Wait until postgres service is up (could be more graceful)
+			sh 'sleep 15'
+			def nodeImage = docker.build("node-image")
+			nodeImage.inside("--link ${id}:db") {
+				stage('Build') {
+	                sh 'java -version'
+	                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db'
+	                sh 'cd spoiled-tomatillos-client/ && npm install'
+				}
+
+				stage('Test') {
+					sh './jenkins-scripts/test.sh'
+				}
+
+				stage('Test Cleanup') {
+					sh 'cd spoiled-tomatillos-server/ && npm run cleanup-dev-db'
+				}
+
+			    stage('SonarQube analysis') {
+			        withSonarQubeEnv('SonarQube') {
+		            	sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
+		            	sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
+		        	}
+			    }
+			    stage('Quality') {
+		            sh 'sleep 30'
+		            timeout(time: 10, unit: 'SECONDS') {
+		                retry(5) {
+		                    script {
+		                        def qg = waitForQualityGate()
+		                        if (qg.status != 'OK') {
+		                            error "Pipeline aborted due to quality gate error ${qg.status}"
+		                        }
+		                    }
+		                }
+		            }
+			    }
+			}
+		}
+	}
+	finally {
+	    stage('Cleanup') {
+            deleteDir()
+    	}
+	}
 }
