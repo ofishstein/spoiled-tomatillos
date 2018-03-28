@@ -13,7 +13,7 @@ export class LoginService {
   userLogin(username: string, password: string) {
     let body = {username: username, password: password};
     console.log(body);
-    return this.http.post(this.baseUri + '/login',
+    return this.http.post('/api/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text',

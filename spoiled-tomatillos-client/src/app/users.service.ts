@@ -9,17 +9,14 @@ import { User } from './user';
 @Injectable()
 export class UsersService {
 
-  private serverBaseUri: string;
-
   constructor(private http: HttpClient) {
-  	this.serverBaseUri = 'http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000/users';
   }
 
   public create(user: User) {
   	const endpoint = '/api/users/register';
   	return this.http.post(endpoint, user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
-        responseType: 'text' 
+        responseType: 'text'
      });
   }
 
@@ -28,7 +25,7 @@ export class UsersService {
     return this.http.put(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
-      withCredentials: true 
+      withCredentials: true
     });
   }
 
