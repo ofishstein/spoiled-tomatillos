@@ -13,14 +13,14 @@ export class UsersService {
   }
 
   public create(user: User) {
-  	return this.http.post('/users/create', user, {
+  	return this.http.post('/api/users/create', user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text'
      });
   }
 
   public update(user: User) {
-    return this.http.put('/users/me', user, {
+    return this.http.put('/api/users/me', user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
       withCredentials: true
@@ -28,7 +28,7 @@ export class UsersService {
   }
 
   public getUserInfo(): Observable<User>  {
-    return this.http.get<Response>('/users/me', {
+    return this.http.get<Response>('/api/users/me', {
       withCredentials: true
     }).map((resp) => {
       const body: any = resp;
@@ -37,7 +37,7 @@ export class UsersService {
   }
 
   public follow(userId: string) {
-    const endpoint = this.serverBaseUri + userId + '/follow';
+    const endpoint = '/api/users/' + userId + '/follow';
     const following = {follow: true};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -46,7 +46,7 @@ export class UsersService {
   }
 
   public unfollow(userId: string) {
-    const endpoint = this.serverBaseUri + userId + '/follow';
+    const endpoint = '/api/users/' + userId + '/follow';
     const following = {follow: false};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
