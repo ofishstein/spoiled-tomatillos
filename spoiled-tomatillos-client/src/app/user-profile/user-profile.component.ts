@@ -72,7 +72,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   follow() {
-    this.isFollowing = true;
     this._usersService.follow(String(this.uid)).subscribe(
       data => {
         console.log(data);
@@ -82,7 +81,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   unfollow() {
-    this.isFollowing = false;
     this._usersService.unfollow(String(this.uid)).subscribe(
       data => {
         console.log(data);
