@@ -20,12 +20,12 @@ export class MovieService {
 
   // retrieve movie by its id
   public getMovie(movieId: string) {
-    return this.http.get('/movies/' + movieId);
+    return this.http.get('/api/movies/' + movieId);
   }
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.http.post(this.serverBaseUri + '/movies/' + movieId + '/add-to-watchlist', null, {
+    return this.http.post('/api/movies/' + movieId + '/add-to-watchlist', null, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
@@ -33,7 +33,7 @@ export class MovieService {
 
   // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.post(this.serverBaseUri + '/movies/' + movieId + '/remove-from-watchlist',  {
+    return this.http.post('/api/movies/' + movieId + '/remove-from-watchlist',  {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text' 
    });
