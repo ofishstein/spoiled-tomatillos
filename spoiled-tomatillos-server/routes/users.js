@@ -8,6 +8,7 @@ const op = session.Sequelize.Op;
 const authCheck = require('./auth');
 const adminCheck = require('./adminCheck');
 const omdb = require('./omdb.service');
+const utils = require('./utils.js');
 
 // search for users with given 'q'
 router.get('/', function(req, res) {
@@ -38,21 +39,50 @@ router.get('/settings', authCheck, function(req, res) {
 });
 
 
+//Helper function for shaping the data returned by the query
+function reformatProfile(profile) {
+  profileInfo = Object.assign({}, profile.toJSON());
+  utils.rename(profileInfo, 'Followers', 'followers');
+  utils.rename(profileInfo, 'Followees', 'following');
+  utils.rename(profileInfo, 'Reviews', 'reviews');
+  // ... Make activity feed
+  profileInfo['activities'] = [];
+  profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
+  ['ReviewComments', 'WatchlistComments', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
+    profileInfo[key].forEach(item => {item['type'] = key});
+    utils.aggAndRemove(profileInfo, 'activities', key);
+  });
+  console.log(profileInfo['activities'])
+  utils.mostRecentN(profileInfo, 'activities', 10);
+
+  return profileInfo;
+}
+
 router.get('/:user_id', function(req, res) {
   session.User
     .findOne({
       where: {id: req.params['user_id']},
-      include: ['Reviews',
-                'ReviewComments',
-                'Watchlists',
-                'WatchlistComments',
-                'RecommendationsSent',
-                'RecommendationsReceived']
+      attributes: {'exclude': ['password', 'movieId']},
+      include: [
+        {
+          model: session.Review,
+          as: 'Reviews',
+          include: {
+            model: session.Movie,
+            as: 'Movie',
+            attributes: ['title', 'id']
+          }
+        },
+        'ReviewComments',
+        'Watchlists',
+        'WatchlistComments',
+        'RecommendationsSent',
+        'RecommendationsReceived',
+        'Followers',
+        'Followees']
     })
     .then(profile => {
-      delete profile.dataValues.password;
-
-      res.send(profile);
+      res.send(reformatProfile(profile));
     });
 });
 
@@ -60,7 +90,7 @@ router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
     session.Follower
         .findAll({
-            attributes: ['followeeId'],
+            attributes: ['FolloweeId'],
             where: {followerId: req.params['user_id']},
             include: ['FolloweeUser']
         })
@@ -73,7 +103,7 @@ router.get('/:user_id/following', function(req, res) {
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
     session.Follower.findAll({
-        attributes: ['followerId'],
+        attributes: ['FollowerId'],
         where: {followeeId: req.params['user_id']},
         include: ['FollowerUser']
     })

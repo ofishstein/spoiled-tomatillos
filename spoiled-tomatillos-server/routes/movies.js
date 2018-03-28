@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../db/db.js');
 const session = db.get_session();
 const utils = require('./utils.js');
+const omdb = require('./omdb.service');
 
 // GET METHODS
 // Handle searching for movies

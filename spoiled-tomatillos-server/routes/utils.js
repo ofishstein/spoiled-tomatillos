@@ -25,4 +25,20 @@ function rename(obj, a, b) {
   delete obj[a];
 }
 
-module.exports = { handleSearch, rename};
+function aggAndRemove(obj, a, b) {
+  obj[a] = obj[a].concat(obj[b]);
+  delete obj[b];
+}
+
+function timeCompare(a, b) {
+  return Date.parse(a['updatedAt']) - Date.parse(b['updatedAt']);
+}
+
+function mostRecentN(obj, key, N) {
+  let n = 0;
+  obj[key].sort(timeCompare).filter(item => {
+    n <=N;
+  })
+}
+
+module.exports = { handleSearch, rename, aggAndRemove, mostRecentN};
