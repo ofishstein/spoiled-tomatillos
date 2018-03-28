@@ -6,6 +6,7 @@ const session = db.get_session();
 const op = session.Sequelize.Op;
 
 const authCheck = require('./auth');
+const adminCheck = require('./adminCheck');
 const omdb = require('./omdb.service');
 
 // search for users with given 'q'
@@ -199,7 +200,7 @@ router.delete('/:user_id', authCheck, function(req, res) {
 
 
 // Post a user to the db. Admin only
-router.post('/', function(req, res) {
+router.post('/', adminCheck, function(req, res) {
 // you can also build, save and access the object with chaining:
   session.User
     .build(req.body)
