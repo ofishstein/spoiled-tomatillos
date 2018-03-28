@@ -26,10 +26,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     bio: DataTypes.STRING,
+    profileImageUrl: DataTypes.STRING,
     isAdmin: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     }
+
   }, {
     hooks: {
       beforeCreate: (user, options) => {
