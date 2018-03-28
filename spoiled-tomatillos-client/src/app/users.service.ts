@@ -16,7 +16,7 @@ export class UsersService {
   }
 
   public create(user: User) {
-  	const endpoint = '/api/register';
+  	const endpoint = '/api/users/register';
   	return this.http.post(endpoint, user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text' 
@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   public update(user: User) {
-    const endpoint = '/api/me';
+    const endpoint = '/api/users/me';
     return this.http.put(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
@@ -33,7 +33,7 @@ export class UsersService {
   }
 
   public getUserInfo(): Observable<User>  {
-    const endpoint = '/api/me';
+    const endpoint = '/api/users/me';
     return this.http.get<Response>(endpoint, {
       withCredentials: true 
     }).map((resp) => {
