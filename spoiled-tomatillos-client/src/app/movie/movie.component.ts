@@ -40,12 +40,12 @@ export class MovieComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.inWatchList = false;
     this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
       data => {
         console.log(data);
-        this.movie = data[0]
-        this.reviews = this.movie.reviews },
+        this.movie = data[0];
+        this.reviews = this.movie.reviews;
+        this.inWatchList = this.movie.inWatchlist; },
       err => console.error(err)
     );
   }
