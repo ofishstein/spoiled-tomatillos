@@ -12,7 +12,12 @@ router.post('/register', function(req, res) {
         .build(req.body)
         .save()
         .then((newUser) => {
-            res.json(newUser);
+        session.Watchlist
+            .build({name: 'My Watchlist', userId: newUser.id})
+            .save()
+            .then(() => {
+                res.json(newUser);
+            });
         })
         .catch(error => {
             console.log(error);
