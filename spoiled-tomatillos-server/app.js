@@ -11,9 +11,7 @@ const index   = require('./routes/index');
 const users   = require('./routes/users');
 const reviews   = require('./routes/reviews');
 const movies  = require('./routes/movies');
-const login   = require('./routes/login');
 const api     = require('./routes/api');
-const register = require('./routes/register');
 const cors    = require('cors');
 
 
