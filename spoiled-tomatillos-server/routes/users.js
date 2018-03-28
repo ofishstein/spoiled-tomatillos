@@ -39,7 +39,7 @@ router.get('/settings', authCheck, function(req, res) {
 
 router.get('/:user_id', function(req, res) {
   session.User
-    .findAll({
+    .findOne({
       where: {id: req.params['user_id']},
       include: ['Reviews',
                 'ReviewComments',
@@ -49,9 +49,10 @@ router.get('/:user_id', function(req, res) {
                 'RecommendationsReceived']
     })
     .then(profile => {
+      delete profile.dataValues.password;
+
       res.send(profile);
     });
-
 });
 
 router.get('/:user_id/following', function(req, res) {
