@@ -205,25 +205,13 @@ router.post('/', adminCheck, function(req, res) {
   session.User
     .build(req.body)
     .save()
-    .then(() => {
-      res.sendStatus(200);
+    .then((newUser) => {
+      res.json(newUser);
     })
     .catch(error => {
       console.log(error);
       res.sendStatus(500);
     });
-});
-
-router.get('/get-current-user', function(req, res) {
-  if (req.isAuthenticated()) {
-    var response = req.user;
-    response.loggedIn = true;
-    res.json(response);
-  } else {
-    res.json({loggedIn: false});
-    //   var respons = {username: 'test', isAdmin: true, loggedIn: true};
-    //   res.json(respons);
-  }
 });
 
 module.exports = router;
