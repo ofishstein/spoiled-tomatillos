@@ -20,4 +20,9 @@ function handleSearch(queries, model, session, callBack) {
   });
 };
 
-module.exports = { handleSearch };
+function rename(obj, a, b) {
+  obj[b] = obj[a];
+  delete obj[a];
+}
+
+module.exports = { handleSearch, rename};

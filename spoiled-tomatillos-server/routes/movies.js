@@ -3,27 +3,22 @@ const router = express.Router();
 
 const db = require('../db/db.js');
 const session = db.get_session();
-const search = require('./search');
+const utils = require('./utils.js');
 
 // GET METHODS
 // Handle searching for movies
 router.get('/', authCheck, function(req, res) {
-  search.handleSearch(req.query, session.Movie, session, (result) => {
+  utils.handleSearch(req.query, session.Movie, session, (result) => {
     res.send(result);
   });
 });
 
-function rename(obj, a, b) {
-  obj[b] = obj[a];
-  delete obj[a];
-}
-
 // Helper function for removing extra information from movies
 function reformatMovie(movie) {
   movieObj = Object.assign({}, movie.toJSON());
-  rename(movieObj, 'Reviews', 'reviews');
+  utils.rename(movieObj, 'Reviews', 'reviews');
   movieObj['reviews'].forEach(reviewObj => {
-    rename(reviewObj, 'User', 'user');
+    utils.rename(reviewObj, 'User', 'user');
   });
   return movieObj;
 }
