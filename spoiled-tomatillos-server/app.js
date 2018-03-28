@@ -44,12 +44,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/api', index);
+app.use('/api/users', users);
 app.use('/api', api);
-app.use('/movies', movies);
-app.use('/reviews', reviews);
-app.use('/login', login);
+app.use('/api/movies', movies);
+app.use('/api/reviews', reviews);
+app.use('/api/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
