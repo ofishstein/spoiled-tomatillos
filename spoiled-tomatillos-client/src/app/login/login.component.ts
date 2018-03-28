@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from '../services/login.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,27 +10,39 @@ import { LoginService } from '../services/login.service';
 export class LoginComponent implements OnInit {
 
   private missingRequired: boolean;
-  private comboNotFound: string;
+  private comboNotFound: boolean;
+  private currentUser: any;
 
-  constructor(private _loginService: LoginService, private router: Router) { }
+  constructor(private _authService: AuthService, private router: Router) {
+    _authService.currentUser.subscribe(isLoggedIn => {
+      this.currentUser = isLoggedIn;
+    });
+  }
 
   ngOnInit() {
   }
 
   userLogin(form) {
-    if (form.username == '' || form.password == '') {
+    if (form.value.username == '' || form.value.password == '') {
+      this.comboNotFound = false;
       this.missingRequired = true;
       return;
     }
     else {
-      this._loginService.userLogin(form.value.username, form.value.password).subscribe(
-        success => { this.router.navigate(['/home']);
+      this.missingRequired = false;
+      this._authService.userLogin(form.value.username, form.value.password, false).subscribe(
+        success => {
+          this.router.navigate(['/home'])
+            .then(() => {});
         },
         error => {
           console.log(error);
-          this.comboNotFound = 'Username and password combination not found';
+          this.comboNotFound = true;
         }
       );
+
+      // update currentUser
+      this._authService.getCurrentUser();
     }
   }
 

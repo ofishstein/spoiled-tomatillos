@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SearchService } from './services/search.service';
 import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,18 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   public title: string;
+  private currentUser: any;
 
-  constructor(private _searchService: SearchService, private _router: Router) {
+  constructor(private _searchService: SearchService, private _router: Router,
+              private _authService: AuthService) {
     this.title = 'Spoiled Tomatillos';
+    _authService.currentUser.subscribe(isLoggedIn => {
+      this.currentUser = isLoggedIn;
+    });
   }
 
   ngOnInit() {
+
     // Navigates the user to the SearchComponent upon a successful search.
     this._searchService.searchChange.subscribe((searchSuccessful) => {
       if (searchSuccessful) {
@@ -36,5 +43,10 @@ export class AppComponent implements OnInit {
     searchForm.resetForm();
 
     this._searchService.searchByKeyword(searchText);
+  }
+
+  public logout(): void {
+    this._authService.logout();
+    this._router.navigate(['/login']);
   }
 }
