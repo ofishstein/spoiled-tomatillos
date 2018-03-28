@@ -45,7 +45,7 @@ export class MovieComponent implements OnInit {
       data => {
         console.log(data);
         this.movie = data[0]
-        this.reviews = this.movie.Reviews },
+        this.reviews = this.movie.reviews },
       err => console.error(err)
     );
   }
