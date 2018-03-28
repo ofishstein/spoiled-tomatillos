@@ -6,7 +6,7 @@ const session = db.get_session();
 
 // GET METHODS
 router.get('/:review_id', function(req, res) {
-  session.findById(req.params['review_id'])
+  session.Review.findById(req.params['review_id'])
     .then(review => {
       res.send(review);
     })

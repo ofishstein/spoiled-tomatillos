@@ -13,15 +13,58 @@ router.get('/', authCheck, function(req, res) {
   });
 });
 
+function rename(obj, a, b) {
+  obj[b] = obj[a];
+  delete obj[a];
+}
+
+// Helper function for removing extra information from movies
+function reformatMovie(movie) {
+  movieObj = Object.assign({}, movie.toJSON());
+  rename(movieObj, 'Reviews', 'reviews');
+  movieObj['reviews'].forEach(reviewObj => {
+    rename(reviewObj, 'User', 'user');
+  });
+  return movieObj;
+}
+
+// Helper for making OMDb API calls
+function expandWithApi(movieObj) {
+ // console.log(omdb.getMovieById(movieObj['tmdbId']));
+  return movieObj;
+}
+
+// Helper for adding in user info
+function expandWithUser(movieObj, user, session) {
+  movieObj['inWatchlist'] = true;
+  return movieObj;
+}
+
 /* GET users listing. */
 router.get('/:movie_id', function(req, res) {
   session.Movie
     .findAll({
       where: {id: req.params['movie_id']},
-      include: ['Reviews']
+      include: [{
+        model: session.Review,
+        as: 'Reviews',
+        attributes: {'exclude': ['userId', 'flagged']},
+        include: [{
+          model: session.User,
+          as: 'User',
+          attributes: ['id', 'username', 'profileImageUrl']
+        }]
+      }]
     })
     .then(movie => {
-      res.send(movie);
+      let movieInfo = [];
+      movie.forEach(movie => {
+        let movieObj = reformatMovie(movie);
+        expandWithApi(movieObj);
+        expandWithUser(movieObj, req.user, session);
+        movieInfo.push(movieObj);
+      });
+      res.send(movieInfo);
     });
 });
 
