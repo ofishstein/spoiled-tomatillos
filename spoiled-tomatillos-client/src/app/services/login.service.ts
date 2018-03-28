@@ -29,7 +29,7 @@ export class LoginService {
    * returns the current user if logged in; otherwise 'false'
    */
   isLoggedIn() {
-    return this.http.get(this.baseUri + '/users/isLoggedIn');
+    return this.http.get(this.baseUri + '/api/users/isLoggedIn');
   }
 
 }

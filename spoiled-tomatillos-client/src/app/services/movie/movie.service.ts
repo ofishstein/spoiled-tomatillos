@@ -25,7 +25,7 @@ export class MovieService {
   // retrieve movie by its id
   public getMovie(movieId: string) {
     console.log('BOOGa BOOGA');
-    return this.http.get(this.serverBaseUri + '/movies/' + movieId);
+    return this.http.get(this.serverBaseUri + '/api/movies/' + movieId);
   }
 
 }
