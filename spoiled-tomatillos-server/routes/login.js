@@ -23,14 +23,18 @@ passport.deserializeUser((userId, done) => {
     });
 });
 
-passport.use(new LocalStrategy((username, password, done) => {
+passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username, password, done) {
   session.User
     .findOne({where: {username: username}})
     .then((user) =>{
       if (!user) return done(null, false);
       user.validatePassword(password, user.get('password')).then((valid) => {
         if (!valid) return done(null, false);
-        return done(null, user);
+        // check if admin login
+        if ((req.body.admin && user.isAdmin) || !req.body.admin) {
+          return done(null, user);
+        }
+        return done(null, false);
       });
     })
     .catch((err) => {
