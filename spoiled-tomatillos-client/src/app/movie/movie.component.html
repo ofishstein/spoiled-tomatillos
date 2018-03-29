@@ -7,18 +7,18 @@
 
         <!-- movie poster -->
         <div class="col-md-4">
-          <img class="img-fluid" src="{{ movie.poster }}">
+          <img class="img-fluid" src="{{ movie.Poster }}">
         </div>
 
         <!-- movie header -->
         <div class="col-md-8">
           <div class="card bg-light">
             <h1 class="card-header">
-              <span class="text-left">{{ movie.title }}</span>
+              <span class="text-left">{{ movie.Title }}</span>
               <span class="text-right">{{ movie.rating }} / 5</span>
             </h1>
             <div class="card-title text-muted m-1">
-              <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
+              <small>{{ movie.Year }} | {{ movie.Rated }} | {{ movie.Genre }} | {{ movie.Runtime }}</small>
               <br/>
 
               <div class="btn-group" role="group">
@@ -45,7 +45,7 @@
             </div>
 
             <div class="card-body">
-              <p>{{ movie.description }}</p>
+              <p>{{ movie.Plot }}</p>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
         <!-- movie poster -->
         <div class="col-xs-6 col-sm-6">
           <div class="">
-            <img id="mobile-movie-poster" src="{{ movie.poster }}">
+            <img id="mobile-movie-poster" src="{{ movie.Poster }}">
           </div>
         </div>
         <div class="col-xs-6 col-sm-6">
@@ -90,17 +90,17 @@
       <div class="row">
         <div class="card bg-light">
           <h1 class="card-header">
-            <span class="text-left">{{ movie.title }}</span>
+            <span class="text-left">{{ movie.Title }}</span>
             <span class="text-right">{{ movie.rating }} / 5</span>
           </h1>
           <div class="card-title text-muted m-1">
-            <small>{{ movie.year }} | {{ movie.rated }} | {{ movie.genre }} | {{ movie.runtime }}</small>
+            <small>{{ movie.Year }} | {{ movie.Rated }} | {{ movie.Genre }} | {{ movie.Runtime }}</small>
             <br/>
           </div>
 
           <div class="card-body">
             <div class="col-xs-12">
-              <p>{{ movie.description }}</p>
+              <p>{{ movie.Plot }}</p>
             </div>
           </div>
         </div>
