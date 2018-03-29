@@ -8,7 +8,7 @@
     "setup-dev-db": "cd db && ../node_modules/.bin/sequelize db:create && ../node_modules/.bin/sequelize db:migrate && ../node_modules/.bin/sequelize db:seed --seed 20180326071657-dev-seed && cd ..",
     "cleanup-dev-db": "cd db && ../node_modules/.bin/sequelize db:drop",
     "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
-    "test": "NODE_ENV=development node_modules/.bin/nyc --reporter=lcov node_modules/.bin/mocha --exit"
+    "test": "node_modules/.bin/nyc --reporter=lcov node_modules/.bin/mocha --exit"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
