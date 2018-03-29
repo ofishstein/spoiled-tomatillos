@@ -12,20 +12,12 @@ const utils = require('./utils.js');
 
 // search for users with given 'q'
 router.get('/', function(req, res) {
-    let keyword = req.query['q'];
-    session.User.findAll({
-        where: {
-            [op.or]: [
-                { username: {[op.like]: '%'+keyword+'%'} },
-                { firstName: {[op.like]: keyword+'%'} },
-                { lastName: {[op.like]: keyword+'%'} },
-                { email: {[op.like]: '%'+keyword+'%'} }
-            ]
-        }
-    })
-        .then(users => {
-            res.json(users);
-        });
+  utils.handleSearch(req.query, session.User, session, results => {
+    results.forEach(result => {
+      delete result['password'];
+    });
+    res.send(results);
+  })
 });
 
 router.get('/settings', authCheck, function(req, res) {
