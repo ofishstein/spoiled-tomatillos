@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { UsersService } from '../users.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,7 +14,7 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('reviewsList')
   private reviewsListTemplate: TemplateRef<any>;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private _usersService: UsersService) {
     this.uid = parseInt(this.route.snapshot.params.uid);
   }
 
@@ -68,6 +69,24 @@ export class UserProfileComponent implements OnInit {
     };
 
     this.isFollowing = false;
+  }
+
+  follow() {
+    this._usersService.follow(String(this.uid)).subscribe(
+      data => {
+        console.log(data);
+        this.isFollowing = true },
+      err => console.error(err)
+    );
+  }
+
+  unfollow() {
+    this._usersService.unfollow(String(this.uid)).subscribe(
+      data => {
+        console.log(data);
+        this.isFollowing = false},
+      err => console.error(err)
+    );
   }
 
 }

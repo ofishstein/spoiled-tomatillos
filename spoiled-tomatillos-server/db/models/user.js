@@ -62,10 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'BlockedUsers', sourceKey: 'id', foreignKey: 'blockerId'});
     User.hasMany(models.BlockedUser,
       {as: 'BlockedByUsers', sourceKey: 'id', foreignKey: 'blockeeId'});
-      User.hasMany(models.Follower,
-          {as: 'Followers', sourceKey: 'id', foreignKey: 'followerId'});
-      User.hasMany(models.Follower,
-          {as: 'Followees', sourceKey: 'id', foreignKey: 'followeeId'});
+    User.hasMany(models.Follower,
+      {as: 'Followers', sourceKey: 'id', foreignKey: 'followerId'});
+    User.hasMany(models.Follower,
+      {as: 'Followees', sourceKey: 'id', foreignKey: 'followeeId'});
   };
   User.prototype.validatePassword = (suppliedPassword, userPassword) => {
     return new Promise(((resolve, reject) => {
