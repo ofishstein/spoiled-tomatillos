@@ -22,7 +22,7 @@
       <!-- follow -->
       <div #followButton>
           <div>
-            <button type="button" class="btn btn-primary" *ngIf="!isFollowing; else remove" (click)="follow()"
+            <button type="button" class="btn btn-primary" *ngIf="!isFollowingProfileViewer; else remove" (click)="follow()"
               style="width:100%">
                 <i class="material-icons">add_to_queue</i> Follow 
             </button>
