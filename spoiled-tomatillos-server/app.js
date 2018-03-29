@@ -9,11 +9,9 @@ const session  = require('express-session');
 
 const index   = require('./routes/index');
 const users   = require('./routes/users');
+const reviews   = require('./routes/reviews');
 const movies  = require('./routes/movies');
-const login   = require('./routes/login');
-const profile = require('./routes/profile');
 const api     = require('./routes/api');
-const search  = require('./routes/search');
 const cors    = require('cors');
 
 
@@ -46,12 +44,10 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
 app.use('/api', api);
-app.use('/movies', movies);
-app.use('/login', login);
-app.use('/profile', profile);
-app.use('/search', search);
+app.use('/api/users', users);
+app.use('/api/movies', movies);
+app.use('/api/reviews', reviews);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -70,5 +66,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// TODO: set API key to be env var instead of hardcoded
+app.omdbApiKey = '3f811d1c';
 
 module.exports = app;

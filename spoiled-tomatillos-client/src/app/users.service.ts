@@ -44,7 +44,25 @@ export class UsersService {
     return this.http.post(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
-      withCredentials: true 
+      withCredentials: true
+    });
+  } 
+
+  public follow(userId: string) {
+    const endpoint = '/api/users/' + userId + '/follow';
+    const following = {follow: true};
+    return this.http.post(endpoint, following, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
+   });
+  }
+
+  public unfollow(userId: string) {
+    const endpoint = '/api/users/' + userId + '/follow';
+    const following = {follow: false};
+    return this.http.post(endpoint, following, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text' 
    });
   }
 

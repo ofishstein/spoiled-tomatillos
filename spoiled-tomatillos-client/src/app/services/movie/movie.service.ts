@@ -20,7 +20,7 @@ export class MovieService {
 
   // retrieve movie by its id
   public getMovie(movieId: string) {
-    console.log('BOOGa BOOGA');
+    console.log('get movie');
     return this.http.get('/api/movies/' + movieId);
   }
 

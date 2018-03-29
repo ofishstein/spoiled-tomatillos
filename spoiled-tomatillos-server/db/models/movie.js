@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Movie = sequelize.define('Movie', {
     imdbId: DataTypes.INTEGER,
     tmdbId: DataTypes.INTEGER,
-    title: DataTypes.STRING
+    title: DataTypes.STRING,
+    poster: DataTypes.STRING
   }, {});
   Movie.associate = function(models) {
     Movie.hasMany(models.Genre,

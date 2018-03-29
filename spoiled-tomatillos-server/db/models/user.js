@@ -3,13 +3,35 @@ const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    username: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     bio: DataTypes.STRING,
-    isAdmin: DataTypes.BOOLEAN
+    profileImageUrl: DataTypes.STRING,
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    }
+
   }, {
     hooks: {
       beforeCreate: (user, options) => {
@@ -26,10 +48,10 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.Review,
       {as: 'Reviews', sourceKey: 'id', foreignKey: 'userId'});
-    User.hasMany(models.Playlist,
-      {as: 'Playlists', sourceKey: 'id', foreignKey: 'userId'});
-    User.hasMany(models.PlaylistComment,
-      {as: 'PlaylistComments', sourceKey: 'id', foreignKey: 'commenterId'});
+    User.hasMany(models.Watchlist,
+      {as: 'Watchlists', sourceKey: 'id', foreignKey: 'userId'});
+    User.hasMany(models.WatchlistComment,
+      {as: 'WatchlistComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.ReviewComment,
       {as: 'ReviewComments', sourceKey: 'id', foreignKey: 'commenterId'});
     User.hasMany(models.Recommendation,
@@ -40,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'BlockedUsers', sourceKey: 'id', foreignKey: 'blockerId'});
     User.hasMany(models.BlockedUser,
       {as: 'BlockedByUsers', sourceKey: 'id', foreignKey: 'blockeeId'});
+      User.hasMany(models.Follower,
+          {as: 'Followers', sourceKey: 'id', foreignKey: 'followerId'});
+      User.hasMany(models.Follower,
+          {as: 'Followees', sourceKey: 'id', foreignKey: 'followeeId'});
   };
   User.prototype.validatePassword = (suppliedPassword, userPassword) => {
     return new Promise(((resolve, reject) => {
