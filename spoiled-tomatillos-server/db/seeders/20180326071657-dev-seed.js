@@ -161,32 +161,6 @@ module.exports = {
       createdAt: now,
       updatedAt: now
     }];
-    const watchlistsToInsert = [{
-      name: 'Kids movies?',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Movies',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Movies?',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Here is a Watchlist',
-      userId: regularUsers[1].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Seed Watchlist',
-      userId: regularUsers[2].id,
-      createdAt: now,
-      updatedAt: now
-    }];
     const recommendationsToInsert = [{
       message: 'I heard you like kids movies',
       recommenderId: regularUsers[1].id,
@@ -251,7 +225,6 @@ module.exports = {
 
     await queryInterface.bulkInsert('Genres', genresToInsert, {});
     await queryInterface.bulkInsert('Reviews', reviewsToInsert, {});
-    await queryInterface.bulkInsert('Watchlists', watchlistsToInsert, {});
     await queryInterface.bulkInsert('Recommendations', recommendationsToInsert, {});
     await queryInterface.bulkInsert('DistributionLinks', distributionLinksToInsert, {});
     await queryInterface.bulkInsert('BlockedUsers', blockedUsersToInsert, {});
@@ -264,13 +237,6 @@ module.exports = {
       }
     );
 
-    const watchlists = await seq.query(
-      `SELECT id from "Watchlists";`, {
-        type: seq.QueryTypes.SELECT
-      }
-    );
-
-    // Tier 3 data (tier 2 foriegn keys)
     const reviewCommentsToInsert = [{
       text: 'This is a silly review',
       commenterId: regularUsers[1].id,
@@ -299,43 +265,43 @@ module.exports = {
     const watchlistCommentsToInsert = [{
       text: 'This is a watchlist comment',
       commenterId: regularUsers[0].id,
-      watchlistId: watchlists[3].id,
+      ownerId: regularUsers[1].id,
       createdAt: now,
       updatedAt: now
     }, {
       text: 'This is another watchlist comment',
       commenterId: regularUsers[1].id,
-      watchlistId: watchlists[3].id,
+      ownerId: watchlists[2].id,
       createdAt: now,
       updatedAt: now
     }];
     const watchlistItemsToInsert = [{
-      watchlistId: watchlists[0].id,
+      userId: regularUsers[0].id,
       movieId: movies[0].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[0].id,
+      userId: regularUsers[0].id,
       movieId: movies[3].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[1].id,
+      userId: regularUsers[1].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[2].id,
+      userId: regularUsers[2].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[3].id,
+      userId: regularUsers[0].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[4].id,
+      userId: regularUsers[1].id,
       movieId: movies[1].id,
       createdAt: now,
       updatedAt: now
