@@ -31,9 +31,26 @@ function expandWithApi(movieObj) {
 }
 
 // Helper for adding in user info
-function expandWithUser(movieObj, user, session) {
-  movieObj['inWatchlist'] = true;
-  return movieObj;
+function expandWithUser(movieObj, user, session, done) {
+  if (user == undefined) {
+    movieObj['inWatchlist'] = false;
+    done(true);
+  }
+  else {
+    session.WatchlistItem.findOne({
+      where: {
+        userId: user.id,
+        movieId: movieObj.id
+      }
+    }).then(found => {
+      movieObj['inWatchlist'] = found !== null;
+      done(true);
+    })
+    .catch(error => {
+      console.log(error);
+      done(false);
+    });
+  }
 }
 
 /* GET users listing. */
@@ -57,8 +74,15 @@ router.get('/:movie_id', function(req, res) {
       movie.forEach(movie => {
         let movieObj = reformatMovie(movie);
         expandWithApi(movieObj);
-        expandWithUser(movieObj, req.user, session);
-        movieInfo.push(movieObj);
+        expandWithUser(movieObj, req.user, session, (success) => {
+          if (success) {
+            movieInfo.push(movieObj);
+          }
+          else {
+            res.sendStatus(500);
+            return;
+          }
+        });
       });
       res.send(movieInfo);
     });
