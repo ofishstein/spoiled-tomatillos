@@ -15,7 +15,7 @@ export class AuthService {
 
   userLogin(username: string, password: string, admin: boolean) {
     let body = {username: username, password: password, admin: admin};
-    return this.http.post('/login',
+    return this.http.post('/api/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text',
@@ -35,7 +35,7 @@ export class AuthService {
   getCurrentUser(): Promise<any> {
     return new Promise(resolve => {
       let res;
-      this.http.get('/users/get-current-user', {withCredentials: true})
+      this.http.get('/api/users/get-current-user', {withCredentials: true})
         .subscribe(aUser => {
           const user: any = aUser;
           if (user == null ||user.loggedIn === false) {
