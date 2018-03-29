@@ -32,6 +32,9 @@ function expandWithApi(movieObj) {
 
 // Helper for adding in user info
 function expandWithUser(movieObj, user, session, done) {
+  movieObj['inWatchlist'] = false;
+  done(true);
+  return;
   if (user == undefined) {
     movieObj['inWatchlist'] = false;
     done(true);
@@ -56,7 +59,7 @@ function expandWithUser(movieObj, user, session, done) {
 /* GET users listing. */
 router.get('/:movie_id', function(req, res) {
   session.Movie
-    .findAll({
+    .findOne({
       where: {id: req.params['movie_id']},
       include: [{
         model: session.Review,
@@ -70,21 +73,17 @@ router.get('/:movie_id', function(req, res) {
       }]
     })
     .then(movie => {
-      let movieInfo = [];
-      movie.forEach(movie => {
-        let movieObj = reformatMovie(movie);
-        expandWithApi(movieObj);
-        expandWithUser(movieObj, req.user, session, (success) => {
-          if (success) {
-            movieInfo.push(movieObj);
-          }
-          else {
-            res.sendStatus(500);
-            return;
-          }
-        });
+      let movieObj = reformatMovie(movie);
+      expandWithApi(movieObj);
+      expandWithUser(movieObj, req.user, session, (success) => {
+        if (success) {
+          res.send(movieObj);
+        }
+        else {
+          res.sendStatus(500);
+          return;
+        }
       });
-      res.send(movieInfo);
     });
 });
 
