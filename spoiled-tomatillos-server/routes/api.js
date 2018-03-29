@@ -1,60 +1,86 @@
 const express = require('express');
 const router = express.Router();
 
-const mysql = require('mysql');
+const db = require('../db/db.js');
+const session = db.get_session();
 
-function query(q, onQ) {
-  let connection = mysql.createConnection({
-    host     : 'cs4500-spring2018-fishstein.cxjizgp7es7a.us-west-2.rds.amazonaws.com',
-    user     : 'ofishstein',
-    password : 'cs4500db',
-    database : 'cs4500_spring2018_fishstein'
-  });
-  connection.connect();
-  connection.query(q, onQ);
-  connection.end();
-}
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
+router.post('/register', function(req, res) {
+    // make sure not creating admin user
+    req.body.isAdmin = false;
 
-
-/* GET hello string. */
-router.get('/hello/string', function(req, res) {
-  res.send('Hello, World!');
+    session.User
+        .build(req.body)
+        .save()
+        .then((newUser) => {
+        session.Watchlist
+            .build({name: 'My Watchlist', userId: newUser.id})
+            .save()
+            .then(() => {
+                res.json(newUser);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        });
 });
 
-/* GET hello string. */
-router.get('/hello/object', function(req, res) {
-  let r = {'message': 'Hello, World!'};
-  res.send(r);
+router.post('/logout', function(req, res) {
+    req.logout();
+    res.sendStatus(200);
 });
 
-router.post('/hello/insert', function(req, res) {
-  let q = 'INSERT INTO hello (id, message) VALUES (NULL,\'Hello Team 22\');';
-  query(q, function (err) {
-    if (err) {
-      console.log(q);
-      throw err;
+router.get('/get-current-user', function(req, res) {
+    if (req.isAuthenticated()) {
+        let response = req.user;
+        response.loggedIn = true;
+        res.json(response);
+    } else {
+        res.json({loggedIn: false});
     }
-  });
-  res.send('Success!');
 });
 
-// Post a parameterized string to db
-router.post('/hello/insert/:msg', function(req, res) {
-  let msg = req.params.msg;
-  let q = 'INSERT INTO hello (id, message) VALUES (NULL,\'' + msg + '\');';
-  query(q, function (err) {
-    if (err) throw err;
-  });
-  res.send('Success!');
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-router.get('/hello/select/all', function(req, res) {
-  query('SELECT * from hello;', function (err, rows) {
-    if (err) throw err;
-    res.send(rows);
-  });
+passport.deserializeUser((userId, done) => {
+  session.User
+    .findOne({where: {id: userId}})
+    .then((user) => {
+      if (!user) return done(null, false);
+      done(null, user);
+    })
+    .catch((err) => {
+      done(err);
+    });
 });
 
+passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username, password, done) {
+  session.User
+    .findOne({where: {username: username}})
+    .then((user) =>{
+      if (!user) return done(null, false);
+      user.validatePassword(password, user.get('password')).then((valid) => {
+        if (!valid) return done(null, false);
+        // check if admin login
+        if ((req.body.admin && user.isAdmin) || !req.body.admin) {
+          return done(null, user);
+        }
+        return done(null, false);
+      });
+    })
+    .catch((err) => {
+      return done(err);
+    });
+}));
+
+/* Post to login user. */
+router.post('/login', passport.authenticate('local', {}), function(req, res) {
+  res.sendStatus(200);
+});
 
 module.exports = router;

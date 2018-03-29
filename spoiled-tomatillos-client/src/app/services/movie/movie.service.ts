@@ -27,7 +27,8 @@ export class MovieService {
   public addToWatchList(movieId: string) {
     return this.http.post('/api/movies/' + movieId + '/add-to-watchlist', null, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
   }
 

@@ -6,7 +6,8 @@
     "start": "NODE_ENV=development node ./bin/www",
     "start-prod": "NODE_ENV=production node ./bin/www",
     "setup-dev-db": "cd db && ../node_modules/.bin/sequelize db:create && ../node_modules/.bin/sequelize db:migrate && ../node_modules/.bin/sequelize db:seed --seed 20180326071657-dev-seed && cd ..",
-    "cleanup-dev-db": "cd db && ../node_modules/.bin/sequelize db:drop",
+    "update-dev-db": "cd db && ../node_modules/.bin/sequelize db:migrate && cd ..",
+    "cleanup-dev-db": "cd db && ../node_modules/.bin/sequelize db:drop && cd ..",
     "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner"
   },
   "dependencies": {
