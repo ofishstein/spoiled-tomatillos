@@ -13,7 +13,7 @@ export class UsersService {
   }
 
   public create(user: User) {
-  	const endpoint = '/api/users/register';
+  	const endpoint = '/api/register';
   	return this.http.post(endpoint, user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text'
@@ -21,7 +21,7 @@ export class UsersService {
   }
 
   public update(user: User) {
-    const endpoint = '/api/users/me';
+    const endpoint = '/api/users/settings';
     return this.http.put(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
@@ -30,7 +30,7 @@ export class UsersService {
   }
 
   public getUserInfo(): Observable<User>  {
-    const endpoint = '/api/users/me';
+    const endpoint = '/api/users/settings';
     return this.http.get<Response>(endpoint, {
       withCredentials: true 
     }).map((resp) => {
@@ -40,7 +40,7 @@ export class UsersService {
   }
 
   public createAdmin(user: User) {
-    const endpoint = '/api/users'
+    const endpoint = '/api/user'
     return this.http.post(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
@@ -53,7 +53,8 @@ export class UsersService {
     const following = {follow: true};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
   }
 
@@ -62,7 +63,8 @@ export class UsersService {
     const following = {follow: false};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
   }
 
