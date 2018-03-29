@@ -21,13 +21,13 @@ router.get('/', function(req, res) {
 });
 
 router.get('/settings', authCheck, function(req, res) {
-    session.User.findOne({
-        where: {id: req.user.id}
-    })
-        .then(user => {
-            delete user.password;
-            res.json(user);
-        });
+  session.User.findOne({
+    where: {id: req.user.id}
+  })
+    .then(user => {
+      delete user.password;
+      res.json(user);
+    });
 });
 
 
@@ -83,144 +83,144 @@ router.get('/:user_id', function(req, res) {
 
 router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
-    session.Follower
-        .findAll({
-            attributes: ['FolloweeId'],
-            where: {followerId: req.params['user_id']},
-            include: ['FolloweeUser']
-        })
-        .then(following => {
-            res.json(following);
+  session.Follower
+    .findAll({
+      attributes: ['FolloweeId'],
+      where: {followerId: req.params['user_id']},
+      include: ['FolloweeUser']
+    })
+    .then(following => {
+      res.json(following);
     });
 });
 
 
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
-    session.Follower.findAll({
-        attributes: ['FollowerId'],
-        where: {followeeId: req.params['user_id']},
-        include: ['FollowerUser']
-    })
-        .then(followers => {
-            res.json(followers);
+  session.Follower.findAll({
+    attributes: ['FollowerId'],
+    where: {followeeId: req.params['user_id']},
+    include: ['FollowerUser']
+  })
+    .then(followers => {
+      res.json(followers);
     });
 });
 
 router.get('/:user_id/is-following', function(req, res) {
-    // Is the logged in user following the user at the given ID.
-    if (req.isAuthenticated()) {
-        session.Follower
-            .findOne({
-                where: {
-                    followerId: req.user.id,
-                    followeeId: req.params['user_id']
-                }
-            })
-            .then(isFollowing => {
-                if (isFollowing) {
-                    res.json(true);
-                } else {
-                    res.json(false);
-                }
-            })
-    } else {
-        res.json(false);
-    }
+  // Is the logged in user following the user at the given ID.
+  if (req.isAuthenticated()) {
+    session.Follower
+      .findOne({
+        where: {
+          followerId: req.user.id,
+          followeeId: req.params['user_id']
+        }
+      })
+      .then(isFollowing => {
+        if (isFollowing) {
+          res.json(true);
+        } else {
+          res.json(false);
+        }
+      })
+  } else {
+    res.json(false);
+  }
 });
 
 router.get('/:user_id/watchlists', function(req, res) {
-    // Get users watchlist
-    session.Watchlist.findAll({
-        where: {userId: req.params['user_id']},
-        include: ['Movie']
-    })
-        .then(watchlists => {
-            // check for any movies in watchlists with imdbId and null poster
-            watchlists.forEach(watchlist => {
-                watchlist.forEach(movie => {
-                    if (movie['poster'] === null) {
-                        movie['poster'] = omdb.getPosterById(movie['imdbId']);
-                    }
-                })
-            });
-            res.json(watchlists);
-        });
+  // Get users watchlist
+  session.Watchlist.findAll({
+    where: {userId: req.params['user_id']},
+    include: ['Movie']
+  })
+    .then(watchlists => {
+      // check for any movies in watchlists with imdbId and null poster
+      watchlists.forEach(watchlist => {
+        watchlist.forEach(movie => {
+          if (movie['poster'] === null) {
+            movie['poster'] = omdb.getPosterById(movie['imdbId']);
+          }
+        })
+      });
+      res.json(watchlists);
+    });
 });
 
 router.get('/:user_id/reviews', function(req, res) {
-    // Get user's reviews
-    session.Review.findAll({
-        where: {userId: req.params['user_id']},
-        include: ['Movie']
-    })
-        .then(reviews => {
-            // check for any movies in watchlists with null poster
-            reviews.forEach(review => {
-                if (review['Movie']['poster'] === null) {
-                    review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
-                }
-            });
-            res.json(reviews);
-        });
+  // Get user's reviews
+  session.Review.findAll({
+    where: {userId: req.params['user_id']},
+    include: ['Movie']
+  })
+    .then(reviews => {
+      // check for any movies in watchlists with null poster
+      reviews.forEach(review => {
+        if (review['Movie']['poster'] === null) {
+          review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
+        }
+      });
+      res.json(reviews);
+    });
 });
 
 router.put('/settings', authCheck, function(req, res) {
   // Handle putting user settings.
-    session.User.update(req.body, {
-        where: { id: req.user.id }
-    })
-        .then(updated => {
-            if (updated === 0) {
-                res.sendStatus(500);
-            } else {
-                session.User.findOne({
-                    where: {id: req.user.id}
-                })
-                    .then(user => {
-                        delete user.password;
-                        res.json(user);
-                    });
-            }
-        });
+  session.User.update(req.body, {
+    where: { id: req.user.id }
+  })
+    .then(updated => {
+      if (updated === 0) {
+        res.sendStatus(500);
+      } else {
+        session.User.findOne({
+          where: {id: req.user.id}
+        })
+          .then(user => {
+            delete user.password;
+            res.json(user);
+          });
+      }
+    });
 });
 
 router.put('/:user_id/follow', authCheck, function(req, res) {
-    // Current logged in user follows user at user_id
-    // sends updated is-following status
-    if (req.body.follow) {
-        session.Follower.findOrCreate({
-            where: {
-                followerId: req.user.id,
-                followeeId: req.params['user_id']
-            }
-        }).spread((follower, created) => {
-            res.json(true);
-        });
-    } else {
-        session.Follower.destroy({
-            where: {
-                followerId: req.user.id,
-                followeeId: req.params['user_id']
-            }
-        }).then(() => {
-            res.json(false);
-        });
-    }
+  // Current logged in user follows user at user_id
+  // sends updated is-following status
+  if (req.body.follow) {
+    session.Follower.findOrCreate({
+      where: {
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
+      }
+    }).spread((follower, created) => {
+      res.json(true);
+    });
+  } else {
+    session.Follower.destroy({
+      where: {
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
+      }
+    }).then(() => {
+      res.json(false);
+    });
+  }
 });
 
 router.delete('/:user_id', authCheck, function(req, res) {
-    // delete the user iff user_id == logged in user or logged in user is admin
-    if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
-        res.sendStatus(401);
-    } else {
-        session.User.destroy({
-            where: {id: req.params['user_id']}
-        })
-            .then(() => {
-            res.sendStatus(200);
-        });
-    }
+  // delete the user iff user_id == logged in user or logged in user is admin
+  if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
+    res.sendStatus(401);
+  } else {
+    session.User.destroy({
+      where: {id: req.params['user_id']}
+    })
+      .then(() => {
+        res.sendStatus(200);
+      });
+  }
 });
 
 
