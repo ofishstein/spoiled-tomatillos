@@ -32,8 +32,6 @@ export class LoginComponent implements OnInit {
       this.missingRequired = false;
       this._authService.userLogin(form.value.username, form.value.password, false).subscribe(
         success => {
-          // update currentUser
-          this._authService.getCurrentUser();
           this.router.navigate(['/home'])
             .then(() => {});
         },
@@ -43,7 +41,8 @@ export class LoginComponent implements OnInit {
         }
       );
 
-      
+      // update currentUser
+      this._authService.getCurrentUser();
     }
   }
 
