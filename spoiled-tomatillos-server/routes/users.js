@@ -48,6 +48,9 @@ function reformatProfile(profile) {
   // ... Make activity feed
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
+  profileInfo['activities'].forEach(item => {
+    item['type'] = 'review';
+  });
   ['ReviewComments', 'WatchlistComments', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {item['type'] = key});
     utils.aggAndRemove(profileInfo, 'activities', key);
