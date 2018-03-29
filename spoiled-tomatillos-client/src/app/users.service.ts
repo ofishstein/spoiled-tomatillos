@@ -13,14 +13,16 @@ export class UsersService {
   }
 
   public create(user: User) {
-  	return this.http.post('/api/users/create', user, {
+  	const endpoint = '/api/register';
+  	return this.http.post(endpoint, user, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text'
      });
   }
 
   public update(user: User) {
-    return this.http.put('/api/users/me', user, {
+    const endpoint = '/api/users/settings';
+    return this.http.put(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
       withCredentials: true
@@ -28,20 +30,31 @@ export class UsersService {
   }
 
   public getUserInfo(): Observable<User>  {
-    return this.http.get<Response>('/api/users/me', {
-      withCredentials: true
+    const endpoint = '/api/users/settings';
+    return this.http.get<Response>(endpoint, {
+      withCredentials: true 
     }).map((resp) => {
       const body: any = resp;
       return body;
     });
   }
 
+  public createAdmin(user: User) {
+    const endpoint = '/api/user'
+    return this.http.post(endpoint, user, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text',
+      withCredentials: true
+    });
+  } 
+
   public follow(userId: string) {
     const endpoint = '/api/users/' + userId + '/follow';
     const following = {follow: true};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
   }
 
@@ -50,7 +63,8 @@ export class UsersService {
     const following = {follow: false};
     return this.http.post(endpoint, following, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
   }
 
