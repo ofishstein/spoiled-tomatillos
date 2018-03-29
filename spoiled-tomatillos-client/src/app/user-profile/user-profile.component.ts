@@ -35,29 +35,29 @@ export class UserProfileComponent implements OnInit {
     this.user = {
       userId: 789, username: 'john_doe', firstName: 'John', lastName: 'Doe',
       bio: 'I like movies blah blah blah.',
-      profileImage: {url: 'http://lorempixel.com/400/400/', width: 400, height: 400},
-      followers: [{userId: 1235, username: "bob_tomato", profileImage: {
-          url: "../../assets/profile_image_placeholder.png", width: 167, height: 167
-        }},
-        {userId: 1236, username: "user9873", profileImage: {
-          url: "../../assets/profile_image_placeholder.png", width: 167, height: 167
-        }}
+      profileImageUrl: 'http://lorempixel.com/400/400/',
+      followers: [{userId: 1235, username: 'bob_tomato',
+          profileImageUrl: '../../assets/profile_image_placeholder.png',
+        },
+        {userId: 1236, username: 'user9873',
+          profileImageUrl: '../../assets/profile_image_placeholder.png',
+        }
       ],
-      following: [{userId: 124, username: "bob_lob_law", profileImage: {
-        url: "../../assets/profile_image_placeholder.png", width: 167, height: 167
-        }},
-        {userId: 125, username: "fred124", profileImage: {
-          url: "http://lorempixel.com/400/400/", width: 400, height: 400
-        }},
-        {userId: 126, username: "jane", profileImage: {
-          url: "http://lorempixel.com/300/400/", width: 300, height: 400
-        }},
-        {userId: 127, username: "ann_23sdf", profileImage: {
-          url: "../../assets/profile_image_placeholder.png", width: 167, height: 167
-        }},
-        {userId: 128, username: "shreksy_lexy", profileImage: {
-          url: "http://lorempixel.com/750/500/", width: 750, height: 500
-        }}
+      following: [{id: 124, username: 'bob_lob_law',
+        profileImageUrl: '../../assets/profile_image_placeholder.png'
+        },
+        {id: 125, username: 'fred124',
+          profileImageUrl: 'http://lorempixel.com/400/400/'
+        },
+        {id: 126, username: 'jane',
+          profileImageUrl: 'http://lorempixel.com/400/400/'
+        },
+        {id: 127, username: 'ann_23sdf',
+          profileImageUrl: '../../assets/profile_image_placeholder.png',
+        },
+        {id: 128, username: 'shreksy_lexy',
+          profileImageUrl: 'http://lorempixel.com/400/400/'
+        }
       ],
       playlist: [
         {movieId: 1, Title: 'Shrek', poster: 'https://images-na.ssl-images-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg'},
@@ -80,9 +80,9 @@ export class UserProfileComponent implements OnInit {
           userId: 123, username: 'john_doe', profileImageUrl: 'http://lorempixel.com/400/400/'
         }}],
       activity: [
-        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-03-28T21:02:09.252Z'},
-        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-03-29T21:02:09.252Z'},
-        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-02-22T21:02:09.252Z'},
+        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-03-28T21:02:09.252Z', title: 'How To Lose a Guy in 10 Days'},
+        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-03-29T21:02:09.252Z', title: 'Black Panther'},
+        {type: 'review', movieId: 1, img: 'http://lorempixel.com/100/100', timestamp: '2018-02-22T21:02:09.252Z', title: 'Dodgeball'},
         ]
     };
 
@@ -92,9 +92,9 @@ export class UserProfileComponent implements OnInit {
         this.user.profileImage.url, this.user.firstName, this.user.lastName, this.user.isAdmin, this.user.reviews,
         this.user.followers, this.user.following, this.user.activity,
         new Watchlist(null, null, null, null, this.user.playlist), this.user.createDate, this.user.lastUpdated);*/
-      this._profileService.getProfileById(this.uid).subscribe((aProfile) => {
+      this._profileService.getProfileById(this.uid).subscribe((aProfile: Profile) => {
         this.parseUserProfile(aProfile);
-      });
+      }, err => { console.log(err); });
     }
 
     // TODO: After populating the profile, make sure to cover the use case's requirement of giving the viewer the
@@ -102,11 +102,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   private parseUserProfile(aProfile: Profile): void {
-    console.log('were in parseUserProfile');
-    console.log(aProfile);
     // if the request completely failed, populate UI with ALL the fake data
     if (!aProfile || aProfile == null) {
-      console.log('yes');
       this.userProfile = new Profile(this.user.id, this.user.bio, this.user.email, this.user.username,
         this.user.profileImage.url, this.user.firstName, this.user.lastName, this.user.isAdmin, this.user.reviews,
         this.user.followers, this.user.following, this.user.activity,
@@ -114,27 +111,34 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    console.log('no!');
     // otherwise, the request succeeded, populate the problem-areas with fake data if no real data exists
-    if (!aProfile.getFollowers()) {
+    if (!aProfile.getFollowers() || aProfile.getFollowers().length === 0) {
       console.log('no followers detected; using mock followers');
       aProfile.setFollowers(this.user.followers);
+      console.log(aProfile.getFollowers());
     }
 
-    if (!aProfile.getFollowing()) {
+    if (!aProfile.getFollowing() || aProfile.getFollowing().length === 0) {
       console.log('no following detected; using mock following');
       aProfile.setFollowing(this.user.following);
+      console.log(aProfile.getFollowing());
     }
 
-    if (!aProfile.getReviews()) {
+    if (!aProfile.getReviews() || aProfile.getReviews().length === 0) {
       console.log('no reviews detected; using mock reviews');
       aProfile.setReviews(this.user.reviews);
+      console.log(aProfile.getReviews());
     }
 
-    if (!aProfile.getWatchlist()) {
+    if (!aProfile.getWatchlist() || aProfile.getWatchlist().getMovies().length <= 1) {
       console.log('no watchlist detected; using mock watchlist');
       const mockedWatchlist = new Watchlist(null, null, null, null, this.user.playlist);
       aProfile.setWatchlist(mockedWatchlist);
+    }
+
+    if (!aProfile.getRecentActivity() || aProfile.getRecentActivity().length === 0) {
+      console.log('no activity detected; using mock activity');
+      aProfile.setRecentActivity(this.user.activity);
     }
 
     this.userProfile = aProfile;

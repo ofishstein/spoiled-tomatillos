@@ -18,20 +18,20 @@ export class ProfileService {
   public getProfileById(profileId: number): Observable<Profile> {
     // return this._http.get<Response>('/api/users/' + String(profileId), { withCredentials: true }).pipe(
     return this._http.get<Response>('/api/users/' + String(profileId)).pipe(
-      tap((resp) => {
+      map((resp) => {
         const body: any = resp;
         console.log('received response from GET /api/users/' + String(profileId));
         console.log(body);
 
-        const profileWatchlist = new Watchlist(body.watchlist.watchlistId, null, body.watchlist.createdAt,
-          body.watchlist.updatedAt, body.watchlist.items);
-        return new Profile(body.user.id, body.user.bio, body.user.email, body.user.username, body.user.pic,
-          body.user.firstName, body.user.lastName, body.user.isAdmin, body.reviews, body.followers, body.following,
-          body.activity, profileWatchlist, body.user.createdAt, body.user.updatedAt);
+        const profileWatchlist = new Watchlist(body.Watchlists.watchlistId, null, body.Watchlists.createdAt,
+          body.Watchlists.updatedAt, body.Watchlists.items);
+        return new Profile(body.id, body.bio, body.email, body.username, body.profileImageUrl,
+          body.firstName, body.lastName, body.isAdmin, body.reviews, body.followers, body.following,
+          body.activities, profileWatchlist, body.createdAt, body.updatedAt);
       }),
       catchError((err) => {
         console.log('ERROR during GET request to /api/users/' + String(profileId) + ':');
-        // console.log(err);
+        console.log(err);
         return of(null);
       })
     );

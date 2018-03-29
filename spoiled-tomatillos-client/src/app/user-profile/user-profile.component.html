@@ -31,7 +31,7 @@
               <div class="card ml-2 mr-2 mb-2">
                 <a routerLink="/user/{{ foll.id }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.pic }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.profileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
@@ -62,7 +62,7 @@
               <div class="card ml-2 mr-2 mb-2">
                 <a routerLink="/user/{{ follower.id }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.pic }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.profileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
@@ -136,7 +136,7 @@
                 </a>
                 <div class="media-body"><!-- Make this stuff programmatic too -->
                   <p class="text-left">{{ userProfile?.getUsername() }} {{ getActionFromActivityType(activity.type) }}
-                    <a routerLink="/movie/1">How to Lose a Guy in 10 Days</a>
+                    <a routerLink="/movie/{{activity.movieId}}">{{ activity.title }}</a>
                   <br/>
                   </p>
                   <!--<p class="text-muted text-right"><small>18h ago</small></p>-->
