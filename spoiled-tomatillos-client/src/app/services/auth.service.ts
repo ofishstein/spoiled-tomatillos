@@ -26,7 +26,7 @@ export class AuthService {
   logout() {
     this.currentUser.emit(false);
     this.currentUserObj = false;
-    return this.http.post('/api/logout');
+    return this.http.post('/api/logout', null);
   }
 
   /**
@@ -36,8 +36,9 @@ export class AuthService {
     return new Promise(resolve => {
       let res;
       this.http.get('/users/get-current-user', {withCredentials: true})
-        .subscribe(user => {
-          if (user.loggedIn === false) {
+        .subscribe(aUser => {
+          const user: any = aUser;
+          if (user == null ||user.loggedIn === false) {
             this.currentUser.emit(false);
             this.currentUserObj = false;
             res = false;
