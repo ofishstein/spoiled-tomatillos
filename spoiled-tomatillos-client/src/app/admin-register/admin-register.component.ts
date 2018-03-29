@@ -27,11 +27,11 @@ export class AdminRegisterComponent implements OnInit {
 
   register() {
   	this.loading = true;
-    this.userService.create(this.user)
+    this.userService.createAdmin(this.user)
         .subscribe(
             data => {
-                // redirect to the login page
-                this.router.navigate(['/admin/login']);
+                // redirect to the home page
+                this.router.navigate(['/admin/home']);
             },
             error => {
             	//todo

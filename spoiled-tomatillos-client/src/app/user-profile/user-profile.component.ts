@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ProfileService } from '../services/profile.service';
 import { Profile } from '../Profile';
 import { Watchlist } from '../Watchlist';
+import { UsersService } from '../users.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,7 +19,7 @@ export class UserProfileComponent implements OnInit {
   @ViewChild('reviewsList')
   private reviewsListTemplate: TemplateRef<any>;
 
-  constructor(private _route: ActivatedRoute, private _http: HttpClient, private _profileService: ProfileService) {
+  constructor(private _route: ActivatedRoute, private _http: HttpClient, private _profileService: ProfileService, private _usersService: UsersService) {
     const profileId = this._route.snapshot.params.uid;
 
     if (profileId && parseInt(profileId, 10)) {
@@ -171,6 +172,24 @@ export class UserProfileComponent implements OnInit {
     }
 
     return 'noaction';
+  }
+
+  follow() {
+    this._usersService.follow(String(this.uid)).subscribe(
+      data => {
+        console.log(data);
+        this.isFollowing = true },
+      err => console.error(err)
+    );
+  }
+
+  unfollow() {
+    this._usersService.unfollow(String(this.uid)).subscribe(
+      data => {
+        console.log(data);
+        this.isFollowing = false},
+      err => console.error(err)
+    );
   }
 
 }

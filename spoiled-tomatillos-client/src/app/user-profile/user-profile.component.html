@@ -19,6 +19,23 @@
         </div>
       </div>
 
+      <!-- follow -->
+      <div #followButton>
+          <div>
+            <button type="button" class="btn btn-primary" *ngIf="!isFollowing; else remove" (click)="follow()"
+              style="width:100%">
+                <i class="material-icons">add_to_queue</i> Follow 
+            </button>
+          </div>
+          <ng-template #remove>
+            <button type="button" class="btn btn-primary" (click)="unfollow()" style="width:100%">
+                <i class="material-icons">remove_from_queue</i> Unfollow
+              </button>
+          </ng-template>
+      </div>
+
+      <br>
+
       <!-- following -->
       <div #followingContainer id="following" class="card bg-light" *ngIf="userProfile">
         <div class="card-header bg-light">
