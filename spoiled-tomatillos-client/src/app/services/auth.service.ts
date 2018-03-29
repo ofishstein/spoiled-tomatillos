@@ -35,7 +35,7 @@ export class AuthService {
   getCurrentUser(): Promise<any> {
     return new Promise(resolve => {
       let res;
-      this.http.get('/api/users/get-current-user', {withCredentials: true})
+      this.http.get('/api/get-current-user', {withCredentials: true})
         .subscribe(aUser => {
           const user: any = aUser;
           if (user == null ||user.loggedIn === false) {
