@@ -26,7 +26,7 @@ export class AuthService {
   logout() {
     this.currentUser.emit(false);
     this.currentUserObj = false;
-    //return this.http.post('/logout');
+    return this.http.post('/api/logout');
   }
 
   /**
@@ -37,7 +37,7 @@ export class AuthService {
       let res;
       this.http.get('/users/get-current-user', {withCredentials: true})
         .subscribe(user => {
-          if (user === 'false') {
+          if (user.loggedIn === false) {
             this.currentUser.emit(false);
             this.currentUserObj = false;
             res = false;
