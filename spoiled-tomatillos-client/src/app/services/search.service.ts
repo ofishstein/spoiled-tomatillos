@@ -5,22 +5,20 @@ import { HttpClient } from '@angular/common/http';
 export class SearchService {
   @Output() searchChange = new EventEmitter<boolean>();
 
-  private _omdbBasePath: string;
-  private _userSearchBasePath: string;
-  private _apiKey: string;
+  private _apiBasePath: string;
+  private _omdbBasePath: string; // Deprecated: searching is now exclusive to our own API
   private results: { movieResults: Array<any>, userResults: Array<any> };
 
   constructor(private http: HttpClient) {
-    this._apiKey = '4a249f8d';
-    this._omdbBasePath = 'http://www.omdbapi.com/?apikey=' + this._apiKey;
-    this._userSearchBasePath = '/api/search/users';
+    const _apiKey = '4a249f8d';
+    this._omdbBasePath = 'http://www.omdbapi.com/?apikey=' + _apiKey;
+    this._apiBasePath = '/api';
     this.results = { movieResults: [], userResults: [] };
-
   }
 
   /**
    * Performs a keywords search across our movies and users apis, and emits a boolean
-   * upon successful response of both requests. The results are stored via a readonly
+   * upon successful response of both requests. The results are captured via a readonly
    * method getResults().
    *
    * @param keyword The keyword(s) string with which to search.
@@ -28,15 +26,26 @@ export class SearchService {
   public searchByKeyword(keyword: string): void {
     let successful = false;
 
-    this.http.get(this._omdbBasePath + '&s=' + keyword).toPromise().then((res: any) => {
-      this.results.movieResults = res.Search;
+    this.http.get(this._apiBasePath + '/movies?title=' + keyword).toPromise().then((res: any) => {
+      console.log('received resp from GET /movies?title=' + String(keyword));
+      console.log(res);
+      this.results.movieResults = res;
 
-      return this.http.get(this._userSearchBasePath + '?firstName=' + keyword).toPromise();
+      return this.http.get(this._apiBasePath + '/users?firstName=' + keyword).toPromise();
     })
     .then((res: any) => {
+      console.log('received resp from GET /users?firstName=' + String(keyword));
+      console.log(res);
       this.results.userResults = res;
+
+      /*return this.http.get(this._omdbBasePath + '&s=' + keyword).toPromise();
+    })
+    .then((res: any) => {
+      console.log('received resp from GET omdbapi');
+      console.log(res);*/
+
       // if the data looks good, send it
-      if (this.results.userResults && this.results.movieResults) {
+      if (this.results.movieResults || this.results.userResults) {
         successful = true;
         this.searchChange.emit(successful);
       } else {
@@ -48,7 +57,7 @@ export class SearchService {
       this.results.movieResults = [];
       this.results.userResults = [];
       successful = false;
-      console.log('search requests failed:');
+      console.log('Search requests failed:');
       console.log(err);
       this.searchChange.emit(successful);
     });
