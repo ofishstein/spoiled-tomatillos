@@ -271,7 +271,7 @@ module.exports = {
     }, {
       text: 'This is another watchlist comment',
       commenterId: regularUsers[1].id,
-      ownerId: watchlists[2].id,
+      ownerId: regularUsers[2].id,
       createdAt: now,
       updatedAt: now
     }];
