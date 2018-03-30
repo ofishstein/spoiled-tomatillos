@@ -24,38 +24,6 @@ function reformatMovie(movie) {
   return movieObj;
 }
 
-// Helper for making OMDb API calls
-function expandWithApi(movieObj) {
-  // console.log(omdb.getMovieById(movieObj['tmdbId']));
-  return movieObj;
-}
-
-// Helper for adding in user info
-function expandWithUser(movieObj, user, session, done) {
-  movieObj['inWatchlist'] = false;
-  done(true);
-  return;
-  if (user == undefined) {
-    movieObj['inWatchlist'] = false;
-    done(true);
-  }
-  else {
-    session.WatchlistItem.findOne({
-      where: {
-        userId: user.id,
-        movieId: movieObj.id
-      }
-    }).then(found => {
-      movieObj['inWatchlist'] = found !== null;
-      done(true);
-    })
-      .catch(error => {
-        console.log(error);
-        done(false);
-      });
-  }
-}
-
 /* GET users listing. */
 router.get('/:movie_id', function(req, res) {
   session.Movie
@@ -74,15 +42,9 @@ router.get('/:movie_id', function(req, res) {
     })
     .then(movie => {
       let movieObj = reformatMovie(movie);
-      expandWithApi(movieObj);
-      expandWithUser(movieObj, req.user, session, (success) => {
-        if (success) {
-          res.send(movieObj);
-        }
-        else {
-          res.sendStatus(500);
-          return;
-        }
+      omdb.getMovieById(movieObj['imdbId'], true, (results) => {
+        movieObj = Object.assign(movieObj, results);
+        res.send(movieObj)
       });
     });
 });
@@ -131,24 +93,11 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
 });
 
 router.post('/:movie_id/add-to-watchlist', authCheck, function(req, res) {
-  session.Watchlist.findOrCreate({
-    where: {
-      userId: req.user.id,
-      name: req.user.firstName + "'s Watchlist"
-    }
-  })
-    .spread((watchlist, created) => {
-      session.WatchlistItem.build({
-        watchlistId: watchlist.id,
-        movieId: req.params['movie_id']})
-        .save()
-        .then(() => { res.sendStatus(200); })
-        .catch(error => {
-          console.log(error);
-          res.sendStatus(500);
-
-        });
-    })
+  session.WatchlistItem.build({
+    userId: req.user.id,
+    movieId: req.params['movie_id']})
+    .save()
+    .then(() => { res.sendStatus(200); })
     .catch(error => {
       console.log(error);
       res.sendStatus(500);
