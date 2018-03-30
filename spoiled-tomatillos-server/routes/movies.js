@@ -93,24 +93,11 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
 });
 
 router.post('/:movie_id/add-to-watchlist', authCheck, function(req, res) {
-  session.Watchlist.findOrCreate({
-    where: {
-      userId: req.user.id,
-      name: req.user.firstName + "'s Watchlist"
-    }
-  })
-    .spread((watchlist, created) => {
-      session.WatchlistItem.build({
-        watchlistId: watchlist.id,
-        movieId: req.params['movie_id']})
-        .save()
-        .then(() => { res.sendStatus(200); })
-        .catch(error => {
-          console.log(error);
-          res.sendStatus(500);
-
-        });
-    })
+  session.WatchlistItem.build({
+    userId: req.user.id,
+    movieId: req.params['movie_id']})
+    .save()
+    .then(() => { res.sendStatus(200); })
     .catch(error => {
       console.log(error);
       res.sendStatus(500);

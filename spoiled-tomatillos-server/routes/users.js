@@ -37,6 +37,7 @@ function reformatProfile(profile) {
   utils.rename(profileInfo, 'Followers', 'followers');
   utils.rename(profileInfo, 'Followees', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
+  utils.rename(profileInfo, 'WatchlistItems', 'watchlist');
   // ... Make activity feed
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
@@ -69,7 +70,7 @@ router.get('/:user_id', function(req, res) {
           }
         },
         'ReviewComments',
-        'Watchlists',
+        'WatchlistItems',
         'WatchlistComments',
         'RecommendationsSent',
         'RecommendationsReceived',
@@ -129,22 +130,19 @@ router.get('/:user_id/is-following', function(req, res) {
   }
 });
 
-router.get('/:user_id/watchlists', function(req, res) {
+router.get('/:user_id/watchlist', function(req, res) {
   // Get users watchlist
-  session.Watchlist.findAll({
+  session.WatchlistItems.findAll({
     where: {userId: req.params['user_id']},
     include: ['Movie']
   })
-    .then(watchlists => {
-      // check for any movies in watchlists with imdbId and null poster
-      watchlists.forEach(watchlist => {
-        watchlist.forEach(movie => {
-          if (movie['poster'] === null) {
-            movie['poster'] = omdb.getPosterById(movie['imdbId']);
-          }
-        })
+    .then(watchlist => {
+      watchlist.forEach(movie => {
+        if (movie['poster'] === null) {
+          movie['poster'] = omdb.getPosterById(movie['imdbId']);
+        }
       });
-      res.json(watchlists);
+      res.json(watchlist);
     });
 });
 
@@ -155,7 +153,6 @@ router.get('/:user_id/reviews', function(req, res) {
     include: ['Movie']
   })
     .then(reviews => {
-      // check for any movies in watchlists with null poster
       reviews.forEach(review => {
         if (review['Movie']['poster'] === null) {
           review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
