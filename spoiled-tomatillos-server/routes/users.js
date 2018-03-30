@@ -73,6 +73,9 @@ router.get('/:user_id', function(req, res) {
         {
           model: session.WatchlistItem,
           as: 'WatchlistItems',
+          attributes: {
+            exclude: ['id', 'userId']
+          },
           include: {
             model: session.Movie,
             as: 'Movie',
