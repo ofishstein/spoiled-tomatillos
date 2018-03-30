@@ -32,21 +32,21 @@ node {
 			    }
 			}
 		}
+		stage('Server Quality') {
+		    sh 'sleep 45'
+		    timeout(time: 45, unit: 'SECONDS') {
+		        retry(5) {
+		            script {
+		                def qg = waitForQualityGate()
+		                if (qg.status != 'OK') {
+		                    error "Pipeline aborted due to quality gate error ${qg.status}"
+		                }
+		            }
+		        }
+		    }
+		}
+		// TODO: Add client code quality check
 	}
-	stage('Server Quality') {
-	    sh 'sleep 45'
-	    timeout(time: 45, unit: 'SECONDS') {
-	        retry(5) {
-	            script {
-	                def qg = waitForQualityGate()
-	                if (qg.status != 'OK') {
-	                    error "Pipeline aborted due to quality gate error ${qg.status}"
-	                }
-	            }
-	        }
-	    }
-	}
-	// TODO: Add client code quality check
 	finally {
 	    stage('Cleanup') {
             deleteDir()
