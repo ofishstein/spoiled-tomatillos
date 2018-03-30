@@ -3,25 +3,27 @@ const winston = require('winston');
 const logDir = 'logs';
 const tsFormat = () => (new Date()).toLocaleTimeString();
 
-const logger = new (winston.Logger)({
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
   transports: [
-    // colorize the output to the console
-    new (winston.transports.Console)({
+    new winston.transports.Console({
       timestamp: tsFormat,
       colorize: true,
       level: 'info'
     }),
-    new (winston.transports.File)({
-      filename: `${logDir}/system-error.log`,
+    new winston.transports.File({
+      filename: `${logDir}/system-warning.log`,
       timestamp: tsFormat,
       level: 'warn'
     }),
     new (require('winston-daily-rotate-file'))({
-      filename: `${logDir}/-results.log`,
-      timestamp: tsFormat,
-      datePattern: 'yyyy-MM-dd',
-      prepend: true,
-      level: 'info'
+      filename: 'st-%DATE%.log',
+      dirname: logDir,
+      datePattern: 'YYYY-MM-DD-HH',
+      zippedArchive: true,
+      maxSize: '20m',
+      maxFiles: '14d'
     })
   ]
 });
