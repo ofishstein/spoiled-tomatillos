@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
 
   constructor(private http: HttpClient, private _searchService: SearchService) {
     this.displayMovies = true;
-    this.buttonText = 'Users';
+    this.buttonText = 'View Users';
   }
 
   ngOnInit() {
@@ -36,9 +36,9 @@ export class SearchComponent implements OnInit {
     this.displayMovies = !this.displayMovies;
 
     if (this.displayMovies) {
-      this.buttonText = 'Users';
+      this.buttonText = 'View Users';
     } else {
-      this.buttonText = 'Movies';
+      this.buttonText = 'View Movies';
     }
   }
 
