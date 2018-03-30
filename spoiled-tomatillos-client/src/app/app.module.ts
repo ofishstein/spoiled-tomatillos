@@ -33,6 +33,7 @@ import { SearchService } from './services/search.service';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthService } from './services/auth.service';
 import { MovieService } from './services/movie/movie.service';
+import { ProfileService } from './services/profile.service';
 import { ApiInterceptor } from './api-interceptor';
 
 @NgModule({
@@ -78,7 +79,8 @@ import { ApiInterceptor } from './api-interceptor';
     UsersService,
     SearchService,
     AuthService,
-    MovieService
+    MovieService,
+    ProfileService
   ],
 
   bootstrap: [AppComponent]
