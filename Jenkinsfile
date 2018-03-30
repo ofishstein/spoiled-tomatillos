@@ -4,7 +4,7 @@ node {
 	}
 
 	try {
-		env.NODE_ENV = "jenkins"
+		env.NODE_ENV = "test"
 
 		print "Node environment is: ${env.NODE_ENV}"
 
@@ -29,24 +29,10 @@ node {
 					sh 'cd spoiled-tomatillos-server/ && npm run cleanup-dev-db'
 				}
 
-			    stage('SonarQube analysis') {
+			    stage('Server SonarQube analysis') {
 			        withSonarQubeEnv('SonarQube') {
 		            	sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
-		            	sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
 		        	}
-			    }
-			    stage('Quality') {
-		            sh 'sleep 30'
-		            timeout(time: 10, unit: 'SECONDS') {
-		                retry(5) {
-		                    script {
-		                        def qg = waitForQualityGate()
-		                        if (qg.status != 'OK') {
-		                            error "Pipeline aborted due to quality gate error ${qg.status}"
-		                        }
-		                    }
-		                }
-		            }
 			    }
 			}
 		}
@@ -57,3 +43,17 @@ node {
     	}
 	}
 }
+stage('Server Quality') {
+    sh 'sleep 45'
+    timeout(time: 45, unit: 'SECONDS') {
+        retry(5) {
+            script {
+                def qg = waitForQualityGate()
+                if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate error ${qg.status}"
+                }
+            }
+        }
+    }
+}
+// TODO: Add client code quality check
