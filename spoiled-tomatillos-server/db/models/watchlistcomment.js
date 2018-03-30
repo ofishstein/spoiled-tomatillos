@@ -6,8 +6,8 @@ module.exports = (sequelize, DataTypes) => {
   WatchlistComment.associate = function(models) {
     WatchlistComment.belongsTo(models.User,
       {foreignKey: 'id', sourceKey: 'commenterId'});
-    WatchlistComment.belongsTo(models.Watchlist,
-      {foreignKey: 'id', sourceKey: 'watchlistId'});
+    WatchlistComment.belongsTo(models.User,
+      {foreignKey: 'id', sourceKey: 'ownerId'});
   };
   return WatchlistComment;
 };
