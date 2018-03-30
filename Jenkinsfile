@@ -4,7 +4,7 @@ node {
 	}
 
 	try {
-		env.NODE_ENV = "test"
+		env.NODE_ENV = "jenkins"
 
 		print "Node environment is: ${env.NODE_ENV}"
 
@@ -17,16 +17,12 @@ node {
 			nodeImage.inside("--link ${id}:db") {
 				stage('Build') {
 	                sh 'java -version'
-	                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db'
+	                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
 	                sh 'cd spoiled-tomatillos-client/ && npm install'
 				}
 
 				stage('Test') {
 					sh './jenkins-scripts/test.sh'
-				}
-
-				stage('Test Cleanup') {
-					sh 'cd spoiled-tomatillos-server/ && npm run cleanup-dev-db'
 				}
 
 			    stage('Server SonarQube analysis') {
