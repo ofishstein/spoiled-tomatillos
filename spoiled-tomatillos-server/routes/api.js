@@ -16,7 +16,7 @@ router.post('/register', function(req, res) {
     .build(req.body)
     .save()
     .then((newUser) => {
-      logger.info('New non-admin user created: ', newUser.get({plain: true}));
+      logger.info('New non-admin user created', logger.omit(newUser.get({plain: true}), 'password'));
       session.Watchlist
         .build({name: 'My Watchlist', userId: newUser.id})
         .save()
@@ -25,12 +25,13 @@ router.post('/register', function(req, res) {
         });
     })
     .catch(error => {
-      logger.error(error);
+      logger.error('Registration Error', error);
       res.sendStatus(500);
     });
 });
 
 router.post('/logout', function(req, res) {
+  logger.info('User logged out', logger.omit(req.user.get({plain: true}), 'password'));
   req.logout();
   res.sendStatus(200);
 });
@@ -82,6 +83,7 @@ passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username
 
 /* Post to login user. */
 router.post('/login', passport.authenticate('local', {}), function(req, res) {
+  logger.info('User logged in', logger.omit(req.user.get({plain: true}), 'password'));
   res.sendStatus(200);
 });
 

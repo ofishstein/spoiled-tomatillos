@@ -28,4 +28,10 @@ const logger = winston.createLogger({
   ]
 });
 
+logger.omit = (o, key) => {
+  let o1 = {...o};
+  delete o1[key];
+  return o1;
+};
+
 module.exports = logger;
