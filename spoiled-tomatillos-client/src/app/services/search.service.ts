@@ -13,7 +13,7 @@ export class SearchService {
   constructor(private http: HttpClient) {
     this._apiKey = '4a249f8d';
     this._omdbBasePath = 'http://www.omdbapi.com/?apikey=' + this._apiKey;
-    this._userSearchBasePath = '/search/users';
+    this._userSearchBasePath = '/api/search/users';
     this.results = { movieResults: [], userResults: [] };
 
   }

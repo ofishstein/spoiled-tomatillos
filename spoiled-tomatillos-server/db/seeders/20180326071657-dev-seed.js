@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,40 +8,44 @@ module.exports = {
     const usersToInsert = [{
       username: "SeedUser1",
       email: "user1@seed.com",
-      password: "su1",
+      password: bcrypt.hashSync("su1", 10),
       firstName: "User1",
       lastName: "Seed",
       bio: "Basic Seeded User #1",
+      profileImageUrl: "www.google.com",
       isAdmin: false,
       createdAt: now,
       updatedAt: now
     }, {
       username: "SeedUser2",
       email: "user2@seed.com",
-      password: "su2",
+      password: bcrypt.hashSync("su2", 10),
       firstName: "User2",
       lastName: "Seed",
       bio: "Basic Seeded User #2",
+      profileImageUrl: "www.google.com",
       isAdmin: false,
       createdAt: now,
       updatedAt: now
       },{
       username: "SeedUser3",
       email: "user3@seed.com",
-      password: "su3",
+      password: bcrypt.hashSync("su3", 10),
       firstName: "User3",
       lastName: "Seed",
       bio: "Basic Seeded User #3",
+      profileImageUrl: "www.google.com",
       isAdmin: false,
       createdAt: now,
       updatedAt: now
     }, {
       username: "AdminSeedUser1",
       email: "adminuser1@seed.com",
-      password: "asu1",
+      password: bcrypt.hashSync("asu1", 10),
       firstName: "AdminUser1",
       lastName: "Seed",
       bio: "Admin Seeded User #1",
+      profileImageUrl: "www.google.com",
       isAdmin: true,
       createdAt: now,
       updatedAt: now
@@ -83,7 +88,6 @@ module.exports = {
       }
     );
     const regularUsers = users.filter((u) => !u.isAdmin);
-    const adminUsers = users.filter((u) => u.isAdmin);
     const movies = await seq.query(
       `SELECT id from "Movies";`, {
         type: seq.QueryTypes.SELECT
@@ -157,32 +161,6 @@ module.exports = {
       createdAt: now,
       updatedAt: now
     }];
-    const watchlistsToInsert = [{
-      name: 'Kids movies?',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Movies',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Movies?',
-      userId: regularUsers[0].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Here is a Watchlist',
-      userId: regularUsers[1].id,
-      createdAt: now,
-      updatedAt: now
-    }, {
-      name: 'Seed Watchlist',
-      userId: regularUsers[2].id,
-      createdAt: now,
-      updatedAt: now
-    }];
     const recommendationsToInsert = [{
       message: 'I heard you like kids movies',
       recommenderId: regularUsers[1].id,
@@ -247,7 +225,6 @@ module.exports = {
 
     await queryInterface.bulkInsert('Genres', genresToInsert, {});
     await queryInterface.bulkInsert('Reviews', reviewsToInsert, {});
-    await queryInterface.bulkInsert('Watchlists', watchlistsToInsert, {});
     await queryInterface.bulkInsert('Recommendations', recommendationsToInsert, {});
     await queryInterface.bulkInsert('DistributionLinks', distributionLinksToInsert, {});
     await queryInterface.bulkInsert('BlockedUsers', blockedUsersToInsert, {});
@@ -260,13 +237,6 @@ module.exports = {
       }
     );
 
-    const watchlists = await seq.query(
-      `SELECT id from "Watchlists";`, {
-        type: seq.QueryTypes.SELECT
-      }
-    );
-
-    // Tier 3 data (tier 2 foriegn keys)
     const reviewCommentsToInsert = [{
       text: 'This is a silly review',
       commenterId: regularUsers[1].id,
@@ -295,43 +265,43 @@ module.exports = {
     const watchlistCommentsToInsert = [{
       text: 'This is a watchlist comment',
       commenterId: regularUsers[0].id,
-      watchlistId: watchlists[3].id,
+      ownerId: regularUsers[1].id,
       createdAt: now,
       updatedAt: now
     }, {
       text: 'This is another watchlist comment',
       commenterId: regularUsers[1].id,
-      watchlistId: watchlists[3].id,
+      ownerId: watchlists[2].id,
       createdAt: now,
       updatedAt: now
     }];
     const watchlistItemsToInsert = [{
-      watchlistId: watchlists[0].id,
+      userId: regularUsers[0].id,
       movieId: movies[0].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[0].id,
+      userId: regularUsers[0].id,
       movieId: movies[3].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[1].id,
+      userId: regularUsers[1].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[2].id,
+      userId: regularUsers[2].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[3].id,
+      userId: regularUsers[0].id,
       movieId: movies[2].id,
       createdAt: now,
       updatedAt: now
     }, {
-      watchlistId: watchlists[4].id,
+      userId: regularUsers[1].id,
       movieId: movies[1].id,
       createdAt: now,
       updatedAt: now
