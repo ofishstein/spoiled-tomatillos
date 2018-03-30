@@ -34,8 +34,8 @@ node {
 		}
 		stage('Server Quality') {
 		    sh 'sleep 45'
-		    timeout(time: 45, unit: 'SECONDS') {
-		        retry(5) {
+		    retry(5) {
+		        timeout(time: 15, unit: 'SECONDS') {
 		            script {
 		                def qg = waitForQualityGate()
 		                if (qg.status != 'OK') {
