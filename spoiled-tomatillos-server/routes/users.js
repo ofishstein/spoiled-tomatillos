@@ -44,7 +44,7 @@ function reformatProfile(profile) {
   profileInfo['activities'].forEach(item => {
     item['type'] = 'review';
   });
-  ['ReviewComments', 'WatchlistComments', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
+  ['ReviewComments', 'WatchlistCommentsSent', 'WatchlistCommentsReceived', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {item['type'] = key});
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
@@ -70,8 +70,17 @@ router.get('/:user_id', function(req, res) {
           }
         },
         'ReviewComments',
-        'WatchlistItems',
-        'WatchlistComments',
+        {
+          model: session.WatchlistItem,
+          as: 'WatchlistItems',
+          include: {
+            model: session.Movie,
+            as: 'Movie',
+            attributes: ['title', 'id', 'poster']
+          }
+        },
+        'WatchlistCommentsSent',
+        'WatchlistCommentsReceived',
         'RecommendationsSent',
         'RecommendationsReceived',
         'Followers',
