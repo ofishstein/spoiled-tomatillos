@@ -17,7 +17,7 @@ node {
 			nodeImage.inside("--link ${id}:db") {
 				stage('Build') {
 	                sh 'java -version'
-	                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source && npm run setup-dev-db'
+	                sh 'cd spoiled-tomatillos-server/ && npm install node-pre-gyp && npm install && npm rebuild bcrypt --build-from-source'
 	                sh 'cd spoiled-tomatillos-client/ && npm install'
 				}
 
@@ -25,31 +25,27 @@ node {
 					sh './jenkins-scripts/test.sh'
 				}
 
-				stage('Test Cleanup') {
-					sh 'cd spoiled-tomatillos-server/ && npm run cleanup-dev-db'
-				}
-
-			    stage('SonarQube analysis') {
+			    stage('Server SonarQube analysis') {
 			        withSonarQubeEnv('SonarQube') {
 		            	sh "cd spoiled-tomatillos-server/ && npm run sonar-scanner"
-		            	sh "cd spoiled-tomatillos-client/ && npm run sonar-scanner"
 		        	}
-			    }
-			    stage('Quality') {
-		            sh 'sleep 30'
-		            timeout(time: 10, unit: 'SECONDS') {
-		                retry(5) {
-		                    script {
-		                        def qg = waitForQualityGate()
-		                        if (qg.status != 'OK') {
-		                            error "Pipeline aborted due to quality gate error ${qg.status}"
-		                        }
-		                    }
-		                }
-		            }
 			    }
 			}
 		}
+		stage('Server Quality') {
+		    sh 'sleep 45'
+		    retry(5) {
+		        timeout(time: 15, unit: 'SECONDS') {
+		            script {
+		                def qg = waitForQualityGate()
+		                if (qg.status != 'OK') {
+		                    error "Pipeline aborted due to quality gate error ${qg.status}"
+		                }
+		            }
+		        }
+		    }
+		}
+		// TODO: Add client code quality check
 	}
 	finally {
 	    stage('Cleanup') {

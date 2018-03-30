@@ -9,7 +9,8 @@
     "update-dev-db": "cd db && ../node_modules/.bin/sequelize db:migrate && cd ..",
     "cleanup-dev-db": "cd db && ../node_modules/.bin/sequelize db:drop && cd ..",
     "sonar-scanner": "node_modules/sonar-scanner/bin/sonar-scanner",
-    "test": "node_modules/.bin/nyc --reporter=lcov node_modules/.bin/mocha --exit"
+    "test": "cd db && (NODE_ENV=test ../node_modules/.bin/sequelize db:drop || true) && NODE_ENV=test ../node_modules/.bin/sequelize db:create && NODE_ENV=test ../node_modules/.bin/sequelize db:migrate && cd .. && (NODE_ENV=test node_modules/.bin/nyc --reporter=lcov node_modules/.bin/mocha --exit || true) && cd db && NODE_ENV=test ../node_modules/.bin/sequelize db:drop && cd ..",
+    "test-jenkins": "cd db && (../node_modules/.bin/sequelize db:drop || true) && ../node_modules/.bin/sequelize db:create && ../node_modules/.bin/sequelize db:migrate && cd .. && (node_modules/.bin/nyc --reporter=lcov node_modules/.bin/mocha --exit || true) && cd db && ../node_modules/.bin/sequelize db:drop && cd .."
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
