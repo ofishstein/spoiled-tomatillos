@@ -37,13 +37,14 @@ function reformatProfile(profile) {
   utils.rename(profileInfo, 'Followers', 'followers');
   utils.rename(profileInfo, 'Followees', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
+  utils.rename(profileInfo, 'WatchlistItems', 'watchlist');
   // ... Make activity feed
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
   profileInfo['activities'].forEach(item => {
     item['type'] = 'review';
   });
-  ['ReviewComments', 'WatchlistComments', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
+  ['ReviewComments', 'WatchlistCommentsSent', 'WatchlistCommentsReceived', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {item['type'] = key});
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
@@ -69,8 +70,17 @@ router.get('/:user_id', function(req, res) {
           }
         },
         'ReviewComments',
-        'Watchlists',
-        'WatchlistComments',
+        {
+          model: session.WatchlistItem,
+          as: 'WatchlistItems',
+          include: {
+            model: session.Movie,
+            as: 'Movie',
+            attributes: ['title', 'id', 'poster']
+          }
+        },
+        'WatchlistCommentsSent',
+        'WatchlistCommentsReceived',
         'RecommendationsSent',
         'RecommendationsReceived',
         'Followers',
@@ -129,22 +139,19 @@ router.get('/:user_id/is-following', function(req, res) {
   }
 });
 
-router.get('/:user_id/watchlists', function(req, res) {
+router.get('/:user_id/watchlist', function(req, res) {
   // Get users watchlist
-  session.Watchlist.findAll({
+  session.WatchlistItems.findAll({
     where: {userId: req.params['user_id']},
     include: ['Movie']
   })
-    .then(watchlists => {
-      // check for any movies in watchlists with imdbId and null poster
-      watchlists.forEach(watchlist => {
-        watchlist.forEach(movie => {
-          if (movie['poster'] === null) {
-            movie['poster'] = omdb.getPosterById(movie['imdbId']);
-          }
-        })
+    .then(watchlist => {
+      watchlist.forEach(movie => {
+        if (movie['poster'] === null) {
+          movie['poster'] = omdb.getPosterById(movie['imdbId']);
+        }
       });
-      res.json(watchlists);
+      res.json(watchlist);
     });
 });
 
