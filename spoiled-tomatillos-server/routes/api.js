@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../logger');
 
 const db = require('../db/db.js');
 const session = db.get_session();
@@ -8,39 +9,41 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
 router.post('/register', function(req, res) {
-    // make sure not creating admin user
-    req.body.isAdmin = false;
+  // make sure not creating admin user
+  req.body.isAdmin = false;
 
-    session.User
-        .build(req.body)
+  session.User
+    .build(req.body)
+    .save()
+    .then((newUser) => {
+      logger.info('New non-admin user created', logger.omit(newUser.get({plain: true}), 'password'));
+      session.Watchlist
+        .build({name: 'My Watchlist', userId: newUser.id})
         .save()
-        .then((newUser) => {
-        session.Watchlist
-            .build({name: 'My Watchlist', userId: newUser.id})
-            .save()
-            .then(() => {
-                res.json(newUser);
-            });
-        })
-        .catch(error => {
-            console.log(error);
-            res.sendStatus(500);
+        .then(() => {
+          res.json(newUser);
         });
+    })
+    .catch(error => {
+      logger.error('Registration Error', error);
+      res.sendStatus(500);
+    });
 });
 
 router.post('/logout', function(req, res) {
-    req.logout();
-    res.sendStatus(200);
+  logger.info('User logged out', logger.omit(req.user.get({plain: true}), 'password'));
+  req.logout();
+  res.sendStatus(200);
 });
 
 router.get('/get-current-user', function(req, res) {
-    if (req.isAuthenticated()) {
-        let response = req.user;
-        response.loggedIn = true;
-        res.json(response);
-    } else {
-        res.json({loggedIn: false});
-    }
+  if (req.isAuthenticated()) {
+    let response = req.user;
+    response.loggedIn = true;
+    res.json(response);
+  } else {
+    res.json({loggedIn: false});
+  }
 });
 
 passport.serializeUser((user, done) => {
@@ -80,6 +83,7 @@ passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username
 
 /* Post to login user. */
 router.post('/login', passport.authenticate('local', {}), function(req, res) {
+  logger.info('User logged in', logger.omit(req.user.get({plain: true}), 'password'));
   res.sendStatus(200);
 });
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../logger');
 
 const db = require('../db/db.js');
 const session = db.get_session();
@@ -35,7 +36,7 @@ router.get('/settings', authCheck, function(req, res) {
 function reformatProfile(profile) {
   profileInfo = Object.assign({}, profile.toJSON());
   utils.rename(profileInfo, 'Followers', 'followers');
-  utils.rename(profileInfo, 'Followees', 'following');
+  utils.rename(profileInfo, 'Following', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
   utils.rename(profileInfo, 'WatchlistItems', 'watchlist');
   // ... Make activity feed
@@ -73,6 +74,9 @@ router.get('/:user_id', function(req, res) {
         {
           model: session.WatchlistItem,
           as: 'WatchlistItems',
+          attributes: {
+            exclude: ['id', 'userId']
+          },
           include: {
             model: session.Movie,
             as: 'Movie',
@@ -84,7 +88,7 @@ router.get('/:user_id', function(req, res) {
         'RecommendationsSent',
         'RecommendationsReceived',
         'Followers',
-        'Followees']
+        'Following']
     })
     .then(profile => {
       res.send(reformatProfile(profile));
@@ -177,47 +181,49 @@ router.get('/:user_id/reviews', function(req, res) {
 });
 
 router.put('/settings', authCheck, function(req, res) {
-    // Handle putting user settings.
-    session.User.update(req.body, {
-        where: { id: req.user.id }
-    })
-        .then(updated => {
-            if (updated === 0) {
-                res.sendStatus(500);
-            } else {
-                session.User.findOne({
-                    where: {id: req.user.id}
-                })
-                    .then(user => {
-                        delete user.password;
-                        res.json(user);
-                    });
-            }
-        });
+  // Handle putting user settings.
+  session.User.update(req.body, {
+    where: { id: req.user.id }
+  })
+    .then(updated => {
+      if (updated === 0) {
+        logger.error('Settings put failed', req.body);
+        res.sendStatus(500);
+      } else {
+        session.User.findOne({
+          where: {id: req.user.id}
+        })
+          .then(user => {
+            delete user.password;
+            logger.info('Settings put succeeded', user.get({plain: true}));
+            res.json(user);
+          });
+      }
+    });
 });
 
-router.put('/:user_id/follow', authCheck, function(req, res) {
-    // Current logged in user follows user at user_id
-    // sends updated is-following status
-    if (req.body.follow) {
-        session.Follower.findOrCreate({
-            where: {
-                followerId: req.user.id,
-                followeeId: req.params['user_id']
-            }
-        }).spread((follower, created) => {
-            res.json(true);
-        });
-    } else {
-        session.Follower.destroy({
-            where: {
-                followerId: req.user.id,
-                followeeId: req.params['user_id']
-            }
-        }).then(() => {
-            res.json(false);
-        });
-    }
+router.post('/:user_id/follow', authCheck, function(req, res) {
+  // Current logged in user follows user at user_id
+  // sends updated is-following status
+  if (req.body.follow) {
+    session.Follower.findOrCreate({
+      where: {
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
+      }
+    }).spread((follower, created) => {
+      res.json(true);
+    });
+  } else {
+    session.Follower.destroy({
+      where: {
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
+      }
+    }).then(() => {
+      res.json(false);
+    });
+  }
 });
 
 router.delete('/:user_id', authCheck, function(req, res) {

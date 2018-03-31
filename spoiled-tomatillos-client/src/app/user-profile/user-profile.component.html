@@ -112,7 +112,7 @@
             <div class="col-sm-3" *ngFor="let movie of userProfile.getWatchlist().getMovies() | slice:0:5">
               <div class="st-thumbnail">
                 <a routerLink="/movie/{{ movie.movieId }}">
-                  <img class="st-thumbnail-img" src="{{ movie.poster }}"/>
+                  <img class="st-thumbnail-img" src="{{ movie.Movie.poster }}"/>
                 </a>
               </div>
             </div>
