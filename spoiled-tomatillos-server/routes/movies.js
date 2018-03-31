@@ -5,6 +5,7 @@ const db = require('../db/db.js');
 const session = db.get_session();
 const utils = require('./utils.js');
 const omdb = require('./omdb.service');
+const authCheck = require('./auth');
 
 // GET METHODS
 // Handle searching for movies
@@ -16,7 +17,7 @@ router.get('/', function(req, res) {
 
 // Helper function for removing extra information from movies
 function reformatMovie(movie) {
-  movieObj = Object.assign({}, movie.toJSON());
+  let movieObj = Object.assign({}, movie.toJSON());
   utils.rename(movieObj, 'Reviews', 'reviews');
   movieObj['reviews'].forEach(reviewObj => {
     utils.rename(reviewObj, 'User', 'user');
@@ -25,7 +26,7 @@ function reformatMovie(movie) {
 }
 
 /* GET users listing. */
-router.get('/:movie_id', function(req, res) {
+router.get('/:movie_id', function(req, res, next) {
   session.Movie
     .findOne({
       where: {id: req.params['movie_id']},
@@ -41,15 +42,20 @@ router.get('/:movie_id', function(req, res) {
       }]
     })
     .then(movie => {
+      if (!movie) {
+        // Movie does not exist
+        next(); // Pass to 404 route
+        return; // End this route
+      }
       let movieObj = reformatMovie(movie);
       omdb.getMovieById(movieObj['imdbId'], true, (results) => {
         movieObj = Object.assign(movieObj, results);
-        res.send(movieObj)
+        res.send(movieObj);
       });
     });
 });
 
-router.get('/:movie_id/reviews', authCheck, function(req, res) {
+router.get('/:movie_id/reviews', function(req, res) {
   session.Review
     .findAll({
       where: {movieId: req.params['movie_id']},
@@ -77,7 +83,7 @@ router.post('/', authCheck, function(req, res) {
 });
 
 router.post('/:movie_id/review', authCheck, function(req, res) {
-  review = req.body // TODO: Validate fields
+  review = req.body; // TODO: Validate fields
   review['movieId'] = req.params['movie_id'];
   review['userId'] = req.user.id;
   session.Review
