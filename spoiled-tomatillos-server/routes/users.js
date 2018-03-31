@@ -35,7 +35,7 @@ router.get('/settings', authCheck, function(req, res) {
 function reformatProfile(profile) {
   profileInfo = Object.assign({}, profile.toJSON());
   utils.rename(profileInfo, 'Followers', 'followers');
-  utils.rename(profileInfo, 'Followees', 'following');
+  utils.rename(profileInfo, 'Following', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
   utils.rename(profileInfo, 'WatchlistItems', 'watchlist');
   // ... Make activity feed
@@ -87,7 +87,7 @@ router.get('/:user_id', function(req, res) {
         'RecommendationsSent',
         'RecommendationsReceived',
         'Followers',
-        'Followees']
+        'Following']
     })
     .then(profile => {
       res.send(reformatProfile(profile));
@@ -194,7 +194,7 @@ router.put('/settings', authCheck, function(req, res) {
     });
 });
 
-router.put('/:user_id/follow', authCheck, function(req, res) {
+router.post('/:user_id/follow', authCheck, function(req, res) {
   // Current logged in user follows user at user_id
   // sends updated is-following status
   if (req.body.follow) {
