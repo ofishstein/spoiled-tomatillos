@@ -194,7 +194,7 @@ router.put('/settings', authCheck, function(req, res) {
     });
 });
 
-router.put('/:user_id/follow', authCheck, function(req, res) {
+router.post('/:user_id/follow', authCheck, function(req, res) {
   // Current logged in user follows user at user_id
   // sends updated is-following status
   if (req.body.follow) {
