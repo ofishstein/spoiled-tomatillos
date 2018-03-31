@@ -62,21 +62,16 @@ describe('DELETE User', () => {
     });
 
     it('should delete test_user2 when logged in as test_admin', (done) => {
-        authenticatedUser
-            .post('/api/logout')
+        authenticatedUser.post('/api/login')
+            .send({username: 'test_admin', password: 'test'})
             .end((err, res) => {
             expect(res).to.have.status(200);
-            authenticatedUser.post('/api/login')
-                .send({username: 'test_admin', password: 'test'})
-                .end((err, res) => {
-                expect(res).to.have.status(200);
-                authenticatedUser
-                    .delete('/api/users/102')
-                        .end((err, res) => {
-                            expect(res).to.have.status(200);
-                            done();
-                        });
-                });
+            authenticatedUser
+                .delete('/api/users/102')
+                    .end((err, res) => {
+                        expect(res).to.have.status(200);
+                        done();
+                    });
             });
     });
 

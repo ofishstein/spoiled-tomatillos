@@ -11,30 +11,38 @@ const session = db.get_session();
 
 const testData = require('./testData');
 
-describe('User Endpoints', () => {
+describe('Profile Related Endpoints', () => {
     before((done) => {
         // setup db
-        session.User.bulkCreate(testData.users).then(() => {});
-        session.Movie.bulkCreate(testData.movies).then(() => {});
-        session.Follower.bulkCreate(testData.followers).then(() => {});
-        session.Review.bulkCreate(testData.reviews).then(() => {});
-        session.WatchlistItem.bulkCreate(testData.watchlist).then(() => {
-            // keep server open for requests
-            requester = chai.request(app).keepOpen();
-            done();
+        session.User.bulkCreate(testData.users).then(() => {
+            session.Movie.bulkCreate(testData.movies).then(() => {
+                session.Follower.bulkCreate(testData.followers).then(() => {
+                    session.Review.bulkCreate(testData.reviews).then(() => {
+                        session.WatchlistItem.bulkCreate(testData.watchlist).then(() => {
+                            // keep server open for requests
+                            requester = chai.request(app).keepOpen();
+                            done();
+                        });
+                    });
+                });
+            });
         });
     });
 
     after((done) => {
         // teardown db
-        session.User.destroy({where: {}}).then(() => {});
-        session.Movie.destroy({where: {}}).then(() => {});
-        session.Follower.destroy({where: {}}).then(() => {});
-        session.Review.destroy({where: {}}).then(() => {});
         session.WatchlistItem.destroy({where: {}}).then(() => {
-            // manually close server down
-            requester.close();
-            done();
+            session.Review.destroy({where: {}}).then(() => {
+                session.Follower.destroy({where: {}}).then(() => {
+                    session.Movie.destroy({where: {}}).then(() => {
+                        session.User.destroy({where: {}}).then(() => {
+                            // manually close server down
+                            requester.close();
+                            done();
+                        });
+                    });
+                });
+            });
         });
     });
 

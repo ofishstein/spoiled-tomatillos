@@ -33,10 +33,10 @@ describe('Follower Endpoints', () => {
     after(function (done) {
         // teardown db
         session.Follower.destroy({where: {}}).then(() => {
+            session.User.destroy({where: {}}).then(() => {
+                done();
+            });
         });
-        session.User.destroy({where: {}}).then(() => {
-        });
-        done();
 
     });
 
@@ -90,7 +90,7 @@ describe('Follower Endpoints', () => {
 
         it('should make test_user1 unfollow test_user 2, then refollow', (done) => {
             authenticatedUser
-                .put('/api/users/102/follow')
+                .post('/api/users/102/follow')
                 .send({follow: false})
                 .end((err, res) => {
                     expect(res).to.have.status(200);
@@ -114,7 +114,7 @@ describe('Follower Endpoints', () => {
 
         it('should make test_user1 follow test_user2', (done) => {
             authenticatedUser
-                .put('/api/users/102/follow')
+                .post('/api/users/102/follow')
                 .send({follow: true})
                 .end((err, res) => {
                     expect(res).to.have.status(200);

@@ -94,7 +94,7 @@ describe('User Settings', () => {
         //     // login with updated credentials
         //     authenticatedUser
         //         .post('/api/login')
-        //         .send({username: 'updated', password: 'test'})
+        //         .send({username: 'updated', password: 'updated'})
         //         .end(function (err, res) {
         //             expect(res).to.have.status(200);
         //             done();

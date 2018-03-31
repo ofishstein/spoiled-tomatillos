@@ -11,7 +11,7 @@ const session = db.get_session();
 
 const testData = require('./testData');
 
-describe('User Endpoints', () => {
+describe('User Search Tests', () => {
     before((done) => {
         // setup db
         session.User.bulkCreate(testData.users).then(() => {
