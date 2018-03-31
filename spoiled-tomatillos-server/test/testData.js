@@ -5,7 +5,7 @@ module.exports = {
     timestamp: now,
     users: [
         {
-            id: 1,
+            id: 101,
             username: "test_user1",
             email: "test_user1@test.com",
             password: bcrypt.hashSync("test", 10),
@@ -18,7 +18,7 @@ module.exports = {
             updatedAt: now
         },
         {
-            id: 2,
+            id: 102,
             username: "test_user2",
             email: "test_user2@test.com",
             password: bcrypt.hashSync("test", 10),
@@ -31,7 +31,7 @@ module.exports = {
             updatedAt: now
         },
         {
-            id: 3,
+            id: 103,
             username: "test_admin",
             email: "test_admin@test.com",
             password: bcrypt.hashSync("test", 10),
@@ -47,28 +47,28 @@ module.exports = {
 
     movies: [
         {
-            id: 1,
+            id: 101,
             imdbId: 114709,
             tmdbId: 862,
             title: "Toy Story (1995)",
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             imdbId: 113497,
             tmdbId: 8844,
             title: "Jumanji (1995)",
             createdAt: now,
             updatedAt: now
         }, {
-            id: 3,
+            id: 103,
             imdbId: 114057,
             tmdbId: 16420,
             title: "Othello (1995)",
             createdAt: now,
             updatedAt: now
         }, {
-            id: 4,
+            id: 104,
             imdbId: 110357,
             tmdbId: 8587,
             title: "Lion King, The (1994)",
@@ -79,39 +79,39 @@ module.exports = {
 
     genres: [
         {
-            id: 1,
+            id: 101,
             genre: 'Children\'s',
-            movieId: 1,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             genre: 'Action',
-            movieId: 1,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 3,
+            id: 103,
             genre: 'Action',
-            movieId: 2,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 4,
+            id: 104,
             genre: 'Adventure',
-            movieId: 2,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 5,
+            id: 105,
             genre: 'Drama',
-            movieId: 3,
+            movieId: 103,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 6,
+            id: 106,
             genre: 'Children\'s',
-            movieId: 4,
+            movieId: 104,
             createdAt: now,
             updatedAt: now
         }
@@ -119,43 +119,43 @@ module.exports = {
 
     reviews: [
         {
-            id: 1,
+            id: 101,
             text: 'Love this movie',
             rating: 4.5,
-            userId: 1,
-            movieId: 1,
+            userId: 101,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             text: 'Hate this movie',
             rating: 1,
-            userId: 1,
-            movieId: 2,
+            userId: 101,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 3,
+            id: 103,
             text: 'Meh',
             rating: 3,
-            userId: 2,
-            movieId: 1,
+            userId: 102,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 4,
+            id: 104,
             text: 'This is a review',
             rating: 2.5,
-            userId: 3,
-            movieId: 3,
+            userId: 103,
+            movieId: 103,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 5,
+            id: 105,
             text: 'This is another review',
             rating: 1.5,
-            userId: 3,
-            movieId: 4,
+            userId: 103,
+            movieId: 104,
             createdAt: now,
             updatedAt: now
         }
@@ -163,19 +163,19 @@ module.exports = {
 
     recommendations: [
         {
-            id: 1,
+            id: 101,
             message: 'I heard you like kids movies',
-            recommenderId: 2,
-            recommendeeId: 1,
-            movieId: 1,
+            recommenderId: 102,
+            recommendeeId: 101,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             message: 'Here is another recommendation I guess',
-            recommenderId: 3,
-            recommendeeId: 1,
-            movieId: 2,
+            recommenderId: 103,
+            recommendeeId: 101,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }
@@ -183,15 +183,15 @@ module.exports = {
 
     distributionLinks: [
         {
-            id: 1,
+            id: 101,
             link: 'www.google.com',
-            movieId: 1,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             link: 'www.imdb.com',
-            movieId: 2,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }
@@ -199,9 +199,9 @@ module.exports = {
 
     blockedUsers: [
         {
-            id: 1,
-            blockerId: 2,
-            blockeeId: 3,
+            id: 101,
+            blockerId: 102,
+            blockeeId: 103,
             createdAt: now,
             updatedAt: now
         }
@@ -209,17 +209,17 @@ module.exports = {
 
     affiliateCodes: [
         {
-            id: 1,
+            id: 101,
             code: 'ABCXYZ',
             provider: 'Fandango',
-            movieId: 1,
+            movieId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
+            id: 102,
             code: 'CODEYCODE',
             provider: 'Groupon',
-            movieId: 2,
+            movieId: 102,
             createdAt: now,
             updatedAt: now
         }
@@ -227,26 +227,51 @@ module.exports = {
 
     followers: [
         {
-            id: 1,
-            followerId: 2,
-            followeeId: 1,
+            id: 101,
+            followerId: 102,
+            followeeId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 2,
-            followerId: 3,
-            followeeId: 1,
+            id: 102,
+            followerId: 103,
+            followeeId: 101,
             createdAt: now,
             updatedAt: now
         }, {
-            id: 3,
-            followerId: 1,
-            followeeId: 2,
+            id: 103,
+            followerId: 101,
+            followeeId: 102,
             createdAt: now,
             updatedAt: now
         }
     ],
 
-    // TODO
-    watchlist: []
+    watchlist: [
+        {
+            id: 101,
+            userId: 101,
+            movieId: 102
+        },
+        {
+            id: 102,
+            userId: 101,
+            movieId: 103
+        },
+        {
+            id: 103,
+            userId: 101,
+            movieId: 104
+        },
+        {
+            id: 104,
+            userId: 102,
+            movieId: 103
+        },
+        {
+            id: 105,
+            userId: 102,
+            movieId: 101
+        },
+    ]
 };

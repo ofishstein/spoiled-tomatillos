@@ -95,7 +95,7 @@ router.get('/:user_id/following', function(req, res) {
     // Get users that the user at the id follows
     session.Follower
         .findAll({
-            attributes: ['FolloweeId'],
+            attributes: ['followeeId'],
             where: {followerId: req.params['user_id']},
             include: ['FolloweeUser']
         })
@@ -108,7 +108,7 @@ router.get('/:user_id/following', function(req, res) {
 router.get('/:user_id/followers', function(req, res) {
     // Get users that the user at the id is followed by
     session.Follower.findAll({
-        attributes: ['FollowerId'],
+        attributes: ['followerId'],
         where: {followeeId: req.params['user_id']},
         include: ['FollowerUser']
     })
@@ -141,7 +141,7 @@ router.get('/:user_id/is-following', function(req, res) {
 
 router.get('/:user_id/watchlist', function(req, res) {
   // Get users watchlist
-  session.WatchlistItems.findAll({
+  session.WatchlistItem.findAll({
     where: {userId: req.params['user_id']},
     include: ['Movie']
   })
@@ -222,7 +222,7 @@ router.put('/:user_id/follow', authCheck, function(req, res) {
 
 router.delete('/:user_id', authCheck, function(req, res) {
     // delete the user iff user_id == logged in user or logged in user is admin
-    if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
+    if (req.user.id !== parseInt(req.params['user_id']) && !req.user.isAdmin) {
         res.sendStatus(401);
     } else {
         session.User.destroy({
