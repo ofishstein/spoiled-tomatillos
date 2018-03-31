@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'Reviews', sourceKey: 'id', foreignKey: 'movieId'});
     Movie.hasMany(models.DistributionLink,
       {as: 'DistributionLinks', sourceKey: 'id', foreignKey: 'movieId'});
+    Movie.hasMany(models.WatchlistItem,
+      {as: 'WatchlistItems', sourceKey: 'id', foreignKey: 'movieId'});
     Movie.hasMany(models.AffiliateCode,
       {as: 'AffiliateCodes', sourceKey: 'id', foreignKey: 'movieId'});
   };

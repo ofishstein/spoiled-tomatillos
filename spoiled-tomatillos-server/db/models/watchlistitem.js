@@ -3,9 +3,9 @@ module.exports = (sequelize, DataTypes) => {
   const WatchlistItem = sequelize.define('WatchlistItem', {}, {});
   WatchlistItem.associate = function(models) {
     WatchlistItem.belongsTo(models.User,
-      {foreignKey: 'id', sourceKey: 'userId'});
+      {sourceKey: 'id', foreignKey: 'userId', as: 'User'});
     WatchlistItem.belongsTo(models.Movie,
-      {foreignKey: 'id', sourceKey: 'movieId'});
+      {sourceKey: 'id', foreignKey: 'movieId', as: 'Movie'});
   };
   return WatchlistItem;
 };
