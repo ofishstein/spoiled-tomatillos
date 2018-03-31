@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../logger');
 
 const db = require('../db/db.js');
 const session = db.get_session();
@@ -181,6 +182,7 @@ router.put('/settings', authCheck, function(req, res) {
   })
     .then(updated => {
       if (updated === 0) {
+        logger.error('Settings put failed', req.body);
         res.sendStatus(500);
       } else {
         session.User.findOne({
@@ -188,6 +190,7 @@ router.put('/settings', authCheck, function(req, res) {
         })
           .then(user => {
             delete user.password;
+            logger.info('Settings put succeeded', user.get({plain: true}));
             res.json(user);
           });
       }
