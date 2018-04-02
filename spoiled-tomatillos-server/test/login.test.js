@@ -27,6 +27,7 @@ describe('Login', () => {
       };
       chai.request(app).post('/api/login').send(validUser).end((err, res) => {
         res.should.have.status(200);
+        res.headers.should.have.property('set-cookie');
         done();
       });
     });
