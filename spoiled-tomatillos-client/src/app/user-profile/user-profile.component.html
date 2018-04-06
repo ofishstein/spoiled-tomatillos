@@ -46,13 +46,13 @@
             <!--display-flex justify-content-center">-->
             <div class="col-xs-4" *ngFor="let foll of userProfile.getFollowing() | slice:0:5">
               <div class="card ml-2 mr-2 mb-2">
-                <a routerLink="/user/{{ foll.id }}">
+                <a routerLink="/user/{{ foll.followeeId }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.profileImageUrl }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.followeeProfileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
-                    <small>{{ foll.username }}</small>
+                    <small>{{ foll.followeeUsername }}</small>
                   </div>
                 </a>
               </div>
@@ -77,13 +77,13 @@
             <!--display-flex justify-content-center">-->
             <div class="col-xs-4" *ngFor="let follower of userProfile.getFollowers() | slice:0:5">
               <div class="card ml-2 mr-2 mb-2">
-                <a routerLink="/user/{{ follower.id }}">
+                <a routerLink="/user/{{ follower.followerId }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.profileImageUrl }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.followerProfileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
-                    <small>{{ follower.username }}</small>
+                    <small>{{ follower.followerUsername }}</small>
                   </div>
                 </a>
               </div>
@@ -109,7 +109,7 @@
 
         <div class="card-body">
           <div class="row">
-            <div class="col-sm-3" *ngFor="let movie of userProfile.getWatchlist().getMovies() | slice:0:5">
+            <div class="col-sm-3" *ngFor="let movie of userProfile.getWatchlist().getMovies() | slice:0:8">
               <div class="st-thumbnail">
                 <a routerLink="/movie/{{ movie.movieId }}">
                   <img class="st-thumbnail-img" src="{{ movie.Movie.poster }}"/>
@@ -120,7 +120,7 @@
         </div>
         <div class="card-footer">
           <div class="text-right">
-            <a routerLink="playlist/{{ userProfile.getWatchlist().getId() }}"><small class="text-muted">View all >></small></a>
+            <a routerLink="/user/{{userProfile?.getId()}}/playlist"><small class="text-muted">View all >></small></a>
           </div>
         </div>
       </div>
@@ -142,44 +142,80 @@
 
             <!-- recent activity -->
             <div class="tab-pane active container" id="recentActivityTab">
-              <div *ngFor="let activity of userProfile?.getRecentActivity()">
-              <div class="media pt-3 pb-3 border-bottom">
-                <a routerLink="/movie/1">
+              <div *ngFor="let activity of userProfile?.getRecentActivity()" [ngSwitch]="activity.type">
+
+              <!-- "Review" case -->
+              <div *ngSwitchCase="'review'" class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/movie/{{activity.Movie.id}}">
                   <!--<img class="d-flex align-self-center mr-3"
                      src="https://images-na.ssl-images-amazon.com/images/M/MV5BMjE4NTA1NzExN15BMl5BanBnXkFtZTYwNjc3MjM3._V1_SX300.jpg"
                        height="100px" width="auto">-->
                     <img class="d-flex align-self-center mr-3" height="100px" width="auto"
-                      src="{{ activity.img }}">
+                      src="{{ activity.Movie.poster }}">
                 </a>
-                <div class="media-body"><!-- Make this stuff programmatic too -->
+                <div class="media-body">
                   <p class="text-left">{{ userProfile?.getUsername() }} {{ getActionFromActivityType(activity.type) }}
-                    <a routerLink="/movie/{{activity.movieId}}">{{ activity.title }}</a>
+                    <a routerLink="/movie/{{activity.Movie?.id}}">{{ activity.Movie.title }}</a>
                   <br/>
                   </p>
                   <!--<p class="text-muted text-right"><small>18h ago</small></p>-->
-                  <p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.timestamp) }}</small></p>
+                  <p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.createdAt) }}</small></p>
                 </div>
               </div>
 
-              <!--<div class="media pt-3 pb-3 border-bottom">
-                <a routerLink="/movie/1">
-                  <!--<img class="d-flex align-self-center mr-3"
-                     src="https://images-na.ssl-images-amazon.com/images/M/MV5BOGZhM2FhNTItODAzNi00YjA0LWEyN2UtNjJlYWQzYzU1MDg5L2ltYWdlL2ltYWdlXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
-                       height="100px" width="auto">-->
-                  <!--<img class="d-flex align-self-center mr-3" height="100px" width="auto"
-                     src="{{ activity.img }}">
+              <div *ngSwitchCase="'ReviewComments'" class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/movie/{{activity.Movie?.id}}/reviews">
+                    <img *ngIf="activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="{{ activity.img }}">
+                    <img *ngIf="!activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="http://lorempixel.com/100/100">
                 </a>
                 <div class="media-body">
-                  <p class="text-left">{{ userProfile?.getUsername() }} suggested
-                    <a routerLink="/movie/1">Shrek</a> to <a routerLink="/user/1">shreksy_lexy</a>
+                  <p class="text-left">{{ userProfile?.getUsername() }} Commented on a <a routerLink="/movie/{{activity.Movie?.id}}/reviews">review</a> for 
+                    <a routerLink="/movie/{{activity.movieId}}">{{ activity.Movie?.title }} :</a>
+                  <br/>
+                    {{ activity.text }}
                   </p>
-                  <!--<p class="text-muted text-right"><small>3d ago</small></p>-->
-                  <!--<p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.timestamp) }}</small></p>
+                  <p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.createdAt) }}</small></p>
                 </div>
-              </div>-->
-              <!--</div>-->
+              </div>
+
+              <div *ngSwitchCase="'WatchlistCommentsSent'" class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/user/{{activity.ownerId}}/playlist">
+                    <img *ngIf="activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="{{ activity.img }}">
+                    <img *ngIf="!activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="http://lorempixel.com/100/100">
+                </a>
+                <div class="media-body">
+                  <p class="text-left">{{ userProfile?.getUsername() }} Commented on a <a routerLink="/user/{{activity.ownerId}}/playlist">watchlist</a> for user 
+                    <a routerLink="/user/{{activity.ownerId}}">{{ activity.ownerUsername }} :</a>
+                  <br/>
+                    {{ activity.text }}
+                  </p>
+                  <p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.createdAt) }}</small></p>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'RecommendationsReceived'" class="media pt-3 pb-3 border-bottom">
+                <a routerLink="/user/{{activity.recommenderId}}">
+                    <img *ngIf="activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="{{ activity.img }}">
+                    <img *ngIf="!activity.img" class="d-flex align-self-center mr-3" height="100px" width="auto"
+                      src="http://lorempixel.com/100/100">
+                </a>
+                <div class="media-body">
+                  <p class="text-left">{{ userProfile?.getUsername() }} Received a recommendation by <a routerLink="/user/{{activity.recommenderId}}">{{activity.recommenderUsername}}:</a>
+                    <a routerLink="/movie/{{activity.Movie?.id}}">{{ activity.Movie?.title }}</a>
+                  <br/>
+                    {{ activity.message }}
+                  </p>
+                  <p class="text-muted text-right"><small>{{ getActivityDisplayDate(activity.createdAt) }}</small></p>
+                </div>
+              </div>
+
             </div>
-            </div>
+          </div>
 
             <!-- reviews -->
             <div class="tab-pane container" id="reviewsTab">
@@ -190,8 +226,23 @@
                 <!--</div>-->
               <!--</div>-->
 
+                <div class="row mt-3 border-bottom" *ngFor="let review of userProfile?.getReviews() | slice:0:3">
+                  <div class="media">
+                    <div class="card ml-2 mr-2 mb-2">
+                      <a routerLink="/movie/{{review.Movie?.id}}"><div class="card-img-top">
+                        <img class="rounded mx-auto img-thumbnail" src="{{review.Movie?.poster}}" width="150px" height="auto" />
+                      </div></a>
+                    </div>
+                    <div class="media-body ml-3">
+                      <h5 class="mt-0">{{ review.Movie?.title }}</h5>
+                      <h6>{{ review.rating }} / 10</h6>
+                      <p>{{ review.text }}</p>
+                    </div>
+                  </div>
+                </div>
 
-                <!-- static UI --><!-- make this programmatic once you get a Reviews data model from backend -->
+
+                <!-- static UI (OLD) 
                 <div class="row mt-3 border-bottom">
                   <div class="media">
                     <div class="card ml-2 mr-2 mb-2">
@@ -228,7 +279,7 @@
                       </p>
                     </div>
                   </div>
-                </div>
+                </div>-->
 
               </div>
               <!--<div class="card-footer">-->
