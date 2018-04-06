@@ -5,6 +5,7 @@ import { ProfileService } from '../services/profile.service';
 import { Profile } from '../Profile';
 import { Watchlist } from '../Watchlist';
 import { UsersService } from '../users.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,14 +14,17 @@ import { UsersService } from '../users.service';
 })
 export class UserProfileComponent implements OnInit {
   private uid: number; // requested user inferred from route
-  private userProfile: Profile;
-  private user: any; // actual user object
-  private isFollowingProfileViewer: boolean; // whether profile in question is following the viewer
+  private userProfile: Profile; // actual service-render user Profile
+  private _mockUser: any; // fake user object for testing UI rendering
+  private isProfileViewerFollowing: boolean; // whether profile viewer is following the user Profile to be rendered
+  private isFollowingProfileViewer: boolean; // whether Profile to be rendered is following the viewer back
+  private isProfileViewerLoggedIn: boolean; // whether Profile viewer is logged in
+  private isViewingOwnProfile: boolean; // whether user is viewing their own Profile page
   @ViewChild('reviewsList')
   private reviewsListTemplate: TemplateRef<any>;
 
   constructor(private _route: ActivatedRoute, private _http: HttpClient,
-    private _profileService: ProfileService, private _usersService: UsersService) {
+    private _profileService: ProfileService, private _usersService: UsersService, private _authService: AuthService) {
       const profileId = this._route.snapshot.params.uid;
 
       if (profileId && parseInt(profileId, 10)) {
@@ -30,11 +34,15 @@ export class UserProfileComponent implements OnInit {
       }
 
       this.isFollowingProfileViewer = false;
+      this.isProfileViewerFollowing = false;
+      this.isProfileViewerLoggedIn = false;
+      this.isViewingOwnProfile = false;
       this.userProfile = null;
   }
 
   ngOnInit() {
-    this.user = {
+    // instantiate the fake mock user with data we may or may not use for rendering purposes
+    this._mockUser = {
       userId: 789, username: 'john_doe', firstName: 'John', lastName: 'Doe',
       bio: 'I like movies blah blah blah.',
       profileImageUrl: 'http://lorempixel.com/400/400/',
@@ -143,6 +151,34 @@ export class UserProfileComponent implements OnInit {
         new Watchlist(null, null, null, null, this.user.watchlist), this.user.createDate, this.user.lastUpdated);*/
       this._profileService.getProfileById(this.uid).subscribe((aProfile: Profile) => {
         this.parseUserProfile(aProfile);
+
+        this._authService.getCurrentUser().then((currentUser) => {
+          if (!currentUser) {
+            this.isProfileViewerLoggedIn = false;
+            this.isProfileViewerFollowing = false;
+            this.isFollowingProfileViewer = false;
+          } else { // user must be logged in
+            this.isProfileViewerLoggedIn = true;
+            this.isViewingOwnProfile = (this.userProfile.getId() === currentUser.id);
+
+            // determine whether user viewing profile is following the Profile in question
+            for (let i = 0; i < this.userProfile.getFollowers().length; i++) {
+              if (this.userProfile.getFollowers()[i]['followerId'] === currentUser.id) {
+                this.isProfileViewerFollowing = true;
+                break;
+              }
+            }
+
+            // determine whether the user Profile is question is following the user viewing their Profile
+            for (let i = 0; i < this.userProfile.getFollowing().length; i++) {
+              if (this.userProfile.getFollowing()[i]['followeeId'] === currentUser.id) {
+                this.isFollowingProfileViewer = true;
+                break;
+              }
+            }
+          }
+        });
+
       }, err => { console.log(err); });
     }
 
@@ -153,41 +189,41 @@ export class UserProfileComponent implements OnInit {
   private parseUserProfile(aProfile: Profile): void {
     // if the request completely failed, populate UI with ALL the fake data
     if (!aProfile || aProfile == null) {
-      this.userProfile = new Profile(this.user.id, this.user.bio, this.user.email, this.user.username,
-        this.user.profileImage.url, this.user.firstName, this.user.lastName, this.user.isAdmin, this.user.reviews,
-        this.user.followers, this.user.following, this.user.activities,
-        new Watchlist(null, null, null, null, this.user.watchlist), this.user.createDate, this.user.lastUpdated);
+      this.userProfile = new Profile(this._mockUser.id, this._mockUser.bio, this._mockUser.email, this._mockUser.username,
+        this._mockUser.profileImage.url, this._mockUser.firstName, this._mockUser.lastName, this._mockUser.isAdmin, this._mockUser.reviews,
+        this._mockUser.followers, this._mockUser.following, this._mockUser.activities,
+        new Watchlist(null, null, null, null, this._mockUser.watchlist), this._mockUser.createDate, this._mockUser.lastUpdated);
       return;
     }
 
     // otherwise, the request succeeded, populate the problem-areas with fake data if no real data exists
     if (!aProfile.getFollowers() || aProfile.getFollowers().length === 0) {
       console.log('no followers detected; using mock followers');
-      aProfile.setFollowers(this.user.followers);
-      console.log(aProfile.getFollowers());
+      aProfile.setFollowers(this._mockUser.followers);
+      // console.log(aProfile.getFollowers());
     }
 
     if (!aProfile.getFollowing() || aProfile.getFollowing().length === 0) {
       console.log('no following detected; using mock following');
-      aProfile.setFollowing(this.user.following);
-      console.log(aProfile.getFollowing());
+      aProfile.setFollowing(this._mockUser.following);
+      // console.log(aProfile.getFollowing());
     }
 
     if (!aProfile.getReviews() || aProfile.getReviews().length === 0) {
       console.log('no reviews detected; using mock reviews');
-      aProfile.setReviews(this.user.reviews);
-      console.log(aProfile.getReviews());
+      aProfile.setReviews(this._mockUser.reviews);
+      // console.log(aProfile.getReviews());
     }
 
     if (!aProfile.getWatchlist() || aProfile.getWatchlist().getMovies().length === 0) {
       console.log('no watchlist detected; using mock watchlist');
-      const mockedWatchlist = new Watchlist(null, null, null, null, this.user.watchlist);
+      const mockedWatchlist = new Watchlist(null, null, null, null, this._mockUser.watchlist);
       aProfile.setWatchlist(mockedWatchlist);
     }
 
     if (!aProfile.getRecentActivity() || aProfile.getRecentActivity().length === 0) {
       console.log('no activity detected; using mock activity');
-      aProfile.setRecentActivity(this.user.activities);
+      aProfile.setRecentActivity(this._mockUser.activities);
     }
 
     this.userProfile = aProfile;
@@ -222,20 +258,20 @@ export class UserProfileComponent implements OnInit {
     return 'noaction';
   }
 
-  follow() {
+  public follow() {
     this._usersService.follow(String(this.uid)).subscribe(
       data => {
         console.log(data);
-        this.isFollowingProfileViewer = true; },
+        this.isProfileViewerFollowing = true; },
       err => console.error(err)
     );
   }
 
-  unfollow() {
+  public unfollow() {
     this._usersService.unfollow(String(this.uid)).subscribe(
       data => {
         console.log(data);
-        this.isFollowingProfileViewer = false; },
+        this.isProfileViewerFollowing = false; },
       err => console.error(err)
     );
   }

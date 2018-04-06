@@ -8,6 +8,7 @@
       <div #userInfoContainer id="user-info" class="card bg-light" *ngIf="userProfile">
         <div class="card-header bg-light">
           <h1>{{ userProfile.getUsername() }}</h1>
+          <h5 *ngIf="isFollowingProfileViewer" class="text-success">(Follows You)</h5>
         </div>
         <div class="card-body">
           <div class="card-img-top st-profile-image mb-3">
@@ -20,9 +21,9 @@
       </div>
 
       <!-- follow -->
-      <div #followButton>
+      <div #followButton *ngIf="isProfileViewerLoggedIn && !isViewingOwnProfile">
           <div>
-            <button type="button" class="btn btn-primary" *ngIf="!isFollowingProfileViewer; else remove" (click)="follow()"
+            <button type="button" class="btn btn-primary" *ngIf="!isProfileViewerFollowing; else remove" (click)="follow()"
               style="width:100%">
                 <i class="material-icons">add_to_queue</i> Follow 
             </button>
