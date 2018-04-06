@@ -98,9 +98,13 @@ router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
   session.Follower
     .findAll({
-      attributes: ['FolloweeId'],
-      where: {followerId: req.params['user_id']},
-      include: ['FolloweeUser']
+      where: {followerUserId: req.params['user_id']},
+      include: {
+        model: session.User,
+        as: 'FolloweeUser',
+        attributes: ['id', 'username', 'profileImageUrl']
+
+      }
     })
     .then(following => {
       res.json(following);
@@ -111,9 +115,13 @@ router.get('/:user_id/following', function(req, res) {
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
   session.Follower.findAll({
-    attributes: ['FollowerId'],
-    where: {followeeId: req.params['user_id']},
-    include: ['FollowerUser']
+    where: {followeeUserId: req.params['user_id']},
+    include: {
+      model: session.User,
+      as: 'FollowerUser',
+      attributes: ['id', 'username', 'profileImageUrl']
+
+    }
   })
     .then(followers => {
       res.json(followers);
@@ -126,8 +134,8 @@ router.get('/:user_id/is-following', function(req, res) {
     session.Follower
       .findOne({
         where: {
-          followerId: req.user.id,
-          followeeId: req.params['user_id']
+          followerUserId: req.user.id,
+          followeeUserId: req.params['user_id']
         }
       })
       .then(isFollowing => {
@@ -200,8 +208,8 @@ router.put('/:user_id/follow', authCheck, function(req, res) {
   if (req.body.follow) {
     session.Follower.findOrCreate({
       where: {
-        followerId: req.user.id,
-        followeeId: req.params['user_id']
+        followerUserId: req.user.id,
+        followeeUserId: req.params['user_id']
       }
     }).spread((follower, created) => {
       res.json(true);
@@ -209,8 +217,8 @@ router.put('/:user_id/follow', authCheck, function(req, res) {
   } else {
     session.Follower.destroy({
       where: {
-        followerId: req.user.id,
-        followeeId: req.params['user_id']
+        followerUserId: req.user.id,
+        followeeUserId: req.params['user_id']
       }
     }).then(() => {
       res.json(false);
