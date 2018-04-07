@@ -15,21 +15,29 @@ describe('DELETE User', () => {
   before((done) => {
     // setup db
     session.User.bulkCreate(testData.users).then(() => {
-      // login
-      authenticatedUser
-        .post('/api/login')
-        .send({username: 'test_user1', password: 'test'})
-        .end(function (err, res) {
-          expect(res).to.have.status(200);
-          done();
+      session.Movie.bulkCreate(testData.movies).then(() => {
+        session.Review.bulkCreate(testData.reviews).then(() => {
+          // login
+          authenticatedUser
+            .post('/api/login')
+            .send({username: 'test_user1', password: 'test'})
+            .end(function (err, res) {
+              expect(res).to.have.status(200);
+              done();
+            });
         });
+      });
     });
   });
 
   after((done) => {
     // teardown db
-    session.User.destroy({where: {}}).then(() => {
-      done();
+    session.Review.destroy({where: {}}).then(() => {
+      session.Movie.destroy({where: {}}).then(() => {
+        session.User.destroy({where: {}}).then(() => {
+          done();
+        });
+      });
     });
   });
 
@@ -56,7 +64,12 @@ describe('DELETE User', () => {
       .end((err, res) => {
         let data = JSON.parse(res.text);
         expect(data.length).to.eql(0);
-        done();
+        request(app).get('/api/reviews/101')
+          .end((err, res) => {
+            expect(res).to.have.status(404);
+            done();
+
+          });
       });
   });
 
