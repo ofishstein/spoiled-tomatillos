@@ -6,4 +6,4 @@ node_modules
 
 # ignore log files
 *.log
-*.audit
+*.audit.json
