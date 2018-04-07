@@ -73,22 +73,59 @@ describe('Profile Related Endpoints', () => {
 
   describe('POST flag review', () => {
     it('It should flag the review', (done) => {
-      authenticatedUser.post('/api/reviews/' + testData.reviews[0].id + '/flag')
+      authenticatedUser.get('/api/reviews/' + testData.reviews[0].id)
         .end((err, res) => {
           expect(res).to.have.status(200);
 
-          authenticatedUser.get('/api/reviews/' + testData.reviews[0].id)
+          // Check that review starts out unflagged
+          expect(res.body).to.have.property('flagged');
+          expect(res.body.flagged).to.equal(false);
+
+          authenticatedUser.post('/api/reviews/' + testData.reviews[0].id + '/flag')
             .end((err, res) => {
               expect(res).to.have.status(200);
 
-              expect(res.body).to.have.property('flagged');
-              expect(res.body.flagged).to.equal(true);
+              authenticatedUser.get('/api/reviews/' + testData.reviews[0].id)
+                .end((err, res) => {
+                  expect(res).to.have.status(200);
 
-              done();
+                  // Check that review is now flagged
+                  expect(res.body).to.have.property('flagged');
+                  expect(res.body.flagged).to.equal(true);
+
+                  done();
+                });
             });
         });
     });
   });
 
+  describe('POST unflag review', () => {
+    it('It should unflag the review', (done) => {
+      authenticatedAdmin.get('/api/reviews/' + testData.reviews[0].id)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
 
+          // Check that review starts out flagged
+          expect(res.body).to.have.property('flagged');
+          expect(res.body.flagged).to.equal(true);
+
+          authenticatedAdmin.post('/api/reviews/' + testData.reviews[0].id + '/unflag')
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+
+              authenticatedAdmin.get('/api/reviews/' + testData.reviews[0].id)
+                .end((err, res) => {
+                  expect(res).to.have.status(200);
+
+                  // Check that review is now unflagged
+                  expect(res.body).to.have.property('flagged');
+                  expect(res.body.flagged).to.equal(false);
+
+                  done();
+                });
+            });
+        });
+    });
+  });
 });
