@@ -8,9 +8,13 @@ const authCheck = require('./auth');
 const adminCheck = require('./adminCheck');
 
 // GET METHODS
-router.get('/:review_id', function(req, res) {
+router.get('/:review_id', function(req, res, next) {
   session.Review.findById(req.params['review_id'])
     .then(review => {
+      if (review === null) {
+        next();
+        return;
+      }
       res.send(review);
     })
     .catch(error => {
@@ -49,11 +53,11 @@ router.put('/:review_id', authCheck, function(req, res) {
   session.Review.findById(req.params['review_id'])
     .then(review => {
       if (req.user.id !== review.userId && !req.user.isAdmin) {
-        logger.info('Unauthenticated user attempted to unflag review: id=' + review.id + ', userId=' + req.user.id);
+        logger.info('Unauthenticated user attempted to edit review: id=' + review.id + ', userId=' + req.user.id);
         res.sendStatus(401);
       } else {
-        session.Review.update(res.body)
-          .then(() => { res.sendStatus(200); })
+        review.update(req.body, {where: {id: review.get('id')}})
+          .then(() => { res.send(review.get({plain: true}));})
           .catch(error => {
             logger.warn('Error putting review by id (update)', error);
             res.sendStatus(500);
@@ -61,7 +65,7 @@ router.put('/:review_id', authCheck, function(req, res) {
       }
     })
     .catch(error => {
-      logger.warn('Error putting review by id', error);
+      logger.warn('Error finding review to PUT by id', error);
       res.sendStatus(500);
     });
 });
@@ -74,7 +78,7 @@ router.delete('/:review_id', authCheck, function(req, res) {
       if (req.user.id !== review.userId && !req.user.isAdmin) {
         res.sendStatus(401);
       } else {
-        session.Review.destroy({
+        review.destroy({
           where: {id: req.params['review_id']}
         })
           .then(() => { res.sendStatus(200); })
