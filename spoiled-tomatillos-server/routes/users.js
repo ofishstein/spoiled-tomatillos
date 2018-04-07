@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const logger = require('../logger');
 
 const db = require('../db/db.js');
 const session = db.get_session();
@@ -17,7 +18,7 @@ router.get('/', function(req, res) {
       delete result['password'];
     });
     res.send(results);
-  })
+  });
 });
 
 router.get('/settings', authCheck, function(req, res) {
@@ -35,7 +36,7 @@ router.get('/settings', authCheck, function(req, res) {
 function reformatProfile(profile) {
   profileInfo = Object.assign({}, profile.toJSON());
   utils.rename(profileInfo, 'Followers', 'followers');
-  utils.rename(profileInfo, 'Followees', 'following');
+  utils.rename(profileInfo, 'Following', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
   utils.rename(profileInfo, 'WatchlistItems', 'watchlist');
   // ... Make activity feed
@@ -45,10 +46,10 @@ function reformatProfile(profile) {
     item['type'] = 'review';
   });
   ['ReviewComments', 'WatchlistCommentsSent', 'WatchlistCommentsReceived', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
-    profileInfo[key].forEach(item => {item['type'] = key});
+    profileInfo[key].forEach(item => {item['type'] = key;});
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
-  console.log(profileInfo['activities'])
+  console.log(profileInfo['activities']);
   utils.mostRecentN(profileInfo, 'activities', 10);
 
   return profileInfo;
@@ -87,7 +88,7 @@ router.get('/:user_id', function(req, res) {
         'RecommendationsSent',
         'RecommendationsReceived',
         'Followers',
-        'Followees']
+        'Following']
     })
     .then(profile => {
       res.send(reformatProfile(profile));
@@ -98,13 +99,9 @@ router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
   session.Follower
     .findAll({
-      where: {followerUserId: req.params['user_id']},
-      include: {
-        model: session.User,
-        as: 'FolloweeUser',
-        attributes: ['id', 'username', 'profileImageUrl']
-
-      }
+      attributes: ['followeeId'],
+      where: {followerId: req.params['user_id']},
+      include: ['FolloweeUser']
     })
     .then(following => {
       res.json(following);
@@ -115,13 +112,9 @@ router.get('/:user_id/following', function(req, res) {
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
   session.Follower.findAll({
-    where: {followeeUserId: req.params['user_id']},
-    include: {
-      model: session.User,
-      as: 'FollowerUser',
-      attributes: ['id', 'username', 'profileImageUrl']
-
-    }
+    attributes: ['followerId'],
+    where: {followeeId: req.params['user_id']},
+    include: ['FollowerUser']
   })
     .then(followers => {
       res.json(followers);
@@ -144,7 +137,7 @@ router.get('/:user_id/is-following', function(req, res) {
         } else {
           res.json(false);
         }
-      })
+      });
   } else {
     res.json(false);
   }
@@ -152,7 +145,7 @@ router.get('/:user_id/is-following', function(req, res) {
 
 router.get('/:user_id/watchlist', function(req, res) {
   // Get users watchlist
-  session.WatchlistItems.findAll({
+  session.WatchlistItem.findAll({
     where: {userId: req.params['user_id']},
     include: ['Movie']
   })
@@ -173,12 +166,17 @@ router.get('/:user_id/reviews', function(req, res) {
     include: ['Movie']
   })
     .then(reviews => {
-      reviews.forEach(review => {
-        if (review['Movie']['poster'] === null) {
-          review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
+      // check for any movies in watchlists with null poster
+      for (let i = 0; i < reviews.length; i++) {
+        if (reviews[i]['Movie']['poster'] === null) {
+          omdb.getPosterById(reviews[i]['Movie']['imdbId'], (poster) => {
+            reviews[i]['Movie']['poster'] = poster;
+          });
         }
-      });
-      res.json(reviews);
+        if (i === reviews.length - 1) {
+          res.json(reviews);
+        }
+      }
     });
 });
 
@@ -189,6 +187,7 @@ router.put('/settings', authCheck, function(req, res) {
   })
     .then(updated => {
       if (updated === 0) {
+        logger.error('Settings put failed', req.body);
         res.sendStatus(500);
       } else {
         session.User.findOne({
@@ -196,13 +195,14 @@ router.put('/settings', authCheck, function(req, res) {
         })
           .then(user => {
             delete user.password;
+            logger.info('Settings put succeeded', user.get({plain: true}));
             res.json(user);
           });
       }
     });
 });
 
-router.put('/:user_id/follow', authCheck, function(req, res) {
+router.post('/:user_id/follow', authCheck, function(req, res) {
   // Current logged in user follows user at user_id
   // sends updated is-following status
   if (req.body.follow) {
@@ -228,7 +228,7 @@ router.put('/:user_id/follow', authCheck, function(req, res) {
 
 router.delete('/:user_id', authCheck, function(req, res) {
   // delete the user iff user_id == logged in user or logged in user is admin
-  if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
+  if (req.user.id !== parseInt(req.params['user_id']) && !req.user.isAdmin) {
     res.sendStatus(401);
   } else {
     session.User.destroy({

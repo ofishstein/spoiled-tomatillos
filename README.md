@@ -10,6 +10,13 @@ Team includes Campbell Alden, Spencer Podzer, Oli Fishstein, Lexy Brooks, Onajé
  * Edit Account Settings
  * Search For Movie                <- using main search bar
  * Search For Users (By Firstname) <- using main search bar
+ * Browse movie page from search
+ * Browse user profile page from search
+ * add movie to watchlist
+ * Follow a user
+ * Unfollow a user
+ * Find user from a movie review
+ * View all reviews for a movie
 
 [Server](http://ec2-18-216-146-141.us-east-2.compute.amazonaws.com:3000)
 

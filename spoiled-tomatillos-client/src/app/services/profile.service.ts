@@ -23,8 +23,12 @@ export class ProfileService {
         console.log('received response from GET /api/users/' + String(profileId));
         console.log(body);
 
-        const profileWatchlist = new Watchlist(body.Watchlists.watchlistId, null, body.Watchlists.createdAt,
-          body.Watchlists.updatedAt, body.Watchlists.items);
+        let profileWatchlist: Watchlist;
+        if (body.watchlist) {
+          profileWatchlist = new Watchlist(null, null, null, null, body.watchlist);
+        } else {
+          profileWatchlist = new Watchlist(null, null, null, null, null);
+        }
         return new Profile(body.id, body.bio, body.email, body.username, body.profileImageUrl,
           body.firstName, body.lastName, body.isAdmin, body.reviews, body.followers, body.following,
           body.activities, profileWatchlist, body.createdAt, body.updatedAt);

@@ -3,3 +3,7 @@
 
 # ignore locally installed packages
 node_modules
+
+# ignore log files
+*.log
+*.audit
