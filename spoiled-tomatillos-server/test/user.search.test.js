@@ -34,8 +34,7 @@ describe('User Search Tests', () => {
       requester.get('/api/users?username=test')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(3);
+          expect(res.body.length).to.eql(3);
           done();
         });
     });
@@ -43,8 +42,7 @@ describe('User Search Tests', () => {
       requester.get('/api/users?username=asdf')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(0);
+          expect(res.body.length).to.eql(0);
           done();
         });
     });
