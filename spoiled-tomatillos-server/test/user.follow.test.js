@@ -44,11 +44,10 @@ describe('Follower Endpoints', () => {
       authenticatedUser.get('/api/users/101/followers')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(2);
-          expect(data[0]).to.have.property('FollowerUser');
-          expect(data[0]['FollowerUser']['username']).to.eql('test_user2');
-          expect(data[1]['FollowerUser']['username']).to.eql('test_admin');
+          expect(res.body.length).to.eql(2);
+          expect(res.body[0]).to.have.property('FollowerUser');
+          expect(res.body[0]['FollowerUser']['username']).to.eql('test_user2');
+          expect(res.body[1]['FollowerUser']['username']).to.eql('test_admin');
           done();
         });
     });
@@ -59,10 +58,9 @@ describe('Follower Endpoints', () => {
       authenticatedUser.get('/api/users/101/following')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(1);
-          expect(data[0]).to.have.property('FolloweeUser');
-          expect(data[0]['FolloweeUser']['username']).to.eql('test_user2');
+          expect(res.body.length).to.eql(1);
+          expect(res.body[0]).to.have.property('FolloweeUser');
+          expect(res.body[0]['FolloweeUser']['username']).to.eql('test_user2');
           done();
         });
     });
@@ -75,8 +73,7 @@ describe('Follower Endpoints', () => {
         .get('/api/users/102/is-following')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.eql(false);
+          expect(res.body).to.eql(false);
           done();
         });
     });
@@ -86,8 +83,7 @@ describe('Follower Endpoints', () => {
         .get('/api/users/102/is-following')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.eql(true);
+          expect(res.body).to.eql(true);
           done();
         });
     });
@@ -98,8 +94,7 @@ describe('Follower Endpoints', () => {
         .send({follow: false})
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.eql(false);
+          expect(res.body).to.eql(false);
           done();
         });
     });
@@ -109,8 +104,7 @@ describe('Follower Endpoints', () => {
         .get('/api/users/102/is-following')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.eql(false);
+          expect(res.body).to.eql(false);
           done();
         });
     });
@@ -122,8 +116,7 @@ describe('Follower Endpoints', () => {
         .send({follow: true})
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.eql(true);
+          expect(res.body).to.eql(true);
           done();
         });
     });

@@ -5,11 +5,16 @@ const logger = require('../logger');
 const db = require('../db/db.js');
 const session = db.get_session();
 const authCheck = require('./auth');
+const adminCheck = require('./adminCheck');
 
 // GET METHODS
-router.get('/:review_id', function(req, res) {
+router.get('/:review_id', function(req, res, next) {
   session.Review.findById(req.params['review_id'])
     .then(review => {
+      if (review === null) {
+        next();
+        return;
+      }
       res.send(review);
     })
     .catch(error => {
@@ -31,12 +36,7 @@ router.post('/:review_id/flag', authCheck, function(req, res) {
     });
 });
 
-router.post('/:review_id/unflag', authCheck, function(req, res) {
-  if (!req.user.isAdmin) {
-    res.sendStatus(401);
-    return;
-  }
-
+router.post('/:review_id/unflag', adminCheck, function(req, res) {
   session.Review.findById(req.params['review_id'])
     .then(review => {
       review.update({flagged: false})
@@ -50,28 +50,22 @@ router.post('/:review_id/unflag', authCheck, function(req, res) {
 
 // PUT METHODS
 router.put('/:review_id', authCheck, function(req, res) {
-  // TODO: Change to findOne
   session.Review.findById(req.params['review_id'])
-    .then(reviews => {
-      if (reviews.length === 1) {
-        // If there is only one review in the db matching then proceed (id is unique key??)
-        const review = reviews[0];
-        if (req.user.id !== review.userId && !req.user.isAdmin) {
-          res.sendStatus(401);
-        } else {
-          session.Review.update(res.body)
-            .then(() => { res.sendStatus(200); })
-            .catch(error => {
-              logger.warn('Error putting review by id (update)', error);
-              res.sendStatus(500);
-            });
-        }
+    .then(review => {
+      if (req.user.id !== review.userId && !req.user.isAdmin) {
+        logger.info('Unauthenticated user attempted to edit review: id=' + review.id + ', userId=' + req.user.id);
+        res.sendStatus(401);
       } else {
-        res.sendStatus(400);
+        review.update(req.body, {where: {id: review.get('id')}})
+          .then(() => { res.send(review.get({plain: true}));})
+          .catch(error => {
+            logger.warn('Error putting review by id (update)', error);
+            res.sendStatus(500);
+          });
       }
     })
     .catch(error => {
-      logger.warn('Error putting review by id', error);
+      logger.warn('Error finding review to PUT by id', error);
       res.sendStatus(500);
     });
 });
@@ -84,7 +78,7 @@ router.delete('/:review_id', authCheck, function(req, res) {
       if (req.user.id !== review.userId && !req.user.isAdmin) {
         res.sendStatus(401);
       } else {
-        session.Review.destroy({
+        review.destroy({
           where: {id: req.params['review_id']}
         })
           .then(() => { res.sendStatus(200); })
