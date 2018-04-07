@@ -46,6 +46,9 @@ describe('Follower Endpoints', () => {
           expect(res).to.have.status(200);
           let data = JSON.parse(res.text);
           expect(data.length).to.eql(2);
+          expect(data[0]).to.have.property('FollowerUser');
+          expect(data[0]['FollowerUser']['username']).to.eql('test_user2');
+          expect(data[1]['FollowerUser']['username']).to.eql('test_admin');
           done();
         });
     });
@@ -58,6 +61,8 @@ describe('Follower Endpoints', () => {
           expect(res).to.have.status(200);
           let data = JSON.parse(res.text);
           expect(data.length).to.eql(1);
+          expect(data[0]).to.have.property('FolloweeUser');
+          expect(data[0]['FolloweeUser']['username']).to.eql('test_user2');
           done();
         });
     });
