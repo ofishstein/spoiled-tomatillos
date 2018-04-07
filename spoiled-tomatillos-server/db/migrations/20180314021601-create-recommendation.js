@@ -13,21 +13,24 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       recommendeeId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       movieId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Movies',
           key: 'id'
-        }
+        },
+        onDelete: 'CASCADE'
       },
       message: {
         type: Sequelize.STRING
