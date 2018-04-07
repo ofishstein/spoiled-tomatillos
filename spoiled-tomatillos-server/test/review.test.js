@@ -128,4 +128,108 @@ describe('Profile Related Endpoints', () => {
         });
     });
   });
+
+  describe('POST unflag review - unauthenticated', () => {
+    it('It should fail to unflag the review - not an admin user', (done) => {
+      authenticatedUser.post('/api/reviews/' + testData.reviews[0].id + '/unflag')
+        .end((err, res) => {
+          // Expect to return 401 as user is not admin
+          expect(res).to.have.status(401);
+          done();
+        });
+    });
+  });
+
+  describe('PUT review edit - owning user', () => {
+    it('It should succeed to edit the review', (done) => {
+      const editedText = 'This is edited text 1';
+      authenticatedUser.put('/api/reviews/' + testData.reviews[0].id).send({
+        ...testData.reviews[0],
+        text: editedText
+      }).end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('text');
+        expect(res.body.text).to.eq(editedText);
+        done();
+      });
+    });
+  });
+
+  describe('PUT review edit - admin user', () => {
+    it('It should succeed to edit the review as admin', (done) => {
+      const editedText = 'This is edited text 2';
+      authenticatedAdmin.put('/api/reviews/' + testData.reviews[0].id).send({
+        ...testData.reviews[0],
+        text: editedText
+      }).end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('text');
+        expect(res.body.text).to.eq(editedText);
+        done();
+      });
+    });
+  });
+
+  describe('PUT review edit fails - non owning or admin user', () => {
+    it('It should fail to edit the review as user is unauthenticated', (done) => {
+      const editedText = 'This is a failed edit';
+      authenticatedUser.put('/api/reviews/' + testData.reviews[2].id).send({
+        ...testData.reviews[2],
+        text: editedText
+      }).end((err, res) => {
+        // Confirm edit attempt returns 401
+        expect(res).to.have.status(401);
+
+        // Confirm edit does not happen
+        authenticatedUser.get('/api/reviews/' + testData.reviews[2].id).end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('text');
+          expect(res.body.text).to.not.equal(editedText);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('DELETE review should succeed for owning user', () => {
+    it('It should delete the review successfully', (done) => {
+      authenticatedUser.delete('/api/reviews/' + testData.reviews[0].id).end((err, res) => {
+        expect(res).to.have.status(200);
+
+        // Check that review is actually deleted
+        authenticatedUser.get('/api/reviews/' + testData.reviews[0].id).end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('DELETE review should succeed for admin user', () => {
+    it('It should delete the review successfully', (done) => {
+      authenticatedAdmin.delete('/api/reviews/' + testData.reviews[1].id).end((err, res) => {
+        expect(res).to.have.status(200);
+
+        // Check that review is actually deleted
+        authenticatedAdmin.get('/api/reviews/' + testData.reviews[1].id).end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('DELETE review should fail for unauthenticated user', () => {
+    it('It should fail to delete review due to user not owning review or being admin', (done) => {
+      authenticatedUser.delete('/api/reviews/' + testData.reviews[2].id).end((err, res) => {
+        expect(res).to.have.status(401);
+
+        // Check that the review is not deleted
+        authenticatedUser.get('/api/reviews/' + testData.reviews[2].id).end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+      });
+    });
+  });
 });
