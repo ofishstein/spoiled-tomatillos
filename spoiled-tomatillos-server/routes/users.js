@@ -45,7 +45,7 @@ function reformatProfile(profile) {
   profileInfo['activities'].forEach(item => {
     item['type'] = 'review';
   });
-  ['ReviewComments', 'WatchlistCommentsSent', 'WatchlistCommentsReceived', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
+  ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {item['type'] = key;});
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
@@ -67,10 +67,9 @@ router.get('/:user_id', function(req, res) {
           include: {
             model: session.Movie,
             as: 'Movie',
-            attributes: ['title', 'id']
+            attributes: ['title', 'id', 'poster']
           }
         },
-        'ReviewComments',
         {
           model: session.WatchlistItem,
           as: 'WatchlistItems',
@@ -83,12 +82,24 @@ router.get('/:user_id', function(req, res) {
             attributes: ['title', 'id', 'poster']
           }
         },
-        'WatchlistCommentsSent',
-        'WatchlistCommentsReceived',
         'RecommendationsSent',
         'RecommendationsReceived',
-        'Followers',
-        'Following']
+        {
+          attributes: ['followerId'],
+          association: 'Followers',
+          include: {
+            association: 'FollowerUser',
+            attributes: ['id', 'username', 'profileImageUrl']
+          }
+        },
+        {
+          attributes: ['followeeId'],
+          association: 'Following',
+          include: {
+            association: 'FolloweeUser',
+            attributes: ['id', 'username', 'profileImageUrl']
+          }
+        }]
     })
     .then(profile => {
       res.send(reformatProfile(profile));
@@ -99,9 +110,12 @@ router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
   session.Follower
     .findAll({
-      attributes: ['followeeId'],
+      attributes: ['followerId'],
       where: {followerId: req.params['user_id']},
-      include: ['FolloweeUser']
+      include: {
+        association: 'FolloweeUser',
+        attributes: ['id', 'username', 'profileImageUrl']
+      }
     })
     .then(following => {
       res.json(following);
@@ -112,9 +126,12 @@ router.get('/:user_id/following', function(req, res) {
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
   session.Follower.findAll({
-    attributes: ['followerId'],
+    attributes: ['followeeId'],
     where: {followeeId: req.params['user_id']},
-    include: ['FollowerUser']
+    include: {
+      association: 'FollowerUser',
+      attributes: ['id', 'username', 'profileImageUrl']
+    }
   })
     .then(followers => {
       res.json(followers);
@@ -127,8 +144,8 @@ router.get('/:user_id/is-following', function(req, res) {
     session.Follower
       .findOne({
         where: {
-          followerUserId: req.user.id,
-          followeeUserId: req.params['user_id']
+          followerId: req.user.id,
+          followeeId: req.params['user_id']
         }
       })
       .then(isFollowing => {
@@ -208,8 +225,8 @@ router.post('/:user_id/follow', authCheck, function(req, res) {
   if (req.body.follow) {
     session.Follower.findOrCreate({
       where: {
-        followerUserId: req.user.id,
-        followeeUserId: req.params['user_id']
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
       }
     }).spread((follower, created) => {
       res.json(true);
@@ -217,8 +234,8 @@ router.post('/:user_id/follow', authCheck, function(req, res) {
   } else {
     session.Follower.destroy({
       where: {
-        followerUserId: req.user.id,
-        followeeUserId: req.params['user_id']
+        followerId: req.user.id,
+        followeeId: req.params['user_id']
       }
     }).then(() => {
       res.json(false);
