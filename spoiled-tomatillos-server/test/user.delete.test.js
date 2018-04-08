@@ -62,8 +62,7 @@ describe('DELETE User', () => {
   it('should return 0 users when searching for test_user1 after deleted', (done) => {
     request(app).get('/api/users?username=test_user1')
       .end((err, res) => {
-        let data = JSON.parse(res.text);
-        expect(data.length).to.eql(0);
+        expect(res.body.length).to.eql(0);
         request(app).get('/api/reviews/101')
           .end((err, res) => {
             expect(res).to.have.status(404);
@@ -90,8 +89,7 @@ describe('DELETE User', () => {
   it('should return 0 users when searching for test_user2 after deleted by admin', (done) => {
     request(app).get('/api/users?username=test_user2')
       .end((err, res) => {
-        let data = JSON.parse(res.text);
-        expect(data.length).to.eql(0);
+        expect(res.body.length).to.eql(0);
         done();
       });
   });

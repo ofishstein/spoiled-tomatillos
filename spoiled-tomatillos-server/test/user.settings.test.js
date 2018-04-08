@@ -63,10 +63,9 @@ describe('User Settings', () => {
         .get('/api/users/settings')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data).to.have.property('username');
-          expect(data).to.have.property('email');
-          expect(data).to.have.property('bio');
+          expect(res.body).to.have.property('username');
+          expect(res.body).to.have.property('email');
+          expect(res.body).to.have.property('bio');
 
           done();
         });
@@ -124,8 +123,7 @@ describe('User Settings', () => {
     //         .get('/api/users/settings')
     //         .end((err, res) => {
     //             expect(res).to.have.status(200);
-    //             let data = JSON.parse(res.text);
-    //             expect(data).to.eql(updatedUser);
+    //             expect(res.body).to.eql(updatedUser);
     //             done();
     //         });
     // });

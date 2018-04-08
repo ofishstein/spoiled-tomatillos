@@ -51,15 +51,14 @@ describe('Profile Related Endpoints', () => {
       requester.get('/api/users/101')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
 
-          expect(data).to.have.property('followers');
-          expect(data).to.have.property('following');
-          expect(data).to.have.property('reviews');
-          expect(data).to.have.property('activities');
-          expect(data).to.have.property('username');
-          expect(data).to.have.property('profileImageUrl');
-          expect(data).to.have.property('watchlist');
+          expect(res.body).to.have.property('followers');
+          expect(res.body).to.have.property('following');
+          expect(res.body).to.have.property('reviews');
+          expect(res.body).to.have.property('activities');
+          expect(res.body).to.have.property('username');
+          expect(res.body).to.have.property('profileImageUrl');
+          expect(res.body).to.have.property('watchlist');
 
           done();
         });
@@ -72,8 +71,7 @@ describe('Profile Related Endpoints', () => {
       requester.get('/api/users/101/watchlist')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(3);
+          expect(res.body.length).to.eql(3);
           done();
         });
     });
@@ -84,14 +82,13 @@ describe('Profile Related Endpoints', () => {
       requester.get('/api/users/101/reviews')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          let data = JSON.parse(res.text);
-          expect(data.length).to.eql(2);
+          expect(res.body.length).to.eql(2);
 
-          expect(data[0]).to.have.property('text');
-          expect(data[0]).to.have.property('rating');
-          expect(data[0]).to.have.property('Movie');
-          expect(data[0]['Movie']).to.have.property('poster');
-          // expect(data[0]['Movie']['poster'] !== null).to.eql(true);
+          expect(res.body[0]).to.have.property('text');
+          expect(res.body[0]).to.have.property('rating');
+          expect(res.body[0]).to.have.property('Movie');
+          expect(res.body[0]['Movie']).to.have.property('poster');
+          // expect(res.body[0]['Movie']['poster'] !== null).to.eql(true);
 
           done();
         });
