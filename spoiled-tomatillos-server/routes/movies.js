@@ -4,7 +4,6 @@ const router = express.Router();
 const db = require('../db/db.js');
 const session = db.get_session();
 const utils = require('./utils.js');
-const omdb = require('./omdb.service');
 const authCheck = require('./auth');
 
 // GET METHODS
@@ -39,7 +38,8 @@ router.get('/:movie_id', function(req, res, next) {
           as: 'User',
           attributes: ['id', 'username', 'profileImageUrl']
         }]
-      }]
+      }],
+      omdb: true
     })
     .then(movie => {
       if (!movie) {
@@ -47,11 +47,26 @@ router.get('/:movie_id', function(req, res, next) {
         next(); // Pass to 404 route
         return; // End this route
       }
-      let movieObj = reformatMovie(movie);
-      omdb.getMovieById(movieObj['imdbId'], true, (results) => {
-        movieObj = Object.assign(movieObj, results);
-        res.send(movieObj);
-      });
+      if (req.user) {
+        // User is logged in, check if movie in user's watchlist
+        session.WatchlistItem.count({where: {userId: req.user.id, movieId: movie.id}})
+          .then(count => {
+            if (count) {
+              console.log('Movie in watchlist');
+              movie.set('inWatchlist', true);
+            }
+            else {
+              console.log('Movie not in watchlist');
+              movie.set('inWatchlist', false);
+            }
+            res.send(reformatMovie(movie));
+          });
+      }
+      else {
+        console.log('User not logged in');
+        movie.set('inWatchlist', false);
+        res.send(reformatMovie(movie));
+      }
     });
 });
 
@@ -100,9 +115,23 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
 
 router.post('/:movie_id/add-to-watchlist', authCheck, function(req, res) {
   session.WatchlistItem.create({
+    userId: req.user.id,
+    movieId: req.params['movie_id']
+  })
+    .then(() => { res.sendStatus(200); })
+    .catch(error => {
+      console.log(error);
+      res.sendStatus(500);
+    });
+});
+
+router.post('/:movie_id/remove-from-watchlist', authCheck, function(req, res) {
+  session.WatchlistItem.destroy({
+    where: {
       userId: req.user.id,
       movieId: req.params['movie_id']
-    })
+    }
+  })
     .then(() => { res.sendStatus(200); })
     .catch(error => {
       console.log(error);

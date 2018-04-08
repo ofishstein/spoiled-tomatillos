@@ -52,18 +52,26 @@ describe('Movies', () => {
   });
 
   describe('GET movie information', () => {
-    it('It should return a movie information object', (done) => {
+    describe('It should return a movie information object', () => {
       chai.request(app).get('/api/movies/' + testData.movies[0].id).end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.property('id');
-        res.body.id.should.equal(testData.movies[0].id);
-        res.body.should.have.property('imdbId');
-        res.body.imdbId.should.equal(testData.movies[0].imdbId);
-        res.body.should.have.property('tmdbId');
-        res.body.tmdbId.should.equal(testData.movies[0].tmdbId);
-        res.body.should.have.property('title');
-        res.body.title.should.equal(testData.movies[0].title);
-        done();
+        it('It should have movie info from the local database', (done) => {
+          res.should.have.status(200);
+          res.body.should.have.property('id');
+          res.body.id.should.equal(testData.movies[0].id);
+          res.body.should.have.property('imdbId');
+          res.body.imdbId.should.equal(testData.movies[0].imdbId);
+          res.body.should.have.property('tmdbId');
+          res.body.tmdbId.should.equal(testData.movies[0].tmdbId);
+          res.body.should.have.property('title');
+          res.body.title.should.equal(testData.movies[0].title);
+          done();
+        });
+        it('It should have movie info from omdb', (done) => {
+          res.body.should.have.property('Rated');
+          res.body.should.have.property('Released');
+          res.body.should.have.property('Runtime');
+          done();
+        });
       });
     });
   });

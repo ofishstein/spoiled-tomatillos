@@ -20,7 +20,9 @@ export class MovieService {
 
   // retrieve movie by its id
   public getMovie(movieId: string) {
-    return this.http.get('/api/movies/' + movieId);
+    return this.http.get('/api/movies/' + movieId, {
+      withCredentials: true
+    });
   }
 
   // add to watchlist
@@ -34,9 +36,10 @@ export class MovieService {
 
   // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.post('/api/movies/' + movieId + '/remove-from-watchlist',  {
+    return this.http.post('/api/movies/' + movieId + '/remove-from-watchlist', null, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
+      responseType: 'text',
+      withCredentials: true 
    });
 
   }

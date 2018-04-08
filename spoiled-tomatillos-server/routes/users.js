@@ -8,7 +8,7 @@ const op = session.Sequelize.Op;
 
 const authCheck = require('./auth');
 const adminCheck = require('./adminCheck');
-const omdb = require('./omdb.service');
+const omdb = require('../services/omdb.service');
 const utils = require('./utils.js');
 
 // search for users with given 'q'
