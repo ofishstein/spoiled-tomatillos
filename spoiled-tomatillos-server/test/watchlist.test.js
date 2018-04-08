@@ -101,8 +101,7 @@ describe('Watchlist Tests', () => {
   });
 
   it('should successfully remove movie from watchlist', (done) => {
-    authenticatedUser.delete('/api/users/101/watchlist')
-      .send({movieId: 101})
+    authenticatedUser.delete('/api/users/101/watchlist/101')
       .end((err, res) => {
         expect(res).to.have.status(200);
 
