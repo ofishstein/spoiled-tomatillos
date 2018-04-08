@@ -111,7 +111,7 @@ router.get('/:user_id', function(req, res) {
       if (profile) {
         res.send(reformatProfile(profile));
       } else {
-        res.json(userNotFound).status(404);
+        res.status(404).send(userNotFound);
       }
     });
 });
@@ -135,12 +135,12 @@ router.get('/:user_id/following', function(req, res) {
       if (following) {
         res.json(following);
       } else {
-        res.json(userNotFound).status(404);
+        res.status(404).send(userNotFound);
       }
     })
     .catch(error => {
       logger.error(error);
-      res.sendStatus(500).send(error);
+      res.sendStatus(500);
     });
 });
 
@@ -166,12 +166,12 @@ router.get('/:user_id/followers', function(req, res) {
       if (followers) {
         res.json(followers);
       } else {
-        res.json(userNotFound).status(404);
+        res.status(404).send(userNotFound);
       }
     })
     .catch(error => {
       logger.error(error);
-      res.sendStatus(500).send(error);
+      res.sendStatus(500);
     });
 });
 
@@ -217,12 +217,12 @@ router.get('/:user_id/reviews', function(req, res) {
       if (reviews) {
         res.json(reviews);
       } else {
-        res.json(userNotFound).status(404);
+        res.status(404).send(userNotFound);
       }
     })
     .catch(error => {
       logger.error(error);
-      res.sendStatus(500).send(error);
+      res.sendStatus(500);
     });
 });
 
@@ -278,7 +278,7 @@ router.post('/:user_id/follow', authCheck, function(req, res) {
     })
       .catch(error => {
         logger.error(error);
-        res.sendStatus(500).send(error);
+        res.sendStatus(500);
       });
   }
 });
@@ -296,7 +296,7 @@ router.delete('/:user_id', authCheck, function(req, res) {
       })
       .catch(error => {
         logger.error(error);
-        res.sendStatus(500).send(error);
+        res.sendStatus(500);
       });
   }
 });
@@ -313,7 +313,7 @@ router.post('/', adminCheck, function(req, res) {
     })
     .catch(error => {
       logger.error(error);
-      res.sendStatus(500).send(error);
+      res.sendStatus(500);
     });
 });
 
