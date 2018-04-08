@@ -125,20 +125,6 @@ router.post('/:movie_id/add-to-watchlist', authCheck, function(req, res) {
     });
 });
 
-router.post('/:movie_id/remove-from-watchlist', authCheck, function(req, res) {
-  session.WatchlistItem.destroy({
-    where: {
-      userId: req.user.id,
-      movieId: req.params['movie_id']
-    }
-  })
-    .then(() => { res.sendStatus(200); })
-    .catch(error => {
-      console.log(error);
-      res.sendStatus(500);
-    });
-});
-
 // PUT METHODS
 
 router.put('/:movie_id', authCheck, function(req, res) {
