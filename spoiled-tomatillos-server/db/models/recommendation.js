@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Recommendation.associate = function(models) {
     Recommendation.belongsTo(models.User,
-      {as: 'Recommender', foreignKey: 'id', sourceKey: 'recommenderId'});
+      {as: 'Recommender', sourceKey: 'id', foreignKey: 'recommenderId'});
     Recommendation.belongsTo(models.User,
-      {as: 'Recommendee', foreignKey: 'id', sourceKey: 'recommendeeId'});
+      {as: 'Recommendee', sourceKey: 'id', foreignKey: 'recommendeeId'});
     Recommendation.belongsTo(models.Movie,
-      {foreignKey: 'id', sourceKey: 'movieId'});
+      {sourceKey: 'id', foreignKey: 'movieId'});
   };
   return Recommendation;
 };
