@@ -21,6 +21,11 @@ router.post('/register', function(req, res) {
     })
     .catch(error => {
       logger.error('Registration Error', error);
+      if (error.constructor.name === 'UniqueConstraintError') {
+        res.sendStatus(400).send(error);
+        return;
+      }
+
       res.sendStatus(500);
     });
 });

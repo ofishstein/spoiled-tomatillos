@@ -313,6 +313,10 @@ router.post('/', adminCheck, function(req, res) {
     })
     .catch(error => {
       logger.error(error);
+      if (error.constructor.name === 'UniqueConstraintError') {
+        res.sendStatus(400).send(error);
+        return;
+      }
       res.sendStatus(500);
     });
 });
