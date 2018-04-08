@@ -31,6 +31,21 @@ function areFriends(user1, user2, yesCase, noCase) {
   noCase);
 }
 
+router.get('/:rec_id', function(req, res, next) {
+  session.Recommendation.findById(req.params['rec_id'])
+    .then(rec => {
+      if (rec === null) {
+        next();
+        return;
+      }
+      res.send(rec);
+    })
+    .catch(err => {
+      logger.warn('Error getting recommendation by id', error);
+      res.sendStatus(500);
+    });
+});
+
 /**
  * Post recommendations to the database as logged in user
  */
