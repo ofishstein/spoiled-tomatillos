@@ -20,7 +20,11 @@ router.get('/', function(req, res) {
       delete result['password'];
     });
     res.send(results);
-  });
+  },
+  (error, status) => {
+    console.log(error);
+    res.sendStatus(status);
+ });
 });
 
 router.get('/settings', authCheck, function(req, res) {

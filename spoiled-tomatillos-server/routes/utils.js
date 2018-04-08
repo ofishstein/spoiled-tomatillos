@@ -5,7 +5,7 @@ const db = require('../db/db.js');
 const session = db.get_session();
 
 
-function handleSearch(queries, model, session, callBack) {
+function handleSearch(queries, model, session, callBack, onError) {
   const searchWhere = {where: {[session.Sequelize.Op.or]: {}}, poster: true};
 
   for (var key in queries) {
@@ -15,10 +15,13 @@ function handleSearch(queries, model, session, callBack) {
   }
 
   model.findAll(searchWhere)
-    .then(results => {
-      callBack(results);
-    });
-}
+  .then(results => {
+    callBack(results);
+  })
+  .catch(error => {
+    onError(error, 500);
+  });
+};
 
 function rename(obj, a, b) {
   obj[b] = obj[a];
