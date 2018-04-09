@@ -73,8 +73,7 @@ describe('Watchlist Tests', () => {
       .end((err, res) => {
         expect(res).to.have.status(401);
 
-        authenticatedUser.delete('/api/users/102/watchlist')
-          .send({movieId: 101})
+        authenticatedUser.delete('/api/users/102/watchlist/101')
           .end((err, res) => {
             expect(res).to.have.status(401);
             done();
