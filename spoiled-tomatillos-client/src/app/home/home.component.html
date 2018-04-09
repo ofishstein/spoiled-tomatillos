@@ -4,72 +4,19 @@
   </div>
   
   <!-- for each -->
-  <div class="row mb-1">
-    <div class="col-12 col-md-3" style="text-align: center">
-      <a href="#" routerLink="/movie/1">
-      <img src="http://lorempixel.com/300/300" class="img-fluid img-thumbnail" alt="Movie thumbnail" style="max-height: 250px">
-      </a>
+  <!-- Movie result set -->
+  <div class="mt-3">
+      <div class="row mb-2 border" *ngFor="let result of recommendations | slice:0:25">
+        <div class="col-12 col-md-3" style="text-align: center">
+          <a href="#" routerLink="/movie/{{ result.Movie.id }}">
+          <img src="{{ result.Movie.poster }}" class="img-fluid img-thumbnail" alt="Poster for {{ result.Movie.title }}" style="max-height: 250px">
+          </a>
+        </div>
+        <div class="description col-12 col-md-9">
+          <a href="#" routerLink="/movie/{{ result.Movie.id }}">
+            <h1>{{ result.Movie.title }}</h1>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="description col-12 col-md-9">
-      <a href="#" routerLink="/movie/1">
-      <h1>Lion (2016)</h1>
-      </a>
-      <button type="button" class="btn btn-warning">Add to watchlist</button>
-      <br>
-      <a href="#" routerLink="/movie/1">
-      <span class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum mattis iaculis. In vehicula sapien at orci interdum, eu cursus massa molestie. Suspendisse ullamcorper turpis vel rhoncus faucibus. Phasellus augue lorem, pretium sed ornare non, scelerisque id orci. Quisque fringilla, nibh molestie imperdiet placerat, dolor orci varius massa, non congue massa velit vel enim. Aenean pellentesque placerat ex, vitae tincidunt dolor lobortis nec. In in lectus tincidunt, pulvinar lacus vitae, semper orci.</span>
-      </a>
-    </div>
-  </div>
-  <div class="row mb-1">
-    <div class="col-12 col-md-3" style="text-align: center">
-      <a href="#" routerLink="/movie/2">
-      <img src="http://lorempixel.com/300/300" class="img-fluid img-thumbnail" alt="Movie thumbnail" style="max-height: 250px">
-      </a>
-    </div>
-    <div class="description col-12 col-md-9">
-      <a href="#" routerLink="/movie/2">
-      <h1>Requiem for a Dream (2000)</h1>
-      </a>
-      <button type="button" class="btn btn-warning">Add to watchlist</button>
-      <br>
-      <a href="#" routerLink="/movie/2">
-      <span class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum mattis iaculis. In vehicula sapien at orci interdum, eu cursus massa molestie. Suspendisse ullamcorper turpis vel rhoncus faucibus. Phasellus augue lorem, pretium sed ornare non, scelerisque id orci. Quisque fringilla, nibh molestie imperdiet placerat, dolor orci varius massa, non congue massa velit vel enim. Aenean pellentesque placerat ex, vitae tincidunt dolor lobortis nec. In in lectus tincidunt, pulvinar lacus vitae, semper orci.</span>
-      </a>
-    </div>
-  </div>
-  <div class="row mb-1">
-    <div class="col-12 col-md-3" style="text-align: center">
-      <a href="#" routerLink="/movie/3">
-      <img src="http://lorempixel.com/300/300" class="img-fluid img-thumbnail" alt="Movie thumbnail" style="max-height: 250px">
-      </a>
-    </div>
-    <div class="description col-12 col-md-9">
-      <a href="#" routerLink="/movie/3">
-      <h1>Amelie (2001)</h1>
-      </a>
-      <button type="button" class="btn btn-warning">Add to watchlist</button>
-      <br>
-      <a href="#" routerLink="/movie/3">
-      <span class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum mattis iaculis. In vehicula sapien at orci interdum, eu cursus massa molestie. Suspendisse ullamcorper turpis vel rhoncus faucibus. Phasellus augue lorem, pretium sed ornare non, scelerisque id orci. Quisque fringilla, nibh molestie imperdiet placerat, dolor orci varius massa, non congue massa velit vel enim. Aenean pellentesque placerat ex, vitae tincidunt dolor lobortis nec. In in lectus tincidunt, pulvinar lacus vitae, semper orci.</span>
-      </a>
-    </div>
-  </div>
-  <div class="row mb-1">
-    <div class="col-12 col-md-3" style="text-align: center">
-      <a href="#" routerLink="/movie/4">
-      <img src="http://lorempixel.com/300/300" class="img-fluid img-thumbnail" alt="Movie thumbnail" style="max-height: 250px">
-      </a>
-    </div>
-    <div class="description col-12 col-md-9">
-      <a href="#" routerLink="/movie/4">
-      <h1>Black Panther (2018)</h1>
-      </a>
-      <button type="button" class="btn btn-warning">Add to watchlist</button>
-      <br>
-      <a href="#" routerLink="/movie/4">
-      <span class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum mattis iaculis. In vehicula sapien at orci interdum, eu cursus massa molestie. Suspendisse ullamcorper turpis vel rhoncus faucibus. Phasellus augue lorem, pretium sed ornare non, scelerisque id orci. Quisque fringilla, nibh molestie imperdiet placerat, dolor orci varius massa, non congue massa velit vel enim. Aenean pellentesque placerat ex, vitae tincidunt dolor lobortis nec. In in lectus tincidunt, pulvinar lacus vitae, semper orci.</span>
-      </a>
-    </div>
-  </div>
 </div>
