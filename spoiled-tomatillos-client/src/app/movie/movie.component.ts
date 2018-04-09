@@ -4,6 +4,7 @@ import { MovieService } from '../services/movie/movie.service';
 import { NgIf } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-movie',
@@ -14,11 +15,12 @@ export class MovieComponent implements OnInit {
 
   private movieSubject: Subject<any>;
   private movieObservable: Observable<any>;
-  private reviewsObservable: any;
-  private inWatchlistObservable: any;
+  private reviewsObservable: Observable<any>;
+  private inWatchlistObservable: Observable<boolean>;
   private movie: any;
+  private isLoggedInObservable: Observable<boolean>;
 
-  constructor(private _movieService: MovieService, private route: ActivatedRoute) {
+  constructor(private _movieService: MovieService, private route: ActivatedRoute, private _authService: AuthService) {
       
   }
 
@@ -29,6 +31,7 @@ export class MovieComponent implements OnInit {
     this._movieService.getMovie(this.route.snapshot.params.id).subscribe(movie => this.movieSubject.next(movie));
     this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
     this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
+    this.isLoggedInObservable = this._authService.isLoggedIn();
   }
 
   addToWatchlist() {
