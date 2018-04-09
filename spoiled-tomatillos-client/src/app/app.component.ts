@@ -22,13 +22,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    // Navigates the user to the SearchComponent upon a successful search.
-    this._searchService.searchChange.subscribe((searchSuccessful) => {
-      if (searchSuccessful) {
-        this._router.navigate(['/search']);
-      }
-    });
+    if (!this.currentUser.isAdmin) {
+      // Navigates the user to the SearchComponent upon a successful search.
+      this._searchService.searchChange.subscribe((searchSuccessful) => {
+        if (searchSuccessful) {
+          this._router.navigate(['/search']);
+        }
+      });
+    }
   }
 
   /**
