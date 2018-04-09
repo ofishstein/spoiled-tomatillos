@@ -68,12 +68,12 @@ router.post('/api/users/:user_id/watchlist', authCheck, function(req, res) {
 
 // DELETE METHODS
 
-router.delete('/api/users/:user_id/watchlist', authCheck, function(req, res) {
+router.delete('/api/users/:user_id/watchlist/:movie_id', authCheck, function(req, res) {
   // delete a movie from user's watchlist
   session.WatchlistItem
     .destroy({
       where: {
-        movieId: req.body.movieId,
+        movieId: req.params['movie_id'],
         userId: req.user.id
       }
     })

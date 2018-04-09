@@ -44,10 +44,11 @@ describe('Follower Endpoints', () => {
       authenticatedUser.get('/api/users/101/followers')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(2);
-          expect(res.body[0]).to.have.property('FollowerUser');
-          expect(res.body[0]['FollowerUser']['username']).to.eql('test_user2');
-          expect(res.body[1]['FollowerUser']['username']).to.eql('test_admin');
+          expect(res.body).to.have.property('Followers');
+          expect(res.body['Followers'].length).to.eql(2);
+          expect(res.body['Followers'][0]).to.have.property('FollowerUser');
+          expect(res.body['Followers'][0]['FollowerUser']['username']).to.eql('test_user2');
+          expect(res.body['Followers'][1]['FollowerUser']['username']).to.eql('test_admin');
           done();
         });
     });
@@ -58,9 +59,11 @@ describe('Follower Endpoints', () => {
       authenticatedUser.get('/api/users/101/following')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(1);
-          expect(res.body[0]).to.have.property('FolloweeUser');
-          expect(res.body[0]['FolloweeUser']['username']).to.eql('test_user2');
+          expect(res.body).to.have.property('Following');
+          expect(res.body['Following'].length).to.eql(1);
+          expect(res.body['Following'][0]).to.have.property('FolloweeUser');
+          expect(res.body['Following'][0]['FolloweeUser']['username']).to.eql('test_user2');
+
           done();
         });
     });
@@ -68,12 +71,11 @@ describe('Follower Endpoints', () => {
 
 
   describe('Follow and unfollow a user', () => {
-    it('should return is-following as false when not logged in', (done) => {
+    it('should return is-following as 401 when not logged in', (done) => {
       request(app)
         .get('/api/users/102/is-following')
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.eql(false);
+          expect(res).to.have.status(401);
           done();
         });
     });

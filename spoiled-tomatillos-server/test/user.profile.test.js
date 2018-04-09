@@ -65,18 +65,6 @@ describe('Profile Related Endpoints', () => {
     });
   });
 
-
-  describe('GET a user\'s watchlist', () => {
-    it('/api/users/1/watchlist', (done) => {
-      requester.get('/api/users/101/watchlist')
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(3);
-          done();
-        });
-    });
-  });
-
   describe('GET a user\'s reviews', () => {
     it('should return all of the user\'s reviews', (done) => {
       requester.get('/api/users/101/reviews')
