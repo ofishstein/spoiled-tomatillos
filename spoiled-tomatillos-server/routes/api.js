@@ -79,7 +79,9 @@ passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username
 /* Post to login user. */
 router.post('/login', passport.authenticate('local', {}), function(req, res) {
   logger.info('User logged in', logger.omit(req.user.get({plain: true}), 'password'));
-  res.sendStatus(200);
+  let resp = req.user;
+  delete resp.password;
+  res.send(resp);
 });
 
 module.exports = router;

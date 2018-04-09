@@ -51,11 +51,12 @@ const routes = [
   { path: 'movie/:id/reviews', component: ReviewsListComponent },
   { path: 'admin/search', component: AdminSearchComponent, canActivate: [AdminGuard] },
   { path: 'admin/user/:uid/flagged/:caseId', component: AdminCaseReviewComponent, canActivate: [AdminGuard] },
-  { path: 'reset', component: ForgotPasswordComponent }
+  { path: 'reset', component: ForgotPasswordComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
+  imports: [ RouterModule.forRoot(routes, {enableTracing: true}), ],
   exports: [ RouterModule ],
   providers: [AuthGuard, AdminGuard]
 })

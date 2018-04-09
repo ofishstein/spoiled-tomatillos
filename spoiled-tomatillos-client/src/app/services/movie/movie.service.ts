@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class MovieService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   /*
   // return all movies that match given keyword in specified fields
@@ -27,21 +28,25 @@ export class MovieService {
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.http.post('/api/movies/' + movieId + '/add-to-watchlist', null, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text',
-      withCredentials: true 
-   });
+    return this.authService.getCurrentUser().map(user => {
+       return this.http.post('/api/users/' + user.id + '/watchlist', {
+         movieId: movieId
+       }, {
+         headers: new HttpHeaders().set('Content-Type', 'application/json'),
+         responseType: 'text',
+         withCredentials: true 
+      });
+    });
   }
 
   // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.post('/api/movies/' + movieId + '/remove-from-watchlist', null, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text',
-      withCredentials: true 
-   });
-
+    return this.authService.getCurrentUser().map(user => {
+      return this.http.delete('/api/users/' + user.id + '/watchlist/' + movieId, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+        responseType: 'text',
+        withCredentials: true 
+     });
+    });
   }
-
 }

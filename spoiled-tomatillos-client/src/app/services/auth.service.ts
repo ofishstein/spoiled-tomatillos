@@ -1,16 +1,14 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { isUndefined } from "util";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
 
-  public currentUser: EventEmitter<any>;
-  private currentUserObj: any;
+  public currentUser: BehaviorSubject<any>;
 
   constructor(private http: HttpClient) {
-    this.currentUser = new EventEmitter();
-    this.currentUserObj = false;
+    this.currentUser = new BehaviorSubject(false);
   }
 
   userLogin(username: string, password: string, admin: boolean) {
@@ -20,53 +18,34 @@ export class AuthService {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text',
         withCredentials: true
-      });
+      }).map(resp => this.currentUser.next(JSON.parse(resp)));
   }
 
   logout() {
-    this.currentUser.emit(false);
-    this.currentUserObj = false;
+    this.currentUser.next(false);
     return this.http.post('/api/logout', null);
   }
 
   /**
    * returns the current user if logged in; otherwise 'false'
    */
-  getCurrentUser(): Promise<any> {
-    return new Promise(resolve => {
-      let res;
-      this.http.get('/api/get-current-user', {withCredentials: true})
-        .subscribe(aUser => {
-          const user: any = aUser;
-          if (user == null ||user.loggedIn === false) {
-            this.currentUser.emit(false);
-            this.currentUserObj = false;
-            res = false;
-          } else {
-            this.currentUser.emit(user);
-            this.currentUserObj = user;
-            res = user;
-          }
-      },
-        err => { console.log('getCurrentUser err: ' + err); });
-
-      resolve(res);
-    });
+  getCurrentUser(): Observable<any> {
+    return this.currentUser.asObservable();
   }
 
   /**
    * returns true if logged in; otherwise false
    */
-  isLoggedIn(): boolean {
-    return !isUndefined(this.currentUserObj.username);
+  isLoggedIn(): Observable<boolean> {
+    return this.currentUser.asObservable().map(user => {console.log(!!user); return !!user;});
   }
 
 
   /**
    * returns true if logged in and admin; otherwise false
    */
-  isAdmin(): boolean {
-    return this.currentUserObj.isAdmin === true;
+  isAdmin(): Observable<boolean> {
+    return this.currentUser.asObservable().map(user => user && user.isAdmin);
   }
 
 }
