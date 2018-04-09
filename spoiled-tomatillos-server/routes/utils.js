@@ -6,19 +6,19 @@ const session = db.get_session();
 
 
 function handleSearch(queries, model, session, callBack) {
-  searchWhere = {where: {[session.Sequelize.Op.or]: {}}}
+  const searchWhere = {where: {[session.Sequelize.Op.or]: {}}, poster: true};
 
   for (var key in queries) {
     searchWhere['where'][session.Sequelize.Op.or][key] = {
-        [session.Sequelize.Op.like]: '%' + queries[key] + '%'
+      [session.Sequelize.Op.like]: '%' + queries[key] + '%'
     };
   }
 
   model.findAll(searchWhere)
-  .then(results => {
-    callBack(results);
-  });
-};
+    .then(results => {
+      callBack(results);
+    });
+}
 
 function rename(obj, a, b) {
   obj[b] = obj[a];
@@ -35,10 +35,7 @@ function timeCompare(a, b) {
 }
 
 function mostRecentN(obj, key, N) {
-  let n = 0;
-  obj[key].sort(timeCompare).filter(item => {
-    n <=N;
-  })
+  obj[key].sort(timeCompare).filter(item, i => i <= N);
 }
 
 module.exports = { handleSearch, rename, aggAndRemove, mostRecentN};
