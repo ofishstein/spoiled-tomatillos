@@ -70,12 +70,13 @@ describe('Profile Related Endpoints', () => {
       requester.get('/api/users/101/reviews')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(2);
+          console.log(res.body);
+          expect(res.body.Reviews.length).to.eql(2);
 
-          expect(res.body[0]).to.have.property('text');
-          expect(res.body[0]).to.have.property('rating');
-          expect(res.body[0]).to.have.property('Movie');
-          expect(res.body[0]['Movie']).to.have.property('poster');
+          expect(res.body.Reviews[0]).to.have.property('text');
+          expect(res.body.Reviews[0]).to.have.property('rating');
+          expect(res.body.Reviews[0]).to.have.property('Movie');
+          expect(res.body.Reviews[0]['Movie']).to.have.property('poster');
           // expect(res.body[0]['Movie']['poster'] !== null).to.eql(true);
 
           done();
