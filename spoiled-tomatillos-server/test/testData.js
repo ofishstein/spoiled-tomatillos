@@ -165,16 +165,16 @@ module.exports = {
     {
       id: 101,
       message: 'I heard you like kids movies',
-      recommenderId: 102,
-      recommendeeId: 101,
+      recommenderId: 101,
+      recommendeeId: 102,
       movieId: 101,
       createdAt: now,
       updatedAt: now
     }, {
       id: 102,
       message: 'Here is another recommendation I guess',
-      recommenderId: 103,
-      recommendeeId: 101,
+      recommenderId: 101,
+      recommendeeId: 103,
       movieId: 102,
       createdAt: now,
       updatedAt: now

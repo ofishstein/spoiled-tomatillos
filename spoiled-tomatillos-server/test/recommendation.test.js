@@ -86,10 +86,10 @@ describe('Recommendation Related Endpoints', () => {
         expect(res).to.have.status(200);
         expect(res.body).to.have.property('id');
         expect(res.body.id).to.equal(testData.recommendations[0].id);
-        expect(res.body).to.have.property('recommenderId');
-        expect(res.body.recommenderId).to.equal(testData.recommendations[0].recommenderId);
-        expect(res.body).to.have.property('recommendeeId');
-        expect(res.body.recommendeeId).to.equal(testData.recommendations[0].recommendeeId);
+        expect(res.body).to.have.property('Recommender');
+        expect(res.body.Recommender.id).to.equal(testData.recommendations[0].recommenderId);
+        expect(res.body).to.have.property('Recommendee');
+        expect(res.body.Recommendee.id).to.equal(testData.recommendations[0].recommendeeId);
         expect(res.body).to.have.property('message');
         expect(res.body.message).to.equal(testData.recommendations[0].message);
 

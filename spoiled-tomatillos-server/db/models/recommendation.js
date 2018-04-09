@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     Recommendation.belongsTo(models.User,
       {as: 'Recommendee', sourceKey: 'id', foreignKey: 'recommendeeId'});
     Recommendation.belongsTo(models.Movie,
-      {sourceKey: 'id', foreignKey: 'movieId'});
+      {as: 'Movie', sourceKey: 'id', foreignKey: 'movieId'});
   };
   return Recommendation;
 };
