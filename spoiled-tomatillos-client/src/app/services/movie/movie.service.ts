@@ -28,7 +28,7 @@ export class MovieService {
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.authService.getCurrentUser().map(user => {
+    return this.authService.getCurrentUser().switchMap(user => {
        return this.http.post('/api/users/' + user.id + '/watchlist', {
          movieId: movieId
        }, {
@@ -41,7 +41,7 @@ export class MovieService {
 
   // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.authService.getCurrentUser().map(user => {
+    return this.authService.getCurrentUser().switchMap(user => {
       return this.http.delete('/api/users/' + user.id + '/watchlist/' + movieId, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text',

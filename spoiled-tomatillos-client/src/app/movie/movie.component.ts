@@ -25,7 +25,7 @@ export class MovieComponent implements OnInit {
   ngOnInit() {
     this.movieSubject = new Subject<any>();
     this.movieObservable = this.movieSubject.asObservable();
-    this.movieObservable.subscribe((movie) => {this.movie = movie; console.log(movie);});
+    this.movieObservable.subscribe((movie) => {this.movie = movie;});
     this._movieService.getMovie(this.route.snapshot.params.id).subscribe(movie => this.movieSubject.next(movie));
     this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
     this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
@@ -41,7 +41,6 @@ export class MovieComponent implements OnInit {
   }
 
   removeFromWatchlist() {
-    console.log("removing from watchlist");
     this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
       data => {
         this.movieSubject.next({...this.movie, inWatchlist: false});
