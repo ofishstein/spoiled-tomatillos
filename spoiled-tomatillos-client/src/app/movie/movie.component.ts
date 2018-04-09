@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../services/movie/movie.service';
 import { NgIf } from '@angular/common';
+import { NgForm } from '@angular/forms';
+declare var $;
 
 @Component({
   selector: 'app-movie',
@@ -12,9 +14,22 @@ export class MovieComponent implements OnInit {
 
   public movie;
   private reviews: any;
-  public inWatchList: boolean; 
+  public inWatchList: boolean;
+  public isProcessingReview: boolean;
+  private _movieId: number;
 
-  constructor(private _movieService: MovieService, private route: ActivatedRoute) {
+  constructor(private _movieService: MovieService, private _route: ActivatedRoute) {
+    const requestedId = this._route.snapshot.params.id;
+
+    try {
+      if (requestedId && parseInt(requestedId, 10) >= 0) {
+        this._movieId = parseInt(requestedId, 10);
+      } else {
+        this._movieId = null;
+      }
+    } catch (e) {
+      this._movieId = null;
+    }
     /**this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 5,
       genre: 'Animation, Adventure, Comedy', runtime: '90 min',
       description: 'When a green ogre named Shrek discovers his swamp has been "swamped" with all sorts of fairytale creatures by the scheming Lord Farquaad, Shrek sets out with a very loud donkey by his side to "persuade" Farquaad to give Shrek his swamp back. Instead, a deal is made. Farquaad, who wants to become the King, sends Shrek to rescue Princess Fiona, who is awaiting her true love in a tower guarded by a fire-breathing dragon. But once they head back with Fiona, it starts to become apparent that not only does Shrek, an ugly ogre, begin to fall in love with the lovely princess, but Fiona is also hiding a huge secret.',
@@ -36,23 +51,43 @@ export class MovieComponent implements OnInit {
       }}];*/
 
       this.inWatchList = false;
-      
+      this.isProcessingReview = false;
   }
 
   ngOnInit() {
-    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
-      data => {
+    if (this._movieId) {
+      this._movieService.getMovie(String(this._movieId)).subscribe(data => {
         console.log(data);
         this.movie = data;
         this.reviews = this.movie.reviews;
-        this.inWatchList = this.movie.inWatchlist; },
-      err => console.error(err)
-    );
+        this.inWatchList = this.movie.inWatchlist;
+      }, err => { console.error(err); }
+      );
+    }
+  }
+
+  public submitReview(reviewForm: NgForm, event): void {
+    const formValues = reviewForm.value;
+
+    if (formValues && formValues.review && formValues.rating) {
+      this.isProcessingReview = true;
+
+      this._movieService.createMovieReview(this._movieId, formValues.rating, formValues.review).subscribe((result) => {
+        this.isProcessingReview = false;
+        reviewForm.setValue({'rating': '', 'review': ''}); // reset values of the input controls
+
+        if (result) { // review successfully POSTed
+          setTimeout(() => {
+            $('#addReview').modal('hide');
+          }, 300);
+        }
+      });
+    }
   }
 
   addToWatchlist() {
-    console.log("adding to watchlist");
-    this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
+    console.log('adding to watchlist');
+    this._movieService.addToWatchList(String(this._movieId)).subscribe(
       data => {
         this.inWatchList = true;
       },
@@ -61,8 +96,8 @@ export class MovieComponent implements OnInit {
   }
 
   removeFromWatchlist() {
-    console.log("removing from watchlist");
-    this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
+    console.log('removing from watchlist');
+    this._movieService.removeFromWatchList(String(this._movieId)).subscribe(
       data => {
         this.inWatchList = false;
       },
