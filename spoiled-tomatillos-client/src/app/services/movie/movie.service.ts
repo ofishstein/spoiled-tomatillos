@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AdminMovie } from '../../admin-movie';
 
 @Injectable()
 export class MovieService {
@@ -40,5 +41,30 @@ export class MovieService {
    });
 
   }
+
+  public addMovie(movieInfo: AdminMovie) {
+    return this.http.post('/api/movies', movieInfo, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text',
+      withCredentials: true 
+    });
+  }
+
+  public editMovie(movieInfo: AdminMovie, movieId: string) {
+    return this.http.put('/api/movies/' + movieId, movieInfo, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text',
+      withCredentials: true 
+    });
+  }
+
+  public deleteMovie(movieId: string) {
+    return this.http.delete('/api/movies/' + movieId, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'text',
+      withCredentials: true 
+    });
+  }
+
 
 }
