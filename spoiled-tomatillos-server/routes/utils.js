@@ -35,7 +35,10 @@ function timeCompare(a, b) {
 }
 
 function mostRecentN(obj, key, N) {
-  obj[key].sort(timeCompare).filter(item, i => i <= N);
+  let n = 0;
+  obj[key].sort(timeCompare).filter(item => {
+    n <=N;
+  });
 }
 
 module.exports = { handleSearch, rename, aggAndRemove, mostRecentN};

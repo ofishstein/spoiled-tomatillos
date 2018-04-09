@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
           return;
         }
         if (options['poster']) {
-          if (movie.get('poster')) {
+          if (movie['poster']) {
             // Poster already in db, no changes to movie object
             return;
           }
