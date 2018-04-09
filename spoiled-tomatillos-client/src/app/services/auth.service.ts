@@ -12,7 +12,7 @@ export class AuthService {
   }
 
   userLogin(username: string, password: string, admin: boolean) {
-    let body = {username: username, password: password, admin: admin};
+    const body = {username: username, password: password, admin: admin};
     return this.http.post('/api/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
