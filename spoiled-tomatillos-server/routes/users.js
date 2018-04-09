@@ -41,6 +41,14 @@ router.get('/settings', authCheck, function(req, res) {
     });
 });
 
+// Helper function for adding an to the given activity
+function addImg(item, key) {
+  if (key === 'RecommendationsSent') {
+    item['img'] = item['Recommendee']['profileImageUrl'];
+  } else {
+    item['img'] = item['Recommender']['profileImageUrl'];
+  }
+}
 
 //Helper function for shaping the data returned by the query
 function reformatProfile(profile) {
@@ -53,10 +61,13 @@ function reformatProfile(profile) {
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
   profileInfo['activities'].forEach(item => {
-    item['type'] = 'review';
+    item['img'] = item['Movie']['poster']
   });
   ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
-    profileInfo[key].forEach(item => {item['type'] = key;});
+    profileInfo[key].forEach(item => {
+      item['type'] = key;
+      addImg(item, key);
+    });
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
   console.log(profileInfo['activities']);
@@ -92,8 +103,20 @@ router.get('/:user_id', function(req, res) {
             attributes: ['title', 'id', 'poster']
           }
         },
-        'RecommendationsSent',
-        'RecommendationsReceived',
+        {
+          association: 'RecommendationsSent',
+          include: {
+            association: 'Recommendee',
+            attributes: ['profileImageUrl', 'username', 'id']
+          }
+        },
+        {
+          association: 'RecommendationsReceived',
+          include: {
+            association: 'Recommender',
+            attributes: ['profileImageUrl', 'username', 'id']
+          }
+        },
         {
           attributes: ['followerId'],
           association: 'Followers',
