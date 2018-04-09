@@ -11,6 +11,8 @@ const adminCheck = require('./adminCheck');
 const omdb = require('./omdb.service');
 const utils = require('./utils.js');
 
+const userNotFound = {error: 'userId not found'};
+
 // search for users with given 'q'
 router.get('/', function(req, res) {
   utils.handleSearch(req.query, session.User, session, results => {
@@ -18,7 +20,7 @@ router.get('/', function(req, res) {
       delete result['password'];
     });
     res.send(results);
-  })
+  });
 });
 
 router.get('/settings', authCheck, function(req, res) {
@@ -28,6 +30,10 @@ router.get('/settings', authCheck, function(req, res) {
     .then(user => {
       delete user.password;
       res.json(user);
+    })
+    .catch(error => {
+      logger.error(error);
+      res.sendStatus(500);
     });
 });
 
@@ -45,11 +51,11 @@ function reformatProfile(profile) {
   profileInfo['activities'].forEach(item => {
     item['type'] = 'review';
   });
-  ['ReviewComments', 'WatchlistCommentsSent', 'WatchlistCommentsReceived', 'RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
-    profileInfo[key].forEach(item => {item['type'] = key});
+  ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
+    profileInfo[key].forEach(item => {item['type'] = key;});
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
-  console.log(profileInfo['activities'])
+  console.log(profileInfo['activities']);
   utils.mostRecentN(profileInfo, 'activities', 10);
 
   return profileInfo;
@@ -67,10 +73,9 @@ router.get('/:user_id', function(req, res) {
           include: {
             model: session.Movie,
             as: 'Movie',
-            attributes: ['title', 'id']
+            attributes: ['title', 'id', 'poster']
           }
         },
-        'ReviewComments',
         {
           model: session.WatchlistItem,
           as: 'WatchlistItems',
@@ -83,41 +88,90 @@ router.get('/:user_id', function(req, res) {
             attributes: ['title', 'id', 'poster']
           }
         },
-        'WatchlistCommentsSent',
-        'WatchlistCommentsReceived',
         'RecommendationsSent',
         'RecommendationsReceived',
-        'Followers',
-        'Following']
+        {
+          attributes: ['followerId'],
+          association: 'Followers',
+          include: {
+            association: 'FollowerUser',
+            attributes: ['id', 'username', 'profileImageUrl']
+          }
+        },
+        {
+          attributes: ['followeeId'],
+          association: 'Following',
+          include: {
+            association: 'FolloweeUser',
+            attributes: ['id', 'username', 'profileImageUrl']
+          }
+        }]
     })
     .then(profile => {
-      res.send(reformatProfile(profile));
+      if (profile) {
+        res.send(reformatProfile(profile));
+      } else {
+        res.status(404).send(userNotFound);
+      }
     });
 });
 
 router.get('/:user_id/following', function(req, res) {
   // Get users that the user at the id follows
-  session.Follower
-    .findAll({
-      attributes: ['FolloweeId'],
-      where: {followerId: req.params['user_id']},
-      include: ['FolloweeUser']
+  session.User
+    .findOne({
+      attributes: ['id', 'username'],
+      where: {id: req.params['user_id']},
+      include: {
+        attributes: ['followeeId'],
+        association: 'Following',
+        include: {
+          association: 'FolloweeUser',
+          attributes: ['id', 'username', 'profileImageUrl']
+        }
+      }
     })
     .then(following => {
-      res.json(following);
+      if (following) {
+        res.json(following);
+      } else {
+        res.status(404).send(userNotFound);
+      }
+    })
+    .catch(error => {
+      logger.error(error);
+      res.sendStatus(500);
     });
 });
 
 
 router.get('/:user_id/followers', function(req, res) {
   // Get users that the user at the id is followed by
-  session.Follower.findAll({
-    attributes: ['FollowerId'],
-    where: {followeeId: req.params['user_id']},
-    include: ['FollowerUser']
-  })
+  // {"id":2,"username":"SeedUser2","Followers":[
+  // {"followerId":1,"FollowerUser":{"id":1,"username":"SeedUser1","profileImageUrl":"www.google.com"}}]}
+  session.User
+    .findOne({
+      attributes: ['id', 'username'],
+      where: {id: req.params['user_id']},
+      include: {
+        attributes: ['followerId'],
+        association: 'Followers',
+        include: {
+          association: 'FollowerUser',
+          attributes: ['id', 'username', 'profileImageUrl']
+        }
+      }
+    })
     .then(followers => {
-      res.json(followers);
+      if (followers) {
+        res.json(followers);
+      } else {
+        res.status(404).send(userNotFound);
+      }
+    })
+    .catch(error => {
+      logger.error(error);
+      res.sendStatus(500);
     });
 });
 
@@ -137,46 +191,50 @@ router.get('/:user_id/is-following', function(req, res) {
         } else {
           res.json(false);
         }
-      })
+      });
   } else {
-    res.json(false);
+    res.sendStatus(401);
   }
 });
 
-router.get('/:user_id/watchlist', function(req, res) {
-  // Get users watchlist
-  session.WatchlistItems.findAll({
-    where: {userId: req.params['user_id']},
-    include: ['Movie']
-  })
-    .then(watchlist => {
-      watchlist.forEach(movie => {
-        if (movie['poster'] === null) {
-          movie['poster'] = omdb.getPosterById(movie['imdbId']);
-        }
-      });
-      res.json(watchlist);
-    });
-});
 
 router.get('/:user_id/reviews', function(req, res) {
   // Get user's reviews
-  session.Review.findAll({
-    where: {userId: req.params['user_id']},
-    include: ['Movie']
+  // {"Reviews":[{"text":"Meh","rating":3,"Movie":{"id":1,"title":"Toy Story (1995)","poster":null}}]}
+  session.User.findOne({
+    attributes: [],
+    where: {id: req.params['user_id']},
+    include: {
+      attributes: ['text', 'rating'],
+      association: 'Reviews',
+      include: {
+        association: 'Movie',
+        attributes: ['id', 'title', 'poster']
+      }
+    }
   })
     .then(reviews => {
-      reviews.forEach(review => {
-        if (review['Movie']['poster'] === null) {
-          review['Movie']['poster'] = omdb.getPosterById(review['Movie']['imdbId']);
-        }
-      });
-      res.json(reviews);
+      if (reviews) {
+        res.json(reviews);
+      } else {
+        res.status(404).send(userNotFound);
+      }
+    })
+    .catch(error => {
+      logger.error(error);
+      res.sendStatus(500);
     });
 });
 
+
 router.put('/settings', authCheck, function(req, res) {
   // Handle putting user settings.
+
+  // don't allow update isAdmin
+  if (req.body.isAdmin) {
+    delete req.body.isAdmin;
+  }
+
   session.User.update(req.body, {
     where: { id: req.user.id }
   })
@@ -217,13 +275,17 @@ router.post('/:user_id/follow', authCheck, function(req, res) {
       }
     }).then(() => {
       res.json(false);
-    });
+    })
+      .catch(error => {
+        logger.error(error);
+        res.sendStatus(500);
+      });
   }
 });
 
 router.delete('/:user_id', authCheck, function(req, res) {
   // delete the user iff user_id == logged in user or logged in user is admin
-  if (req.user.id !== req.params['user_id'] && !req.user.isAdmin) {
+  if (req.user.id !== parseInt(req.params['user_id']) && !req.user.isAdmin) {
     res.sendStatus(401);
   } else {
     session.User.destroy({
@@ -231,6 +293,10 @@ router.delete('/:user_id', authCheck, function(req, res) {
     })
       .then(() => {
         res.sendStatus(200);
+      })
+      .catch(error => {
+        logger.error(error);
+        res.sendStatus(500);
       });
   }
 });
@@ -246,7 +312,11 @@ router.post('/', adminCheck, function(req, res) {
       res.json(newUser);
     })
     .catch(error => {
-      console.log(error);
+      logger.error(error);
+      if (error.constructor.name === 'UniqueConstraintError') {
+        res.sendStatus(400).send(error);
+        return;
+      }
       res.sendStatus(500);
     });
 });

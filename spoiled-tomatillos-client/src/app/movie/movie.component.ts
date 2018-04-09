@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../services/movie/movie.service';
 import { NgIf } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 import { NgForm } from '@angular/forms';
 declare var $;
 
@@ -17,8 +18,9 @@ export class MovieComponent implements OnInit {
   public inWatchList: boolean;
   public isProcessingReview: boolean;
   private _movieId: number;
+  private isLoggedIn: boolean;
 
-  constructor(private _movieService: MovieService, private _route: ActivatedRoute) {
+  constructor(private _movieService: MovieService, private _authService: AuthService, private _route: ActivatedRoute) {
     const requestedId = this._route.snapshot.params.id;
 
     try {
@@ -52,6 +54,7 @@ export class MovieComponent implements OnInit {
 
       this.inWatchList = false;
       this.isProcessingReview = false;
+      this.isLoggedIn = false;
   }
 
   ngOnInit() {
@@ -64,6 +67,16 @@ export class MovieComponent implements OnInit {
       }, err => { console.error(err); }
       );
     }
+    
+    this._authService.getCurrentUser().then(currentUser => {
+      if (!currentUser) {
+        this.isLoggedIn = false;
+      } else { // user must be logged in
+        this.isLoggedIn = true;
+      }
+        console.log("isLoggedIn: " + this.isLoggedIn);
+      }, err => console.log(err)
+    );
   }
 
   public submitReview(reviewForm: NgForm, event): void {

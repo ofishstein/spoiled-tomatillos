@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { isUndefined } from "util";
+import { isUndefined } from 'util';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,7 @@ export class AuthService {
   }
 
   userLogin(username: string, password: string, admin: boolean) {
-    let body = {username: username, password: password, admin: admin};
+    const body = {username: username, password: password, admin: admin};
     return this.http.post('/api/login',
       body, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -24,8 +24,8 @@ export class AuthService {
   }
 
   logout() {
-    this.currentUser.emit(false);
     this.currentUserObj = false;
+    this.currentUser.emit(this.currentUserObj);
     return this.http.post('/api/logout', null);
   }
 
@@ -38,19 +38,18 @@ export class AuthService {
       this.http.get('/api/get-current-user', {withCredentials: true})
         .subscribe(aUser => {
           const user: any = aUser;
-          if (user == null ||user.loggedIn === false) {
-            this.currentUser.emit(false);
+
+          if (user == null || user.loggedIn === false) {
             this.currentUserObj = false;
-            res = false;
           } else {
-            this.currentUser.emit(user);
             this.currentUserObj = user;
-            res = user;
           }
+
+          this.currentUser.emit(this.currentUserObj);
+          res = this.currentUserObj;
+          resolve(res);
       },
         err => { console.log('getCurrentUser err: ' + err); });
-
-      resolve(res);
     });
   }
 
@@ -66,7 +65,7 @@ export class AuthService {
    * returns true if logged in and admin; otherwise false
    */
   isAdmin(): boolean {
-    return this.currentUserObj.isAdmin === true;
+    return this.currentUserObj && this.currentUserObj.isAdmin === true;
   }
 
 }
