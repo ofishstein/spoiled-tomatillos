@@ -5,6 +5,8 @@ import { NgIf } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../services/auth.service';
+import { NgForm } from '@angular/forms';
+declare var $;
 
 @Component({
   selector: 'app-movie',
@@ -32,6 +34,25 @@ export class MovieComponent implements OnInit {
     this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
     this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
     this.isLoggedInObservable = this._authService.isLoggedIn();
+  }
+
+  public submitReview(reviewForm: NgForm, event): void {
+    const formValues = reviewForm.value;
+
+    if (formValues && formValues.review && formValues.rating) {
+      this.isProcessingReview = true;
+
+      this._movieService.createMovieReview(this._movieId, formValues.rating, formValues.review).subscribe((result) => {
+        this.isProcessingReview = false;
+        reviewForm.setValue({'rating': '', 'review': ''}); // reset values of the input controls
+
+        if (result) { // review successfully POSTed
+          setTimeout(() => {
+            $('#addReview').modal('hide');
+          }, 300);
+        }
+      });
+    }
   }
 
   addToWatchlist() {

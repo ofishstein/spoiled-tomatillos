@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
+import { Observable } from 'rxjs/Observable';
+import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class MovieService {
@@ -48,5 +51,19 @@ export class MovieService {
         withCredentials: true 
      });
     });
+  }
+  
+  public createMovieReview(movieId: number, reviewRating: number, reviewText: string): Observable<any> {
+    const createObject = { text: reviewText, rating: reviewRating, flagged: false };
+
+    return this.http.post('/api/movies/' + String(movieId) + '/review', createObject,
+     { headers: new HttpHeaders().set('Content-Type', 'application/json'), withCredentials: true, responseType: 'text' } ).pipe(
+       map((res) => {
+         console.log('received res from POST /api/movies/' + String(movieId) + '/review:');
+         console.log(res);
+         return of(true);
+       })
+       , catchError(err => { console.log(err); return of(null); })
+     );
   }
 }
