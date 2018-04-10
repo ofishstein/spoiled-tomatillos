@@ -30,15 +30,12 @@ function aggAndRemove(obj, a, b) {
   delete obj[b];
 }
 
-function timeCompare(a, b) {
+function timeCompare(b, a) {
   return Date.parse(a['updatedAt']) - Date.parse(b['updatedAt']);
 }
 
 function mostRecentN(obj, key, N) {
-  let n = 0;
-  obj[key].sort(timeCompare).filter(item => {
-    n <=N;
-  });
+  return obj[key].sort(timeCompare).filter((item, index) => index <= N);
 }
 
 module.exports = { handleSearch, rename, aggAndRemove, mostRecentN};

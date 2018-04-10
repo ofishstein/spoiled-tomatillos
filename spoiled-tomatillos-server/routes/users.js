@@ -40,7 +40,7 @@ router.get('/settings', authCheck, function(req, res) {
 
 //Helper function for shaping the data returned by the query
 function reformatProfile(profile) {
-  profileInfo = Object.assign({}, profile.toJSON());
+  let profileInfo = Object.assign({}, profile.toJSON());
   utils.rename(profileInfo, 'Followers', 'followers');
   utils.rename(profileInfo, 'Following', 'following');
   utils.rename(profileInfo, 'Reviews', 'reviews');
@@ -56,7 +56,7 @@ function reformatProfile(profile) {
     utils.aggAndRemove(profileInfo, 'activities', key);
   });
   console.log(profileInfo['activities']);
-  utils.mostRecentN(profileInfo, 'activities', 10);
+  profileInfo['activities'] = utils.mostRecentN(profileInfo, 'activities', 10);
 
   return profileInfo;
 }
