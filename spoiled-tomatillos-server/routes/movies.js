@@ -47,6 +47,7 @@ router.get('/:movie_id', function(req, res, next) {
         next(); // Pass to 404 route
         return; // End this route
       }
+      //console.log(req.user);
       if (req.user) {
         // User is logged in, check if movie in user's watchlist
         session.WatchlistItem.count({where: {userId: req.user.id, movieId: movie.id}})

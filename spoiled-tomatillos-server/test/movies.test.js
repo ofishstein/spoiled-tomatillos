@@ -5,13 +5,41 @@ const db = require('../db/db');
 const session = db.get_session();
 const testData = require('./testData');
 const should = chai.should();
+const expect = chai.expect;
+chai.use(chaiHttp);
+const request = require('supertest');
+
+const login = {username: 'test_user1', password: 'test'};
+const adminLogin = {username: 'test_admin', password: 'test'};
+
+const authenticatedUser = request.agent(app);
+const authenticatedAdmin = request.agent(app);
+
 
 chai.use(chaiHttp);
-describe('Movies', () => {
+describe('Movies endpoint', () => {
   before((done) => {
     session.Movie.bulkCreate(testData.movies).then(() => {
       session.User.bulkCreate(testData.users).then(() => {
-        session.Review.bulkCreate(testData.reviews).then(() => {done();});
+        session.Review.bulkCreate(testData.reviews).then(() => {
+          session.WatchlistItem.bulkCreate(testData.watchlistItems).then(() => {
+            // login regular user
+            authenticatedUser
+              .post('/api/login')
+              .send(login)
+              .end(function (err, res) {
+                expect(res).to.have.status(200);
+                // login admin user
+                authenticatedAdmin
+                  .post('/api/login')
+                  .send(adminLogin)
+                  .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                  });
+              });
+          });
+        });
       });
     });
   });
@@ -30,14 +58,24 @@ describe('Movies', () => {
   });
 
   describe('GET movie search - results', () => {
-    it('It should return at least one result for a movie search', (done) => {
+    let response;
+    before((done) => {
       chai.request(app).get('/api/movies?title=' + testData.movies[0].title).end((err, res) => {
-        res.should.have.status(200);
-        res.body.should.have.length.above(0);
-        res.body[0].should.have.property('id');
-        res.body[0].id.should.equal(testData.movies[0].id);
+        response = res;
         done();
       });
+    });
+    it('It should return at least one result for a movie search', (done) => {
+      response.should.have.status(200);
+      response.body.should.have.length.above(0);
+      response.body[0].should.have.property('id');
+      response.body[0].id.should.equal(testData.movies[0].id);
+      done();
+    });
+    it('It should have a valid poster from imdb', (done) => {
+      response.body[0].should.have.property('poster');
+      response.body[0].poster.should.equal('https://images-na.ssl-images-amazon.com/images/M/MV5BMDU2ZWJlMjktMTRhMy00ZTA5LWEzNDgtYmNmZTEwZTViZWJkXkEyXkFqcGdeQXVyNDQ2OTk4MzI@._V1_SX300.jpg');
+      done();
     });
   });
 
@@ -53,25 +91,34 @@ describe('Movies', () => {
 
   describe('GET movie information', () => {
     describe('It should return a movie information object', () => {
-      chai.request(app).get('/api/movies/' + testData.movies[0].id).end((err, res) => {
-        it('It should have movie info from the local database', (done) => {
-          res.should.have.status(200);
-          res.body.should.have.property('id');
-          res.body.id.should.equal(testData.movies[0].id);
-          res.body.should.have.property('imdbId');
-          res.body.imdbId.should.equal(testData.movies[0].imdbId);
-          res.body.should.have.property('tmdbId');
-          res.body.tmdbId.should.equal(testData.movies[0].tmdbId);
-          res.body.should.have.property('title');
-          res.body.title.should.equal(testData.movies[0].title);
+      let response;
+      before((done) => {
+        chai.request(app).get('/api/movies/' + testData.movies[0].id).end((err, res) => {
+          response = res;
           done();
         });
-        it('It should have movie info from omdb', (done) => {
-          res.body.should.have.property('Rated');
-          res.body.should.have.property('Released');
-          res.body.should.have.property('Runtime');
-          done();
-        });
+      });
+      it('It should have movie info from the local database', (done) => {
+        response.should.have.status(200);
+        response.body.should.have.property('id');
+        response.body.id.should.equal(testData.movies[0].id);
+        response.body.should.have.property('imdbId');
+        response.body.imdbId.should.equal(testData.movies[0].imdbId);
+        response.body.should.have.property('tmdbId');
+        response.body.tmdbId.should.equal(testData.movies[0].tmdbId);
+        response.body.should.have.property('title');
+        response.body.title.should.equal(testData.movies[0].title);
+        done();
+      });
+      it('It should have a poster url', (done) => {
+        response.body.should.have.property('poster');
+        done();
+      });
+      it('It should have movie info from omdb', (done) => {
+        response.body.should.have.property('Rated');
+        response.body.should.have.property('Released');
+        response.body.should.have.property('Runtime');
+        done();
       });
     });
   });
@@ -92,6 +139,28 @@ describe('Movies', () => {
         const expectedReviews = testData.reviews.filter((r) => r.movieId === testData.movies[0].id);
         expectedReviews.should.have.length.above(0);
         res.body.should.have.length(expectedReviews.length);
+        done();
+      });
+    });
+  });
+
+  describe('GET movie where movie is in user\'s watchlist', () => {
+    it('It should return true for inWatchlist', (done) => {
+      authenticatedUser.get('/api/movies/102').end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('inWatchlist');
+        expect(res.body.inWatchlist).to.equal(true);
+        done();
+      });
+    });
+  });
+
+  describe('GET movie where movie is NOT in user\'s watchlist', () => {
+    it('It should return false for inWatchlist', (done) => {
+      authenticatedUser.get('/api/movies/101').end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.property('inWatchlist');
+        expect(res.body.inWatchlist).to.equal(false);
         done();
       });
     });
