@@ -10,6 +10,7 @@ const session  = require('express-session');
 const index   = require('./routes/index');
 const users   = require('./routes/users');
 const reviews   = require('./routes/reviews');
+const recommendations   = require('./routes/recommendations');
 const movies  = require('./routes/movies');
 const api     = require('./routes/api');
 const watchlist = require('./routes/watchlists');
@@ -50,6 +51,7 @@ app.use('/api/users', users);
 app.use('/api/movies', movies);
 app.use('/api/reviews', reviews);
 app.use('/', watchlist);
+app.use('/api/recommendations', recommendations);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
