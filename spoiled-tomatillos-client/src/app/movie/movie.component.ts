@@ -21,8 +21,24 @@ export class MovieComponent implements OnInit {
   private inWatchlistObservable: Observable<boolean>;
   private movie: any;
   private isLoggedInObservable: Observable<boolean>;
+  private isProcessingReview: boolean;
+  private _movieId: number;
 
-  constructor(private _movieService: MovieService, private route: ActivatedRoute, private _authService: AuthService) {
+  constructor(private _movieService: MovieService, private _route: ActivatedRoute, private _authService: AuthService) {
+
+    const requestedId = this._route.snapshot.params.id;
+
+    try {
+      if (requestedId && parseInt(requestedId, 10) >= 0) {
+        this._movieId = parseInt(requestedId, 10);
+      } else {
+        this._movieId = null;
+      }
+    } catch (e) {
+      this._movieId = null;
+    }
+
+    this.isProcessingReview = false;
       
   }
 
@@ -30,7 +46,9 @@ export class MovieComponent implements OnInit {
     this.movieSubject = new Subject<any>();
     this.movieObservable = this.movieSubject.asObservable();
     this.movieObservable.subscribe((movie) => {this.movie = movie;});
-    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(movie => this.movieSubject.next(movie));
+    if (this._movieId) {
+      this._movieService.getMovie(this._movieId.toString()).subscribe(movie => this.movieSubject.next(movie));
+    }
     this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
     this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
     this.isLoggedInObservable = this._authService.isLoggedIn();
@@ -49,6 +67,7 @@ export class MovieComponent implements OnInit {
         if (result) { // review successfully POSTed
           setTimeout(() => {
             $('#addReview').modal('hide');
+            this._movieService.getMovie(this._movieId.toString()).subscribe(movie => this.movieSubject.next(movie));
           }, 300);
         }
       });
@@ -56,7 +75,7 @@ export class MovieComponent implements OnInit {
   }
 
   addToWatchlist() {
-    this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.addToWatchList(this._movieId.toString()).subscribe(
       data => {
         this.movieSubject.next({...this.movie, inWatchlist: true});
       },
@@ -65,7 +84,7 @@ export class MovieComponent implements OnInit {
   }
 
   removeFromWatchlist() {
-    this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.removeFromWatchList(this._movieId.toString()).subscribe(
       data => {
         this.movieSubject.next({...this.movie, inWatchlist: false});
       },
