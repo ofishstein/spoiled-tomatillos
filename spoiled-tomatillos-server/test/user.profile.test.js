@@ -65,29 +65,18 @@ describe('Profile Related Endpoints', () => {
     });
   });
 
-
-  describe('GET a user\'s watchlist', () => {
-    it('/api/users/1/watchlist', (done) => {
-      requester.get('/api/users/101/watchlist')
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(3);
-          done();
-        });
-    });
-  });
-
   describe('GET a user\'s reviews', () => {
     it('should return all of the user\'s reviews', (done) => {
       requester.get('/api/users/101/reviews')
         .end((err, res) => {
           expect(res).to.have.status(200);
-          expect(res.body.length).to.eql(2);
+          console.log(res.body);
+          expect(res.body.Reviews.length).to.eql(2);
 
-          expect(res.body[0]).to.have.property('text');
-          expect(res.body[0]).to.have.property('rating');
-          expect(res.body[0]).to.have.property('Movie');
-          expect(res.body[0]['Movie']).to.have.property('poster');
+          expect(res.body.Reviews[0]).to.have.property('text');
+          expect(res.body.Reviews[0]).to.have.property('rating');
+          expect(res.body.Reviews[0]).to.have.property('Movie');
+          expect(res.body.Reviews[0]['Movie']).to.have.property('poster');
           // expect(res.body[0]['Movie']['poster'] !== null).to.eql(true);
 
           done();
