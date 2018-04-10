@@ -19,9 +19,14 @@ export class HomeComponent implements OnInit {
     this._recommendService.getAllRecommendations().subscribe(
       data => {
         this.recommendations = data;
-        this.noRes = data.length === 0;
+
+        if (data) {
+          this.noRes = false;
+        } else {
+          this.noRes = true;
+        }
         console.log(data);
-        console.log(data.length === 0);
+        console.log(this.noRes);
       }, err => console.error(err)
     );
   }
