@@ -17,7 +17,7 @@ describe('Profile Related Endpoints', () => {
       session.Movie.bulkCreate(testData.movies).then(() => {
         session.Follower.bulkCreate(testData.followers).then(() => {
           session.Review.bulkCreate(testData.reviews).then(() => {
-            session.WatchlistItem.bulkCreate(testData.watchlist).then(() => {
+            session.WatchlistItem.bulkCreate(testData.watchlistItems).then(() => {
               // keep server open for requests
               requester = chai.request(app).keepOpen();
               done();

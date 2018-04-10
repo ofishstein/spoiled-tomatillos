@@ -247,7 +247,7 @@ module.exports = {
     }
   ],
 
-  watchlist: [
+  watchlistItems: [
     {
       id: 101,
       userId: 101,

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { UsersService } from './users.service';

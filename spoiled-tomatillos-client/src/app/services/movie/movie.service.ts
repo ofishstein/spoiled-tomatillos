@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AdminMovie } from '../../admin-movie';
+import { AuthService } from '../auth.service';
 import { Observable } from 'rxjs/Observable';
 import { tap, map, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
@@ -8,7 +9,7 @@ import { of } from 'rxjs/observable/of';
 @Injectable()
 export class MovieService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   /*
   // return all movies that match given keyword in specified fields
@@ -24,25 +25,33 @@ export class MovieService {
 
   // retrieve movie by its id
   public getMovie(movieId: string) {
-    return this.http.get('/api/movies/' + movieId);
+    return this.http.get('/api/movies/' + movieId, {
+      withCredentials: true
+    });
   }
 
   // add to watchlist
   public addToWatchList(movieId: string) {
-    return this.http.post('/api/movies/' + movieId + '/add-to-watchlist', null, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text',
-      withCredentials: true 
-   });
+    return this.authService.getCurrentUser().switchMap(user => {
+       return this.http.post('/api/users/' + user.id + '/watchlist', {
+         movieId: movieId
+       }, {
+         headers: new HttpHeaders().set('Content-Type', 'application/json'),
+         responseType: 'text',
+         withCredentials: true 
+      });
+    });
   }
 
   // TODO remove from watchlist
   public removeFromWatchList(movieId: string) {
-    return this.http.post('/api/movies/' + movieId + '/remove-from-watchlist',  {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      responseType: 'text' 
-   });
-
+    return this.authService.getCurrentUser().switchMap(user => {
+      return this.http.delete('/api/users/' + user.id + '/watchlist/' + movieId, {
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
+        responseType: 'text',
+        withCredentials: true 
+     });
+    });
   }
 
   public addMovie(movieInfo: AdminMovie) {
@@ -82,5 +91,4 @@ export class MovieService {
        , catchError(err => { console.log(err); return of(null); })
      );
   }
-
 }

@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { SearchService } from './services/search.service';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +12,14 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
   public title: string;
-  private currentUser: any;
+  private currentUser: Observable<any>;
+  private isLoggedIn: Observable<boolean>;
 
   constructor(private _searchService: SearchService, private _router: Router,
               private _authService: AuthService) {
     this.title = 'Spoiled Tomatillos';
-    _authService.currentUser.subscribe(isLoggedIn => {
-      this.currentUser = isLoggedIn;
-    });
+    this.currentUser = _authService.getCurrentUser();
+    this.isLoggedIn = _authService.isLoggedIn();
   }
 
   ngOnInit() {
