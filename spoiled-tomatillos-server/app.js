@@ -14,6 +14,7 @@ const recommendations   = require('./routes/recommendations');
 const movies  = require('./routes/movies');
 const api     = require('./routes/api');
 const watchlist = require('./routes/watchlists');
+const notifications = require('./routes/notifications');
 const cors    = require('cors');
 
 
@@ -52,6 +53,7 @@ app.use('/api/movies', movies);
 app.use('/api/reviews', reviews);
 app.use('/', watchlist);
 app.use('/api/recommendations', recommendations);
+app.use('/api/notifications', notifications);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
