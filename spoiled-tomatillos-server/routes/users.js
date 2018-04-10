@@ -62,6 +62,7 @@ function reformatProfile(profile) {
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
   profileInfo['activities'].forEach(item => {
     item['img'] = item['Movie']['poster']
+    item['type'] = 'review'
   });
   ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {
