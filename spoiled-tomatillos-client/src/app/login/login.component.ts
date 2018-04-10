@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,12 +12,8 @@ export class LoginComponent implements OnInit {
 
   private missingRequired: boolean;
   private comboNotFound: boolean;
-  private currentUser: any;
 
   constructor(private _authService: AuthService, private router: Router) {
-    _authService.currentUser.subscribe(isLoggedIn => {
-      this.currentUser = isLoggedIn;
-    });
   }
 
   ngOnInit() {
@@ -32,7 +29,8 @@ export class LoginComponent implements OnInit {
       this.missingRequired = false;
       this._authService.userLogin(form.value.username, form.value.password, false).subscribe(
         success => {
-          this.router.navigate(['/home'])
+          console.log('Success!');
+          this.router.navigateByUrl('/home')
             .then(() => {});
         },
         error => {
@@ -40,9 +38,6 @@ export class LoginComponent implements OnInit {
           this.comboNotFound = true;
         }
       );
-
-      // update currentUser
-      this._authService.getCurrentUser();
     }
   }
 

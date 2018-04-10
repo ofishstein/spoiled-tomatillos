@@ -207,18 +207,18 @@ module.exports = {
       updatedAt: now
     }];
     const followersToInsert = [{
-      followerUserId: regularUsers[1].id,
-      followeeUserId: regularUsers[0].id,
+      followerId: regularUsers[1].id,
+      followeeId: regularUsers[0].id,
       createdAt: now,
       updatedAt: now
     }, {
-      followerUserId: regularUsers[2].id,
-      followeeUserId: regularUsers[0].id,
+      followerId: regularUsers[2].id,
+      followeeId: regularUsers[0].id,
       createdAt: now,
       updatedAt: now
     }, {
-      followerUserId: regularUsers[0].id,
-      followeeUserId: regularUsers[1].id,
+      followerId: regularUsers[0].id,
+      followeeId: regularUsers[1].id,
       createdAt: now,
       updatedAt: now
     }];

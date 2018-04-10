@@ -152,7 +152,7 @@ export class UserProfileComponent implements OnInit {
       this._profileService.getProfileById(this.uid).subscribe((aProfile: Profile) => {
         this.parseUserProfile(aProfile);
 
-        this._authService.getCurrentUser().then((currentUser) => {
+        this._authService.getCurrentUser().subscribe((currentUser) => {
           if (!currentUser) {
             this.isProfileViewerLoggedIn = false;
             this.isProfileViewerFollowing = false;

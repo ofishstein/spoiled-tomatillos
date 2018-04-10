@@ -7,29 +7,29 @@
 
         <!-- movie poster -->
         <div class="col-md-4">
-          <img class="img-fluid" src="{{ movie?.poster }}">
+          <img class="img-fluid" [src]="(this.movieObservable | async)?.poster">
         </div>
 
         <!-- movie header -->
         <div class="col-md-8">
           <div class="card bg-light">
             <h1 class="card-header">
-              <span class="text-left">{{ movie.Title }}</span>
-              <span class="text-right">{{ movie.rating }} / 5</span>
+              <span class="text-left">{{ (this.movieObservable | async)?.Title }}</span>
+              <span class="text-right">{{ (this.movieObservable | async)?.rating }} / 5</span>
             </h1>
             <div class="card-title text-muted m-1">
-              <small>{{ movie.Year }} | {{ movie.Rated }} | {{ movie.Genre }} | {{ movie.Runtime }}</small>
+              <small>{{ (this.movieObservable | async)?.Year }} | {{ (this.movieObservable | async)?.Rated }} | {{ (this.movieObservable | async)?.Genre }} | {{ (this.movieObservable | async)?.Runtime }}</small>
               <br/>
 
               <div class="btn-group" role="group">
-                <div *ngIf="isLoggedIn">
+                <div *ngIf="(isLoggedInObservable | async)">
                   <div>
-                    <button type="button" class="btn btn-primary" *ngIf="!inWatchList; else remove" (click)="addToWatchlist()">
+                    <button type="button" class="btn btn-primary" *ngIf="!(inWatchlistObservable | async); else remove" (click)="addToWatchlist()">
                         <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
                     </button>
                   </div>
                   <ng-template #remove>
-                    <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()" disabled>
+                    <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()">
                         <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
                       </button>
                   </ng-template>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="card-body">
-              <p>{{ movie.Plot }}</p>
+              <p>{{ (this.movieObservable | async)?.Plot }}</p>
             </div>
           </div>
         </div>
@@ -61,22 +61,22 @@
         <!-- movie poster -->
         <div class="col-xs-6 col-sm-6">
           <div class="">
-            <img id="mobile-movie-poster" src="{{ movie?.poster }}">
+            <img id="mobile-movie-poster" [src]="(this.movieObservable | async)?.poster">
           </div>
         </div>
         <div class="col-xs-6 col-sm-6">
-            <div *ngIf="isLoggedIn">
-              <div>
-                  <button type="button" class="btn btn-primary" *ngIf="!inWatchlist; else remove" (click)="addToWatchlist()">
-                      <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
-                  </button>
-                </div>
-                <ng-template #remove>
-                  <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()" disabled>
-                      <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
-                    </button>
-                </ng-template>
+          <div *ngIf="(isLoggedInObservable | async)">
+            <div>
+              <button type="button" class="btn btn-primary" *ngIf="!(inWatchlistObservable | async); else remove" (click)="addToWatchlist()">
+                  <i class="material-icons">add_to_queue</i>  <small class="st-movie-btn-label">Add to Watchlist</small>
+              </button>
             </div>
+            <ng-template #remove>
+              <button type="button" class="btn btn-primary" (click)="removeFromWatchlist()">
+                  <i class="material-icons">remove_from_queue</i>  <small class="st-movie-btn-label">Remove from Watchlist</small>
+                </button>
+            </ng-template>
+          </div>
           <br/>
           <button type="button" class="btn btn-primary mb-1"
                   data-toggle="modal" data-target="#addReview">
@@ -94,17 +94,17 @@
       <div class="row">
         <div class="card bg-light">
           <h1 class="card-header">
-            <span class="text-left">{{ movie.Title }}</span>
-            <span class="text-right">{{ movie.rating }} / 5</span>
+            <span class="text-left">{{ (this.movieObservable | async)?.Title }}</span>
+            <span class="text-right">{{ (this.movieObservable | async)?.rating }} / 5</span>
           </h1>
           <div class="card-title text-muted m-1">
-            <small>{{ movie.Year }} | {{ movie.Rated }} | {{ movie.Genre }} | {{ movie.Runtime }}</small>
+            <small>{{ (this.movieObservable | async)?.Year }} | {{ (this.movieObservable | async)?.Rated }} | {{ (this.movieObservable | async)?.Genre }} | {{ (this.movieObservable | async)?.Runtime }}</small>
             <br/>
           </div>
 
           <div class="card-body">
             <div class="col-xs-12">
-              <p>{{ movie.Plot }}</p>
+              <p>{{ (this.movieObservable | async)?.Plot }}</p>
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@
     <div class="card bg-light mt-3">
       <h4 class="card-header">Reviews</h4>
       <div class="card-body">
-        <div class="row m-3 border-bottom" *ngFor="let review of reviews | slice:0:3">
+        <div class="row m-3 border-bottom" *ngFor="let review of (reviewsObservable | async) | slice:0:3">
           <app-review [review]="review"></app-review>
         </div>
       </div>
