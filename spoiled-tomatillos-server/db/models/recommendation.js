@@ -6,14 +6,13 @@ module.exports = (sequelize, DataTypes) => {
     hooks:
       {
         afterCreate: (rec, options) => {
-          sequelize.models.Notification
+          sequelize.models.RecommendationNotification
             .findOrCreate({
               where: {
-                type: 'RECOMMENDATION',
                 userId: rec.recommendeeId,
                 seen: null,
                 recommendationId: rec.id,
-                followshipId: null
+                type: 'RECOMMENDATION'
               }
             })
             .then(() => {});
@@ -27,6 +26,8 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'Recommendee', sourceKey: 'id', foreignKey: 'recommendeeId'});
     Recommendation.belongsTo(models.Movie,
       {sourceKey: 'id', foreignKey: 'movieId'});
+    Recommendation.hasOne(models.RecommendationNotification,
+      {as: 'Notification', sourceKey: 'id', foreignKey: 'recommendationId'});
   };
   return Recommendation;
 };

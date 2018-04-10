@@ -30,15 +30,15 @@ describe('Notifications Tests', () => {
 
   after((done) => {
     // teardown db
-    session.Notification.destroy({where: {}}).then(() => {
-      session.Recommendation.destroy({where: {}}).then(() => {
-        session.Follower.destroy({where: {}}).then(() => {
-          session.User.destroy({where: {}}).then(() => {
-            session.Movie.destroy({where: {}}).then(() => {
-              done();
-            });
+    // session.Notification.destroy({where: {}}).then(() => {
+    session.Recommendation.destroy({where: {}}).then(() => {
+      session.Follower.destroy({where: {}}).then(() => {
+        session.User.destroy({where: {}}).then(() => {
+          session.Movie.destroy({where: {}}).then(() => {
+            done();
           });
         });
+        // });
       });
     });
   });
@@ -61,6 +61,7 @@ describe('Notifications Tests', () => {
       })
       .save()
       .then((followship) => {
+        expect(followship).to.not.be.a('null');
         authenticatedUser.get('/api/notifications')
           .end((err, res) => {
             expect(res).to.have.status(200);
@@ -71,33 +72,35 @@ describe('Notifications Tests', () => {
             expect(n['seen']).to.eql(null);
             expect(n).to.have.property('Follower');
             // TODO: add more follower specific comparisons once format finalized
-            expect(n['Recommendation']).to.eql(null);
             done();
           });
       });
   });
 
-  // it('should create a recommendation notification when test_user2 recommends a movie to test_user1', (done) => {
-  //   session.Recommendation
-  //     .build({
-  //       message: 'Must watch!',
-  //       recommenderId: 102,
-  //       recomendeeId: 101,
-  //       movieId: 101
-  //     })
-  //     .save()
-  //     .then((rec) => {
-  //       authenticatedUser.get('/api/notifications')
-  //         .end((err, res) => {
-  //           expect(res).to.have.status(200);
-  //           expect(res.body['unseenCount']).to.eql(1);
-  //           expect(res.body['notifications'].length).to.eql(2);
-  //           let n = res.body['notifications'][0];
-  //           expect(n['type']).to.eql('RECOMMENDATION');
-  //           done();
-  //         });
-  //     });
-  // });
+  it('should create a recommendation notification when test_user2 recommends a movie to test_user1', (done) => {
+    session.Recommendation
+      .build({
+        message: 'Must watch!',
+        recommenderId: 102,
+        recommendeeId: 101,
+        movieId: 101
+      })
+      .save()
+      .then((rec) => {
+        expect(rec).to.not.be.a('null');
+
+        console.log('\n\n'+rec);
+        authenticatedUser.get('/api/notifications')
+          .end((err, res) => {
+            expect(res).to.have.status(200);
+            expect(res.body['unseenCount']).to.eql(2);
+            expect(res.body['notifications'].length).to.eql(2);
+            let n = res.body['notifications'][1];
+            expect(n['type']).to.eql('RECOMMENDATION');
+            done();
+          });
+      });
+  });
 
   it('should delete the follower notification when test_user2 unfollows test_user1', (done) => {
     session.Follower.destroy({
@@ -108,8 +111,8 @@ describe('Notifications Tests', () => {
         authenticatedUser.get('/api/notifications')
           .end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body['notifications'].length).to.eql(0);
-            // expect(res.body['notifications'][0]['type']).to.eql('RECOMMENDATION');
+            expect(res.body['notifications'].length).to.eql(1);
+            expect(res.body['notifications'][0]['type']).to.eql('RECOMMENDATION');
             done();
           });
       });

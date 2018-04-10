@@ -4,14 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     hooks:
       {
         afterCreate: (followship, options) => {
-          sequelize.models.Notification
+          sequelize.models.FollowerNotification
             .findOrCreate({
               where: {
-                type: 'FOLLOWER',
                 userId: followship.followeeId,
                 seen: null,
-                recommendationId: null,
-                followshipId: followship.id
+                followshipId: followship.id,
+                type: 'FOLLOWER'
               }
             })
             .then(() => {});
@@ -23,6 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       {as: 'FollowerUser', foreignKey: 'followerId', sourceKey: 'id'});
     Follower.belongsTo(models.User,
       {as: 'FolloweeUser', foreignKey: 'followeeId', sourceKey: 'id'});
+    Follower.hasOne(models.FollowerNotification,
+      {as: 'Notification', sourceKey: 'id', foreignKey: 'followshipId'});
   };
   return Follower;
 };

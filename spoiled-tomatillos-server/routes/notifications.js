@@ -7,46 +7,59 @@ const authCheck = require('./auth');
 
 // Get all notifications for logged in user
 router.get('/', authCheck, (req, res) => {
-  session.Notification
-    .count({
-      where: {
-        userId: req.user.id,
-        seen: null
-      }
-    })
-    .then((unseenCount) => {
-      session.Notification.findAll({
-        where: {
-          userId: req.user.id
-        },
-        include: [
-          {
-            association: 'Follower',
-            attributes: ['followerId'],
-            include: {
-              association: 'FollowerUser',
-              attributes: ['id', 'username', 'profileImageUrl']
-            }
-          },
-          {
-            association: 'Recommendation',
-            attributes: ['id', 'message'],
-            include: [
-              {
-                association: 'Recommender',
-                attributes: ['id', 'username', 'profileImageUrl']
-              },
-              {
-                association: 'Movie',
-                attributes: ['id', 'title', 'poster']
-              }
-            ]
+  session.FollowerNotification
+    .findAll({
+      where: {userId: req.user.id},
+      attributes: {exclude: ['userId', 'updatedAt']},
+      include:
+        {
+          association: 'Follower',
+          attributes: ['followerId'],
+          include: {
+            association: 'FollowerUser',
+            attributes: ['id', 'username', 'profileImageUrl']
           }
-        ]
-      })
-        .then((notifications) => {
-          const response = {unseenCount: unseenCount, notifications: notifications};
-          res.json(response);
+        }
+    })
+    .then((fNotifications) => {
+      session.RecommendationNotification
+        .findAll({
+          where: {userId: req.user.id},
+          attributes: {exclude: ['userId', 'updatedAt']},
+          include:
+            {
+              association: 'Recommendation',
+              attributes: ['message'],
+              include: [
+                {
+                  association: 'Recommender',
+                  attributes: ['id', 'username', 'profileImageUrl']
+                },
+                {
+                  association: 'Movie',
+                  attributes: ['id', 'title', 'poster']
+                }
+              ]
+            }
+        })
+        .then((rNotifications) => {
+          // console.log('\n\nrNOTIFICATION LENGTH: '+rNotifications.length);
+          response = {notifications: fNotifications.concat(rNotifications)};
+          session.FollowerNotification
+            .count({
+              where: {userId: req.user.id, seen: null}
+            })
+            .then((followerUnseen) => {
+              session.RecommendationNotification
+                .count({
+                  where: {userId: req.user.id, seen: null}
+                })
+                .then((recUnseen) => {
+                  response['unseenCount'] = followerUnseen+recUnseen;
+                  // console.log('\n\nnotifications COUNT = '+response['notifications'].length);
+                  res.json(response);
+                });
+            });
         });
     });
 });

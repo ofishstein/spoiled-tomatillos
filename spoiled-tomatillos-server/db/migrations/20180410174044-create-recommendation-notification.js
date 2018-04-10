@@ -3,14 +3,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
+     Add altering commands here.
+     Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-    */
+     Example:
+     return queryInterface.createTable('users', { id: Sequelize.INTEGER });
+     */
     return Promise.all([
-      queryInterface.createTable('Notifications', {
+      queryInterface.createTable('RecommendationNotifications', {
         id: {
           allowNull: false,
           autoIncrement: true,
@@ -27,15 +27,7 @@ module.exports = {
         },
         type: {
           allowNull: false,
-          type: Sequelize.DataTypes.ENUM('FOLLOWER', 'RECOMMENDATION')
-        },
-        followshipId: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Followers',
-            key: 'id'
-          },
-          onDelete: 'CASCADE'
+          type: Sequelize.STRING
         },
         recommendationId: {
           type: Sequelize.INTEGER,
@@ -62,14 +54,14 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
     /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
+     Add reverting commands here.
+     Return a promise to correctly handle asynchronicity.
 
-      Example:
-      return queryInterface.dropTable('users');
-    */
+     Example:
+     return queryInterface.dropTable('users');
+     */
     return Promise.all([
-      queryInterface.dropTable('Notifications'),
+      queryInterface.dropTable('RecommendationNotifications'),
     ]);
   }
 };
