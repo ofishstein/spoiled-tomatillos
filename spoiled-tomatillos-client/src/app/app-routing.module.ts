@@ -42,7 +42,7 @@ const routes = [
   { path: 'search', component: SearchComponent },
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/movie/add', component: AddMovieComponent, canActivate: [AdminGuard] },
-  { path: 'admin/movie/edit/:id', component: EditMovieComponent },
+  { path: 'admin/movie/edit/:id', component: EditMovieComponent, canActivate: [AdminGuard },
   { path: 'admin/user/:uid', component: AdminUserDetailComponent, canActivate: [AdminGuard] },
   { path: 'admin/home', component: AdminHomeComponent, canActivate: [AdminGuard] },
   { path: 'user/:uid/:listType', component: UsersListComponent },
