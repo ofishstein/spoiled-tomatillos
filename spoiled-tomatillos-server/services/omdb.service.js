@@ -21,13 +21,13 @@ omdb.searchByKeyword = (keyword, page) => {
 // Get a movie by imdb id and return json results, returns promise
 omdb.getMovieById = (id) => {
   id = '000000' + id;
-  return rp.get({uri: omdbBase + 'plot=full&i=tt' + id.slice(-6), json: true});
+  return rp.get({uri: omdbBase + 'plot=full&i=tt' + id.slice(-7), json: true});
 };
 
 // Get a movie's poster image by imdb id, returns promise
 omdb.getPosterById = (id) => {
   id = '000000' + id;
-  return rp.get({uri: omdbBase + 'i=tt' + id.slice(-6), json: true});
+  return rp.get({uri: omdbBase + 'i=tt' + id.slice(-7), json: true});
 };
 
 module.exports = omdb;
