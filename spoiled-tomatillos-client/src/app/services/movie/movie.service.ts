@@ -37,7 +37,7 @@ export class MovieService {
        }, {
          headers: new HttpHeaders().set('Content-Type', 'application/json'),
          responseType: 'text',
-         withCredentials: true 
+         withCredentials: true
       });
     });
   }
@@ -48,11 +48,11 @@ export class MovieService {
       return this.http.delete('/api/users/' + user.id + '/watchlist/' + movieId, {
         headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text',
-        withCredentials: true 
+        withCredentials: true
      });
     });
   }
-  
+
   public createMovieReview(movieId: number, reviewRating: number, reviewText: string): Observable<any> {
     const createObject = { text: reviewText, rating: reviewRating, flagged: false };
 
@@ -65,5 +65,21 @@ export class MovieService {
        })
        , catchError(err => { console.log(err); return of(null); })
      );
+  }
+
+  /**
+   * Deletes the review of the given ID and returns a boolean indicating success.
+   * @param reviewId the number representing the id of the review to delete
+   */
+  public deleteMovieReview(reviewId: number): Observable<boolean> {
+    return this.http.delete('/api/reviews/' + String(reviewId), { withCredentials: true, responseType: 'text' }).pipe(
+      map((res) => {
+        console.log('received res from DELETE /api/reviews/' + String(reviewId));
+        console.log(res);
+
+        return true;
+      }),
+      catchError(err => { console.log(err); return of(false); })
+    );
   }
 }

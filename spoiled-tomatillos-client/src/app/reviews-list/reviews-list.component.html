@@ -2,15 +2,15 @@
   <div class="col-xs-12 col-sm-10 offset-sm-1">
     <div id="reviews" class="card bg-light">
       <h1 class="card-header">
-        <a routerLink="/movie/{{ movieId }}">
+        <a routerLink="/movie/{{ _movieId }}">
           <i class="material-icons">chevron_left</i>
         </a>
-        Reviews for {{ movie.Title }}
+        Reviews for {{ movie?.Title }}
       </h1>
 
-      <div class="card-body">
-        <div class="row m-3 border-bottom" *ngFor="let review of reviews">
-          <app-review [review]="review"></app-review>
+      <div class="card-body" *ngFor="let review of reviews">
+        <div class="row mb-3 ml-3 mr-3 mt-0 border-bottom">
+          <app-review class="w-100" [review]="review"></app-review>
 
         </div>
       </div>
