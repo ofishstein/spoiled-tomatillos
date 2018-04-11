@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RecommendService } from '../services/recommend.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public recommendations;
+  public noRes: boolean;
+
+  constructor(private _recommendService: RecommendService) {
+      this.noRes = true;
+   }
 
   ngOnInit() {
+    this._recommendService.getAllRecommendations().subscribe(
+      data => {
+        this.recommendations = data;
+
+        if (data) {
+          this.noRes = false;
+        } else {
+          this.noRes = true;
+        }
+        console.log(data);
+        console.log(this.noRes);
+      }, err => console.error(err)
+    );
   }
 
 }
