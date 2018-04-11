@@ -32,7 +32,7 @@ router.get('/settings', authCheck, function(req, res) {
       delete response.password;
       res.json(response);
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
       logger.error(error);
       res.sendStatus(500);
     });

@@ -36,16 +36,6 @@ router.post('/logout', function(req, res) {
   res.sendStatus(200);
 });
 
-router.get('/get-current-user', function(req, res) {
-  if (req.isAuthenticated()) {
-    let response = req.user;
-    response.loggedIn = true;
-    res.json(response);
-  } else {
-    res.json({loggedIn: false});
-  }
-});
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
