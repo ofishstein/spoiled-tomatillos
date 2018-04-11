@@ -25,14 +25,18 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.isAdmin) {
-      // Navigates the user to the SearchComponent upon a successful search.
-      this._searchService.searchChange.subscribe((searchSuccessful) => {
-        if (searchSuccessful) {
-          this._router.navigate(['/search']);
-        }
+
+    this.isAdmin.subscribe(isAdmin => {
+      if (!isAdmin) { 
+        // Navigates the user to the SearchComponent upon a successful search.
+        this._searchService.searchChange.subscribe((searchSuccessful) => {
+          if (searchSuccessful) {
+            this._router.navigate(['/search']);
+          }
+        }); 
+      }
       });
-    }
+
   }
 
   /**
