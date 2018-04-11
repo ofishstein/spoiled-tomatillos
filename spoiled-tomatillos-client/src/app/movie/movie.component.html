@@ -15,7 +15,7 @@
           <div class="card bg-light">
             <h1 class="card-header">
               <span class="text-left">{{ (this.movieObservable | async)?.Title }}</span>
-              <span class="text-right">{{ (this.movieObservable | async)?.rating }} / 5</span>
+              <span class="text-right">({{ (this.movieObservable | async)?.Year }})</span>
             </h1>
             <div class="card-title text-muted m-1">
               <small>{{ (this.movieObservable | async)?.Year }} | {{ (this.movieObservable | async)?.Rated }} | {{ (this.movieObservable | async)?.Genre }} | {{ (this.movieObservable | async)?.Runtime }}</small>
@@ -95,7 +95,7 @@
         <div class="card bg-light">
           <h1 class="card-header">
             <span class="text-left">{{ (this.movieObservable | async)?.Title }}</span>
-            <span class="text-right">{{ (this.movieObservable | async)?.rating }} / 5</span>
+            <span class="text-right">({{ (this.movieObservable | async)?.Year }})</span>
           </h1>
           <div class="card-title text-muted m-1">
             <small>{{ (this.movieObservable | async)?.Year }} | {{ (this.movieObservable | async)?.Rated }} | {{ (this.movieObservable | async)?.Genre }} | {{ (this.movieObservable | async)?.Runtime }}</small>
@@ -115,9 +115,9 @@
     <!-- reviews (desktop and mobile) -->
     <div class="card bg-light mt-3">
       <h4 class="card-header">Reviews</h4>
-      <div class="card-body">
-        <div class="row m-3 border-bottom" *ngFor="let review of (reviewsObservable | async) | slice:0:3">
-          <app-review [review]="review"></app-review>
+      <div class="card-body" *ngFor="let review of (reviewsObservable | async) | slice:0:3">
+        <div class="row mb-3 ml-3 mr-3 mt-0 border-bottom">
+          <app-review class="w-100" [review]="review"></app-review>
         </div>
       </div>
       <div class="card-footer">

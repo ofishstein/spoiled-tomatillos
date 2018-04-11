@@ -36,16 +36,6 @@ router.post('/logout', function(req, res) {
   res.sendStatus(200);
 });
 
-router.get('/get-current-user', function(req, res) {
-  if (req.isAuthenticated()) {
-    let response = req.user;
-    response.loggedIn = true;
-    res.json(response);
-  } else {
-    res.json({loggedIn: false});
-  }
-});
-
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
@@ -84,7 +74,7 @@ passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username
 /* Post to login user. */
 router.post('/login', passport.authenticate('local', {}), function(req, res) {
   logger.info('User logged in', logger.omit(req.user.get({plain: true}), 'password'));
-  let resp = req.user;
+  let resp = req.user.get({plain: true});
   delete resp.password;
   res.send(resp);
 });

@@ -57,6 +57,7 @@ describe('Profile Related Endpoints', () => {
           expect(res.body).to.have.property('reviews');
           expect(res.body).to.have.property('activities');
           expect(res.body).to.have.property('username');
+          expect(res.body).to.have.property('preferredService');
           expect(res.body).to.have.property('profileImageUrl');
           expect(res.body).to.have.property('watchlist');
 
@@ -81,6 +82,24 @@ describe('Profile Related Endpoints', () => {
 
           done();
         });
+    });
+  });
+
+  describe('GET a user that doesn\'t exist', () => {
+    it('It should return a 404', (done) => {
+      requester.get('/api/users/0').end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+    });
+  });
+
+  describe('GET a user that doesn\'t exist\'s reviews', () => {
+    it('It should return a 404', (done) => {
+      requester.get('/api/users/0/reviews').end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
     });
   });
 
