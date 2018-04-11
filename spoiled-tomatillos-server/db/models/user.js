@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     bio: DataTypes.STRING,
+    preferredService: DataTypes.STRING,
     profileImageUrl: DataTypes.STRING,
     isAdmin: {
       type: DataTypes.BOOLEAN,
