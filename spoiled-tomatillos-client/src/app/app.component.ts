@@ -14,16 +14,18 @@ export class AppComponent implements OnInit {
   public title: string;
   private currentUser: Observable<any>;
   private isLoggedIn: Observable<boolean>;
+  private isAdmin: Observable<boolean>;
 
   constructor(private _searchService: SearchService, private _router: Router,
               private _authService: AuthService) {
     this.title = 'Spoiled Tomatillos';
     this.currentUser = _authService.getCurrentUser();
     this.isLoggedIn = _authService.isLoggedIn();
+    this.isAdmin = _authService.isAdmin();
   }
 
   ngOnInit() {
-    if (!this.currentUser.isAdmin) {
+    if (!this.isAdmin) {
       // Navigates the user to the SearchComponent upon a successful search.
       this._searchService.searchChange.subscribe((searchSuccessful) => {
         if (searchSuccessful) {
