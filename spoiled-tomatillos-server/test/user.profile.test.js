@@ -57,6 +57,7 @@ describe('Profile Related Endpoints', () => {
           expect(res.body).to.have.property('reviews');
           expect(res.body).to.have.property('activities');
           expect(res.body).to.have.property('username');
+          expect(res.body).to.have.property('preferredService');
           expect(res.body).to.have.property('profileImageUrl');
           expect(res.body).to.have.property('watchlist');
 
