@@ -31,8 +31,50 @@ function areFriends(user1, user2, yesCase, noCase) {
   noCase);
 }
 
+router.get('/', authCheck, function(req, res) {
+  session.Recommendation.findAll({
+    where: {recommendeeId: req.user.id},
+    include: [
+      {
+        model: session.User,
+        as: 'Recommender',
+        attributes: ['id', 'username', 'profileImageUrl']
+      },
+      {
+        model: session.Movie,
+        as: 'Movie',
+        attributes: ['id', 'title', 'poster']
+      }
+    ]
+  })
+  .then(recs => {
+    res.send(recs);
+  })
+  .catch(error => {
+    res.sendStatus(500);
+  })
+});
+
 router.get('/:rec_id', function(req, res, next) {
-  session.Recommendation.findById(req.params['rec_id'])
+  session.Recommendation.findOne({
+    where: { id: req.params['rec_id']},
+    include: [
+      {
+        model: session.User,
+        as: 'Recommender',
+        attributes: ['id', 'username', 'profileImageUrl']
+      },
+      {
+        model: session.User,
+        as: 'Recommendee',
+        attributes: ['id', 'username', 'profileImageUrl']
+      },
+      {
+        model: session.Movie,
+        as: 'Movie',
+        attributes: ['id', 'title', 'poster']
+      },
+    ]})
     .then(rec => {
       if (rec === null) {
         next();
@@ -41,7 +83,8 @@ router.get('/:rec_id', function(req, res, next) {
       res.send(rec);
     })
     .catch(err => {
-      logger.warn('Error getting recommendation by id', error);
+      logger.warn('Error getting recommendation by id');
+      logger.warn(err)
       res.sendStatus(500);
     });
 });

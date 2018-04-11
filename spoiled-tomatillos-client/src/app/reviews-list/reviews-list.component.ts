@@ -10,12 +10,22 @@ import { MovieService } from '../services/movie/movie.service';
 export class ReviewsListComponent implements OnInit {
 
   // path params specify reviews for either movie or user
-  private movieId: number;
-  public movie;
+  private _movieId: number;
+  public movie: any;
   private reviews: any;
 
   constructor(private route: ActivatedRoute, private _movieService: MovieService) {
-    this.movieId = parseInt(this.route.snapshot.params.id);
+    const reqMovie = this.route.snapshot.params.id;
+
+    try {
+      if (reqMovie && parseInt(reqMovie, 10) >= 0) {
+        this._movieId = parseInt(reqMovie, 10);
+      } else {
+        this._movieId = null;
+      }
+    } catch (e) {
+      this._movieId = null;
+    }
 
     /*this.movie = {id: 1, title: 'Shrek', year: '2001', rated: 'PG', rating: 5,
       genre: 'Animation, Adventure, Comedy', runtime: '90 min',
@@ -39,12 +49,12 @@ export class ReviewsListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
-      data => {
-        console.log(data);
-        this.movie = data;
-        this.reviews = this.movie.reviews },
-      err => console.error(err)
-    );
+    if (this._movieId) {
+      this._movieService.getMovie(String(this._movieId)).subscribe((data) => {
+          this.movie = data;
+          this.reviews = this.movie.reviews;
+      }, (err) => { console.error(err); }
+      );
+    }
   }
 }

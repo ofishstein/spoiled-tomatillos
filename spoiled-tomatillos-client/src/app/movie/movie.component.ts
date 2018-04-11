@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../services/movie/movie.service';
 import { NgIf } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { AuthService } from '../services/auth.service';
+import { NgForm } from '@angular/forms';
+declare var $;
 
 @Component({
   selector: 'app-movie',
@@ -11,52 +15,81 @@ import { AuthService } from '../services/auth.service';
 })
 export class MovieComponent implements OnInit {
 
-  public movie;
-  private reviews: any;
-  public inWatchList: boolean;
-  private isLoggedIn: boolean; 
+  private movieSubject: Subject<any>;
+  private movieObservable: Observable<any>;
+  private reviewsObservable: Observable<any>;
+  private inWatchlistObservable: Observable<boolean>;
+  private movie: any;
+  private isLoggedInObservable: Observable<boolean>;
+  private isProcessingReview: boolean;
+  private _movieId: number;
 
-  constructor(private _movieService: MovieService, private route: ActivatedRoute, private _authService: AuthService) {
-      this.inWatchList = false;
-      this.isLoggedIn = false;
+  constructor(private _movieService: MovieService, private _route: ActivatedRoute, private _authService: AuthService) {
+
+    const requestedId = this._route.snapshot.params.id;
+
+    try {
+      if (requestedId && parseInt(requestedId, 10) >= 0) {
+        this._movieId = parseInt(requestedId, 10);
+      } else {
+        this._movieId = null;
+      }
+    } catch (e) {
+      this._movieId = null;
+    }
+
+    this.isProcessingReview = false;
+      
   }
 
   ngOnInit() {
-    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
-      data => {
-        console.log(data);
-        this.movie = data;
-        this.reviews = this.movie.reviews;
-        this.inWatchList = this.movie.inWatchlist; },
-      err => console.error(err)
-    );
+    this.movieSubject = new Subject<any>();
+    this.movieObservable = this.movieSubject.asObservable();
+    this.movieObservable.subscribe((movie) => {this.movie = movie;});
+    if (this._movieId) {
+      this._movieService.getMovie(this._movieId.toString()).subscribe(movie => {
+        console.log(movie);
+        this.movieSubject.next(movie);
+      });
+    }
+    this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
+    this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
+    this.isLoggedInObservable = this._authService.isLoggedIn();
+  }
 
-    this._authService.getCurrentUser().then(currentUser => {
-        if (!currentUser) {
-          this.isLoggedIn = false;
-        } else { // user must be logged in
-          this.isLoggedIn = true;
+  public submitReview(reviewForm: NgForm, event): void {
+    const formValues = reviewForm.value;
+
+    if (formValues && formValues.review && formValues.rating) {
+      this.isProcessingReview = true;
+
+      this._movieService.createMovieReview(this._movieId, formValues.rating, formValues.review).subscribe((result) => {
+        this.isProcessingReview = false;
+        reviewForm.setValue({'rating': '', 'review': ''}); // reset values of the input controls
+
+        if (result) { // review successfully POSTed
+          setTimeout(() => {
+            $('#addReview').modal('hide');
+            this._movieService.getMovie(this._movieId.toString()).subscribe(movie => this.movieSubject.next(movie));
+          }, 300);
         }
-        console.log("isLoggedIn: " + this.isLoggedIn);
-      }, err => console.log(err)
-    );
+      });
+    }
   }
 
   addToWatchlist() {
-    console.log("adding to watchlist");
-    this._movieService.addToWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.addToWatchList(this._movieId.toString()).subscribe(
       data => {
-        this.inWatchList = true;
+        this.movieSubject.next({...this.movie, inWatchlist: true});
       },
       err => console.error(err)
     );
   }
 
   removeFromWatchlist() {
-    console.log("removing from watchlist");
-    this._movieService.removeFromWatchList(this.route.snapshot.params.id).subscribe(
+    this._movieService.removeFromWatchList(this._movieId.toString()).subscribe(
       data => {
-        this.inWatchList = false;
+        this.movieSubject.next({...this.movie, inWatchlist: false});
       },
       err => console.error(err)
     );

@@ -25,9 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     Recommendation.belongsTo(models.User,
       {as: 'Recommendee', sourceKey: 'id', foreignKey: 'recommendeeId'});
     Recommendation.belongsTo(models.Movie,
-      {sourceKey: 'id', foreignKey: 'movieId'});
-    Recommendation.hasOne(models.RecommendationNotification,
-      {as: 'Notification', sourceKey: 'id', foreignKey: 'recommendationId'});
+      {as: 'Movie', sourceKey: 'id', foreignKey: 'movieId'});
   };
   return Recommendation;
 };

@@ -36,9 +36,6 @@ export class AdminLoginComponent implements OnInit {
           this.invalidCredentials = true;
         }
       );
-
-      // update currentUser
-      this._authService.getCurrentUser();
     }
   }
 

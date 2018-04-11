@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { HelloComponent } from './hello/hello.component';
 import { HelloService } from './hello.service';
 import { UsersService } from './users.service';
@@ -35,6 +35,7 @@ import { AuthService } from './services/auth.service';
 import { MovieService } from './services/movie/movie.service';
 import { ProfileService } from './services/profile.service';
 import { ApiInterceptor } from './api-interceptor';
+import { RecommendService } from './services/recommend.service';
 
 @NgModule({
   declarations: [
@@ -80,7 +81,8 @@ import { ApiInterceptor } from './api-interceptor';
     SearchService,
     AuthService,
     MovieService,
-    ProfileService
+    ProfileService,
+    RecommendService
   ],
 
   bootstrap: [AppComponent]
