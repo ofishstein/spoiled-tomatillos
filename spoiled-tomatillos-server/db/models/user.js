@@ -1,6 +1,16 @@
 'use strict';
 const bcrypt = require('bcrypt');
 
+function encryptPassword(user, options) {
+  return new Promise(((resolve, reject) => {
+    bcrypt.hash(user.password, 10, (err, hash) => {
+      if (err) return reject(err);
+      user.password = hash;
+      resolve(hash);
+    });
+  }));
+}
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     username: {
@@ -36,13 +46,10 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: (user, options) => {
-        return new Promise(((resolve, reject) => {
-          bcrypt.hash(user.password, 10, (err, hash) => {
-            if (err) return reject(err);
-            user.password = hash;
-            resolve(hash);
-          });
-        }));
+        return encryptPassword(user, options);
+      },
+      beforeUpdate: (user, options) => {
+        return encryptPassword(user, options);
       }
     }
   });

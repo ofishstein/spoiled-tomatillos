@@ -27,6 +27,12 @@ describe('User Settings', () => {
     });
   });
 
+  const updated = {
+    username: 'updated', email: 'updated@test.com',
+    password: 'updated', firstName: 'updated',
+    lastName: 'updated', bio: 'This is an updated bio'
+  };
+
   describe('Get and update user settings', () => {
     before(function (done) {
       // login
@@ -66,38 +72,58 @@ describe('User Settings', () => {
           expect(res.body).to.have.property('username');
           expect(res.body).to.have.property('email');
           expect(res.body).to.have.property('bio');
+          expect(res.body).to.not.have.property('password');
 
           done();
         });
     });
 
     it('should update all user fields if logged in as user', (done) => {
-      let updated = {
-        username: 'updated', email: 'updated@test.com',
-        password: 'updated', firstName: 'updated',
-        lastName: 'updated', bio: 'This is an updated bio'
-      };
       authenticatedUser
         .put('/api/users/settings')
         .send(updated)
         .end((err, res) => {
           expect(res).to.have.status(200);
+          authenticatedUser
+            .get('/api/users/settings')
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body.isAdmin).to.equal(false);
+              done();
+            });
+        });
+    });
+
+    it('It should not update isAdmin settings', (done) => {
+      authenticatedUser
+        .put('/api/users/settings')
+        .send({...updated, isAdmin: true})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          authenticatedUser
+            .get('/api/users/settings')
+            .end((err, res) => {
+              expect(res).to.have.status(200);
+              expect(res.body).to.have.property('username');
+              expect(res.body.username).to.equal(updated.username);
+              expect(res.body).to.have.property('email');
+              expect(res.body).to.have.property('bio');
+              expect(res.body.isAdmin).to.equal(false);
+              done();
+            });
+        });
+    });
+
+    it('It should correctly login after changing credentials', (done) => {
+      // login with updated credentials
+      request(app)
+        .post('/api/login')
+        .send({username: updated.username, password: updated.password})
+        .end(function (err, res) {
+          expect(res).to.have.status(200);
           done();
         });
     });
-  });
-
-  describe('Login and get settings after settings were updated', () => {
-    // before((done) => {
-    //     // login with updated credentials
-    //     authenticatedUser
-    //         .post('/api/login')
-    //         .send({username: 'updated', password: 'updated'})
-    //         .end(function (err, res) {
-    //             expect(res).to.have.status(200);
-    //             done();
-    //         });
-    // });
 
     it('should return 401 when logging in with old credentials', (done) => {
       request(app).post('/api/login')
@@ -107,25 +133,5 @@ describe('User Settings', () => {
           done();
         });
     });
-
-    // it('should return updated settings when logged in with updated credentials', (done) => {
-    //     let updatedUser = testData.users[0];
-    //     updatedUser.username = 'updated';
-    //     updatedUser.email = 'updated@test.com';
-    //     updatedUser.firstName = 'updated';
-    //     updatedUser.lastName = 'updated';
-    //     updatedUser.bio = 'This is an updated bio';
-    //     delete updatedUser.password;
-    //     delete updatedUser.createdAt;
-    //     delete updatedUser.updatedAt;
-    //
-    //     request.agent(app)
-    //         .get('/api/users/settings')
-    //         .end((err, res) => {
-    //             expect(res).to.have.status(200);
-    //             expect(res.body).to.eql(updatedUser);
-    //             done();
-    //         });
-    // });
   });
 });

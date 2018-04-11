@@ -85,5 +85,23 @@ describe('Profile Related Endpoints', () => {
     });
   });
 
+  describe('GET a user that doesn\'t exist', () => {
+    it('It should return a 404', (done) => {
+      requester.get('/api/users/0').end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+    });
+  });
+
+  describe('GET a user that doesn\'t exist\'s reviews', () => {
+    it('It should return a 404', (done) => {
+      requester.get('/api/users/0/reviews').end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+    });
+  });
+
 
 });
