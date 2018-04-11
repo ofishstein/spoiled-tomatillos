@@ -69,6 +69,26 @@ describe('Follower Endpoints', () => {
     });
   });
 
+  describe('GET non-existant user\'s following - 404', () => {
+    it('It should return a 404', (done) => {
+      authenticatedUser.get('/api/users/0/following').end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.error).to.equal('userId not found');
+        done();
+      });
+    });
+  });
+
+  describe('GET non-existant user\'s followers - 404', () => {
+    it('It should return a 404', (done) => {
+      authenticatedUser.get('/api/users/0/followers').end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.error).to.equal('userId not found');
+        done();
+      });
+    });
+  });
+
 
   describe('Follow and unfollow a user', () => {
     it('should return is-following as 401 when not logged in', (done) => {

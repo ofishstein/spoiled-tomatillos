@@ -26,7 +26,9 @@ function isFollowing(user1, user2, yesCase, noCase) {
  */
 function areFriends(user1, user2, yesCase, noCase) {
   return isFollowing(user1, user2, () => {
-    isFollowing(user2, user1, yesCase, noCase);
+    const u1 = user1;
+    const u2 = user2;
+    isFollowing(u2, u1, yesCase, noCase);
   },
   noCase);
 }
@@ -47,12 +49,12 @@ router.get('/', authCheck, function(req, res) {
       }
     ]
   })
-  .then(recs => {
-    res.send(recs);
-  })
-  .catch(error => {
-    res.sendStatus(500);
-  })
+    .then(recs => {
+      res.send(recs);
+    })
+    .catch(error => {
+      res.sendStatus(500);
+    });
 });
 
 router.get('/:rec_id', function(req, res, next) {
@@ -84,7 +86,7 @@ router.get('/:rec_id', function(req, res, next) {
     })
     .catch(err => {
       logger.warn('Error getting recommendation by id');
-      logger.warn(err)
+      logger.warn(err);
       res.sendStatus(500);
     });
 });
@@ -109,7 +111,7 @@ router.post('/', authCheck, function(req, res) {
             });
         },
         () => {
-          logger.warn('Are not friends!')
+          logger.warn('Are not friends!');
           errs.push({status: 401, err: 'not friends'});
           done();
         });
@@ -129,25 +131,25 @@ router.post('/', authCheck, function(req, res) {
 
 router.delete('/:rec_id', authCheck, function(req, res) {
   session.Recommendation.findById(req.params['rec_id'])
-  .then(rec => {
-    if (rec === null) {
-      res.sendStatus(404);
-      return;
-    }
+    .then(rec => {
+      if (rec === null) {
+        res.sendStatus(404);
+        return;
+      }
 
-    if (req.user.id !== rec.recommenderId && !req.user.isAdmin) {
-      res.sendStatus(401);
-    } else {
-      session.Recommendation.destroy({
-        where: {id: req.params['rec_id']}
-      })
-      .then(() => res.sendStatus(200))
-      .catch(error => {
-        logger.warn('Error deleting recommendation by id', error);
-        res.sendStatus(500);
-      });
-    }
-  });
+      if (req.user.id !== rec.recommenderId && !req.user.isAdmin) {
+        res.sendStatus(401);
+      } else {
+        session.Recommendation.destroy({
+          where: {id: req.params['rec_id']}
+        })
+          .then(() => res.sendStatus(200))
+          .catch(error => {
+            logger.warn('Error deleting recommendation by id', error);
+            res.sendStatus(500);
+          });
+      }
+    });
 });
 
 

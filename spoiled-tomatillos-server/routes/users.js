@@ -28,10 +28,11 @@ router.get('/settings', authCheck, function(req, res) {
     where: {id: req.user.id}
   })
     .then(user => {
-      delete user.password;
-      res.json(user);
+      let response = user.get({plain: true});
+      delete response.password;
+      res.json(response);
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
       logger.error(error);
       res.sendStatus(500);
     });
@@ -138,7 +139,8 @@ router.get('/:user_id/following', function(req, res) {
         res.status(404).send(userNotFound);
       }
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
+      // Only occurs on db error, unable to test
       logger.error(error);
       res.sendStatus(500);
     });
@@ -169,7 +171,8 @@ router.get('/:user_id/followers', function(req, res) {
         res.status(404).send(userNotFound);
       }
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
+      // Only occurs on db error, unable to test
       logger.error(error);
       res.sendStatus(500);
     });
@@ -200,7 +203,6 @@ router.get('/:user_id/is-following', function(req, res) {
 
 router.get('/:user_id/reviews', function(req, res) {
   // Get user's reviews
-  // {"Reviews":[{"text":"Meh","rating":3,"Movie":{"id":1,"title":"Toy Story (1995)","poster":null}}]}
   session.User.findOne({
     attributes: [],
     where: {id: req.params['user_id']},
@@ -220,7 +222,8 @@ router.get('/:user_id/reviews', function(req, res) {
         res.status(404).send(userNotFound);
       }
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
+      // Only occurs on db error, unable to test
       logger.error(error);
       res.sendStatus(500);
     });
@@ -235,21 +238,18 @@ router.put('/settings', authCheck, function(req, res) {
     delete req.body.isAdmin;
   }
 
-  session.User.update(req.body, {
-    where: { id: req.user.id }
-  })
-    .then(updated => {
-      if (updated === 0) {
+  session.User.findById(req.user.id)
+    .then(user => {
+      if (!user) /* istanbul ignore next */ {
         logger.error('Settings put failed', req.body);
         res.sendStatus(500);
       } else {
-        session.User.findOne({
-          where: {id: req.user.id}
-        })
-          .then(user => {
-            delete user.password;
-            logger.info('Settings put succeeded', user.get({plain: true}));
-            res.json(user);
+        user.update(req.body)
+          .then(updatedUser => {
+            let response = updatedUser.get({plain: true});
+            delete response.password;
+            logger.info('Settings put succeeded', response);
+            res.json(response);
           });
       }
     });
@@ -276,7 +276,7 @@ router.post('/:user_id/follow', authCheck, function(req, res) {
     }).then(() => {
       res.json(false);
     })
-      .catch(error => {
+      .catch(/* istanbul ignore next */ error => {
         logger.error(error);
         res.sendStatus(500);
       });
@@ -294,7 +294,7 @@ router.delete('/:user_id', authCheck, function(req, res) {
       .then(() => {
         res.sendStatus(200);
       })
-      .catch(error => {
+      .catch(/* istanbul ignore next */ error => {
         logger.error(error);
         res.sendStatus(500);
       });
@@ -315,9 +315,9 @@ router.post('/', adminCheck, function(req, res) {
       logger.error(error);
       if (error.constructor.name === 'UniqueConstraintError') {
         res.sendStatus(400).send(error);
-        return;
+      } else /* istanbul ignore next */ {
+        res.sendStatus(500);
       }
-      res.sendStatus(500);
     });
 });
 

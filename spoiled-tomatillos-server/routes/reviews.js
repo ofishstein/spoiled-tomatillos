@@ -17,7 +17,7 @@ router.get('/:review_id', function(req, res, next) {
       }
       res.send(review);
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
       logger.warn('Error getting review by id', error);
       res.sendStatus(500);
     });
@@ -25,11 +25,12 @@ router.get('/:review_id', function(req, res, next) {
 
 // POST METHODS
 router.post('/:review_id/flag', authCheck, function(req, res) {
+  // TODO: 404 if review id doesn't exist
   session.Review.findById(req.params['review_id'])
     .then(review => {
       review.update({flagged: true})
         .then(() => { res.sendStatus(200); })
-        .catch(error => {
+        .catch(/* istanbul ignore next */ error => {
           logger.warn('Error flagging (POST) review by id', error);
           res.sendStatus(500);
         });
@@ -37,11 +38,12 @@ router.post('/:review_id/flag', authCheck, function(req, res) {
 });
 
 router.post('/:review_id/unflag', adminCheck, function(req, res) {
+  // TODO: 404 if review id doesn't exist
   session.Review.findById(req.params['review_id'])
     .then(review => {
       review.update({flagged: false})
         .then(() => { res.sendStatus(200); })
-        .catch(error => {
+        .catch(/* istanbul ignore next */ error => {
           logger.warn('Error flagging review (POST) by id', error);
           res.sendStatus(500);
         });
@@ -58,13 +60,13 @@ router.put('/:review_id', authCheck, function(req, res) {
       } else {
         review.update(req.body, {where: {id: review.get('id')}})
           .then(() => { res.send(review.get({plain: true}));})
-          .catch(error => {
+          .catch(/* istanbul ignore next */ error => {
             logger.warn('Error putting review by id (update)', error);
             res.sendStatus(500);
           });
       }
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
       logger.warn('Error finding review to PUT by id', error);
       res.sendStatus(500);
     });
@@ -82,13 +84,13 @@ router.delete('/:review_id', authCheck, function(req, res) {
           where: {id: req.params['review_id']}
         })
           .then(() => { res.sendStatus(200); })
-          .catch(error => {
+          .catch(/* istanbul ignore next */ error => {
             logger.warn('Error deleting review by id (destroy)', error);
             res.sendStatus(500);
           });
       }
     })
-    .catch(error => {
+    .catch(/* istanbul ignore next */ error => {
       logger.warn('Error deleting review by id', error);
       res.sendStatus(500);
     });
