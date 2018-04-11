@@ -84,7 +84,7 @@ passport.use(new LocalStrategy({passReqToCallback: true}, function(req, username
 /* Post to login user. */
 router.post('/login', passport.authenticate('local', {}), function(req, res) {
   logger.info('User logged in', logger.omit(req.user.get({plain: true}), 'password'));
-  let resp = req.user;
+  let resp = req.user.get({plain: true});
   delete resp.password;
   res.send(resp);
 });
