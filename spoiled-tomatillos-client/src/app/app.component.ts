@@ -26,10 +26,13 @@ export class AppComponent implements OnInit {
 
     // Navigates the user to the SearchComponent upon a successful search.
     this._searchService.searchChange.subscribe((searchSuccessful) => {
-      if (searchSuccessful) {
-        this._router.navigate(['/search']);
-      }
+      this._authService.isAdmin().subscribe((isAdmin) => {
+        if (searchSuccessful && !isAdmin) {
+          this._router.navigate(['/search']);
+        }
+      });
     });
+
   }
 
   /**

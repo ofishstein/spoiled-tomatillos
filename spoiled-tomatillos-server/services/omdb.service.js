@@ -20,13 +20,14 @@ omdb.searchByKeyword = (keyword, page) => {
 
 // Get a movie by imdb id and return json results, returns promise
 omdb.getMovieById = (id) => {
-  // TODO: are all imported movielens imdb ID's 6 digits? (determine omdb prefix)
-  return rp.get({uri: omdbBase + 'plot=full&i=tt0' + id, json: true});
+  id = '000000' + id;
+  return rp.get({uri: omdbBase + 'plot=full&i=tt' + id.slice(-7), json: true});
 };
 
 // Get a movie's poster image by imdb id, returns promise
 omdb.getPosterById = (id) => {
-  return rp.get({uri: omdbBase + 'i=tt0' + id, json: true});
+  id = '000000' + id;
+  return rp.get({uri: omdbBase + 'i=tt' + id.slice(-7), json: true});
 };
 
 module.exports = omdb;
