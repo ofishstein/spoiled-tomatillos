@@ -1,4 +1,4 @@
-<div class="media">
+<div [ngClass]="{'media':true, 'deleted': this._isDeleted}">
   <div class="card ml-2 mr-2 mb-2">
     <a routerLink="/user/{{ review.user.id }}">
       <div class="card-img-top">
@@ -12,7 +12,11 @@
   </div>
 
   <div class="media-body">
-    <h6>{{ review.rating }} / 5</h6>
+    <h6>{{ review.rating }} / 10</h6>
     <p>{{ review.text }}</p>
   </div>
+  <p class="text-muted text-right mb-0"><small>{{ getActivityDisplayDate(review.createdAt) }}</small>
+    <br style="clear:right">
+    <button type="button" *ngIf="canDelete(review)" (click)="deleteReview(review)" role="button" class="btn btn-sm btn-outline-success">Delete</button>
+  </p>
 </div>

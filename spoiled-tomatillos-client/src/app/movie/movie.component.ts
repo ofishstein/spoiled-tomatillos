@@ -47,7 +47,10 @@ export class MovieComponent implements OnInit {
     this.movieObservable = this.movieSubject.asObservable();
     this.movieObservable.subscribe((movie) => {this.movie = movie;});
     if (this._movieId) {
-      this._movieService.getMovie(this._movieId.toString()).subscribe(movie => this.movieSubject.next(movie));
+      this._movieService.getMovie(this._movieId.toString()).subscribe(movie => {
+        console.log(movie);
+        this.movieSubject.next(movie);
+      });
     }
     this.reviewsObservable = this.movieObservable.map((movie) => movie.reviews);
     this.inWatchlistObservable = this.movieObservable.map((movie) => movie.inWatchlist);
