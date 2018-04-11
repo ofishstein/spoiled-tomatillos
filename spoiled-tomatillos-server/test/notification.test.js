@@ -72,6 +72,8 @@ describe('Notifications Tests', () => {
             expect(n['seen']).to.eql(null);
             expect(n).to.have.property('Follower');
             // TODO: add more follower specific comparisons once format finalized
+
+
             done();
           });
       });
@@ -88,12 +90,10 @@ describe('Notifications Tests', () => {
       .save()
       .then((rec) => {
         expect(rec).to.not.be.a('null');
-
-        console.log('\n\n'+rec);
         authenticatedUser.get('/api/notifications')
           .end((err, res) => {
             expect(res).to.have.status(200);
-            expect(res.body['unseenCount']).to.eql(2);
+            expect(res.body['unseenCount']).to.eql(1);
             expect(res.body['notifications'].length).to.eql(2);
             let n = res.body['notifications'][1];
             expect(n['type']).to.eql('RECOMMENDATION');
@@ -111,6 +111,7 @@ describe('Notifications Tests', () => {
         authenticatedUser.get('/api/notifications')
           .end((err, res) => {
             expect(res).to.have.status(200);
+            expect(res.body['unseenCount']).to.eql(0);
             expect(res.body['notifications'].length).to.eql(1);
             expect(res.body['notifications'][0]['type']).to.eql('RECOMMENDATION');
             done();
