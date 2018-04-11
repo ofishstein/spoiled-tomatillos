@@ -3,29 +3,35 @@
     <div class="form-row align-items-center">
       <div class="col-0 col-sm-1"></div>
       <div class="col-9">
-        <input class="form-control" name="search" type="search" placeholder="Search movie info..." aria-label="Search" ngModel>
+        <input class="form-control" name="search" type="search" placeholder="Search for movie to edit..." aria-label="Search" ngModel>
       </div>
       <div class="col-3 col-sm-1 ml-0">
         <button class="btn btn-outline-warning pull-left" type="submit">Search</button>
       </div>
-      <div class="col-0 col-sm-1"></div>
+      <div class="col-0 col-sm-1">
+          <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>
     </div>
   </form>
   <div *ngIf="results" class="mt-3">
-    <div class="row mb-2 border" *ngFor="let result of results">
+    <div class="row mb-2 border" *ngFor="let result of results | slice:0:25">
       <div class="col-12 col-md-3" style="text-align: center">
-        <a href="#">
-        <img src="{{ result.Poster }}" class="img-fluid img-thumbnail" alt="Poster for {{ result.Title }}" style="max-height: 100px">
+        <a href="#" routerLink="/admin/movie/edit/{{ result.id }}">
+        <img src="{{ result.poster }}" class="img-fluid img-thumbnail" alt="Poster for {{ result.title }}" style="max-height: 100px">
         </a>
       </div>
       <div class="description col-12 col-md-9">
-        <a href="#">
-        <h4>{{ result.Title }} ({{ result.Year}})</h4>
+        <a href="#" routerLink="/admin/movie/edit/{{ result.id }}">
+        <h4>{{ result.title }}</h4>
         </a>
-        <button type="button" class="btn btn-sm btn-outline-warning" [routerLink]="['/admin/movie/edit/result.id']">Edit Listing</button>
+        <button type="button" class="btn btn-sm btn-outline-warning" [routerLink]="['/admin/movie/edit/', result.id]">Edit Listing</button>
         <!--<a href="#">
         <span class="">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum mattis iaculis. In vehicula sapien at orci interdum, eu cursus massa molestie. Suspendisse ullamcorper turpis vel rhoncus faucibus.</span>
         </a>-->
+        <br>
+        <a href="#" routerLink="/admin/movie/edit/{{ result.id }}">
+          <span *ngIf="result.description" class="">{{ result.description }}</span>
+        </a>
       </div>
     </div>
   </div>
