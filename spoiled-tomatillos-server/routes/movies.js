@@ -11,6 +11,10 @@ const authCheck = require('./auth');
 router.get('/', function(req, res) {
   utils.handleSearch(req.query, session.Movie, session, (result) => {
     res.send(result);
+  },
+  (error, status) => {
+    console.log(error);
+    res.sendStatus(status);
   });
 });
 
