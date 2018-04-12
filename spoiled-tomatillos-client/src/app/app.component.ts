@@ -62,6 +62,7 @@ export class AppComponent implements OnInit {
 
   public logout(): void {
     this._authService.logout();
+    this._notificationService.resetUnseenCount();
     this._router.navigate(['/login']);
   }
 }

@@ -1,3 +1,9 @@
 .nav-item.dropdown .dropdown-menu {
   left: -140px;
 }
+
+.badge.badge-danger.notification-badge {
+  position: relative;
+  bottom: 18px;
+  right: 12px;
+}

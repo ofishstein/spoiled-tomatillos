@@ -26,7 +26,12 @@ export class NotificationService {
         .catch((err) => {
         console.log('Checking for new notifications failed: ',+err);
       });
-}
+  }
+
+  // on logout, reset unseen count to false
+  public resetUnseenCount(): void {
+    this.unseenCount.next(false);
+  }
 
 
 
