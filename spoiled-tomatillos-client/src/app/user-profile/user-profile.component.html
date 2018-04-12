@@ -18,6 +18,9 @@
             {{ userProfile.getBio() }}
           </div>
         </div>
+        <div class="card-body">
+          <p><span style="font-weight: bold">Preferred Service: </span>{{ displayStreamingService(userProfile.getPreferredService()) }}</p>
+        </div>
       </div>
 
       <!-- follow -->
@@ -49,11 +52,11 @@
               <div class="card ml-2 mr-2 mb-2">
                 <a routerLink="/user/{{ foll.followeeId }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.followeeProfileImageUrl }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ foll.FolloweeUser?.profileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
-                    <small>{{ foll.followeeUsername }}</small>
+                    <small>{{ foll.FolloweeUser?.username }}</small>
                   </div>
                 </a>
               </div>
@@ -80,11 +83,11 @@
               <div class="card ml-2 mr-2 mb-2">
                 <a routerLink="/user/{{ follower.followerId }}">
                   <div class="card-img-top">
-                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.followerProfileImageUrl }}"
+                    <img class="rounded mx-auto img-thumbnail st-follower-thumbnail" src="{{ follower.FollowerUser?.profileImageUrl }}"
                          width="100%" height="auto"/>
                   </div>
                   <div class="card-title mb-0 text-center">
-                    <small>{{ follower.followerUsername }}</small>
+                    <small>{{ follower.FollowerUser?.username }}</small>
                   </div>
                 </a>
               </div>
@@ -113,7 +116,7 @@
             <div class="col-sm-3" *ngFor="let movie of userProfile.getWatchlist().getMovies() | slice:0:8">
               <div class="st-thumbnail">
                 <a routerLink="/movie/{{ movie.movieId }}">
-                  <img class="st-thumbnail-img" src="{{ movie.Movie.poster }}"/>
+                  <img class="st-thumbnail-img" src="{{ movie.Movie?.poster }}"/>
                 </a>
               </div>
             </div>
@@ -147,12 +150,12 @@
 
               <!-- "Review" case -->
               <div *ngSwitchCase="'review'" class="media pt-3 pb-3 border-bottom">
-                <a routerLink="/movie/{{activity.Movie.id}}">
+                <a routerLink="/movie/{{activity.Movie?.id}}">
                   <!--<img class="d-flex align-self-center mr-3"
                      src="https://images-na.ssl-images-amazon.com/images/M/MV5BMjE4NTA1NzExN15BMl5BanBnXkFtZTYwNjc3MjM3._V1_SX300.jpg"
                        height="100px" width="auto">-->
                     <img class="d-flex align-self-center mr-3" height="100px" width="auto"
-                      src="{{ activity.Movie.poster }}">
+                      src="{{ activity.Movie?.poster }}">
                 </a>
                 <div class="media-body">
                   <p class="text-left">{{ userProfile?.getUsername() }} {{ getActionFromActivityType(activity.type) }}

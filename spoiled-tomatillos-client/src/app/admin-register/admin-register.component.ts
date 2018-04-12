@@ -15,7 +15,9 @@ export class AdminRegisterComponent implements OnInit {
     password: null,
     firstName: null,
     lastName: null,
-    isAdmin: true
+    isAdmin: true,
+    bio: null,
+    preferredService: null
   };
 
   loading = false;

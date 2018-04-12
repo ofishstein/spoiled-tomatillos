@@ -40,13 +40,13 @@ export class UsersService {
   }
 
   public createAdmin(user: User) {
-    const endpoint = '/api/user'
+    const endpoint = '/api/users';
     return this.http.post(endpoint, user, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text',
       withCredentials: true
     });
-  } 
+  }
 
   public follow(userId: string) {
     const endpoint = '/api/users/' + userId + '/follow';

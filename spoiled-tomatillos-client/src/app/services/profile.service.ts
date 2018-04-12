@@ -30,7 +30,7 @@ export class ProfileService {
           profileWatchlist = new Watchlist(null, null, null, null, null);
         }
         return new Profile(body.id, body.bio, body.email, body.username, body.profileImageUrl,
-          body.firstName, body.lastName, body.isAdmin, body.reviews, body.followers, body.following,
+          body.firstName, body.lastName, body.isAdmin, body.preferredService, body.reviews, body.followers, body.following,
           body.activities, profileWatchlist, body.createdAt, body.updatedAt);
       }),
       catchError((err) => {
