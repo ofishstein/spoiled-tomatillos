@@ -25,19 +25,23 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private _route: ActivatedRoute, private _http: HttpClient,
     private _profileService: ProfileService, private _usersService: UsersService, private _authService: AuthService) {
-      const profileId = this._route.snapshot.params.uid;
+      this._route.params.subscribe((params) => {
+        const profileId = params.uid;
 
-      if (profileId && parseInt(profileId, 10)) {
-        this.uid = parseInt(profileId, 10);
-      } else {
-        this.uid = null;
-      }
+        if (profileId && parseInt(profileId, 10)) {
+          this.uid = parseInt(profileId, 10);
+        } else {
+          this.uid = null;
+        }
 
-      this.isFollowingProfileViewer = false;
-      this.isProfileViewerFollowing = false;
-      this.isProfileViewerLoggedIn = false;
-      this.isViewingOwnProfile = false;
-      this.userProfile = null;
+        this.isFollowingProfileViewer = false;
+        this.isProfileViewerFollowing = false;
+        this.isProfileViewerLoggedIn = false;
+        this.isViewingOwnProfile = false;
+        this.userProfile = null;
+
+        this.ngOnInit();
+      });
   }
 
   ngOnInit() {
