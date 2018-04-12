@@ -45,12 +45,15 @@ export class UserProfileComponent implements OnInit {
     this._mockUser = {
       userId: 789, username: 'john_doe', firstName: 'John', lastName: 'Doe',
       bio: 'I like movies blah blah blah.',
+      preferredService: 'netflix',
       profileImageUrl: 'http://lorempixel.com/400/400/',
       followers: [{followerId: 1235, followerUsername: 'bob_tomato',
           followerProfileImageUrl: '../../assets/profile_image_placeholder.png',
+          FollowerUser: { id: 1235, username: 'bob_tomato', profileImageUrl: '../../assets/profile_image_placeholder.png' }
         },
         {followerId: 1236, followerUsername: 'user9873',
           followerProfileImageUrl: '../../assets/profile_image_placeholder.png',
+          FollowerUser: { id: 1236, username: 'user9873', profileImageUrl: '../../assets/profile_image_placeholder.png' }
         }
       ],
       following: [{followeeId: 124, followeeUsername: 'bob_lob_law',
@@ -190,8 +193,9 @@ export class UserProfileComponent implements OnInit {
     // if the request completely failed, populate UI with ALL the fake data
     if (!aProfile || aProfile == null) {
       this.userProfile = new Profile(this._mockUser.id, this._mockUser.bio, this._mockUser.email, this._mockUser.username,
-        this._mockUser.profileImage.url, this._mockUser.firstName, this._mockUser.lastName, this._mockUser.isAdmin, this._mockUser.reviews,
-        this._mockUser.followers, this._mockUser.following, this._mockUser.activities,
+        this._mockUser.profileImage.url, this._mockUser.firstName, this._mockUser.lastName, this._mockUser.isAdmin,
+        this._mockUser.preferredService, this._mockUser.reviews, this._mockUser.followers, this._mockUser.following,
+        this._mockUser.activities,
         new Watchlist(null, null, null, null, this._mockUser.watchlist), this._mockUser.createDate, this._mockUser.lastUpdated);
       return;
     }
@@ -274,6 +278,21 @@ export class UserProfileComponent implements OnInit {
         this.isProfileViewerFollowing = false; },
       err => console.error(err)
     );
+  }
+
+  public displayStreamingService(aService: string): string {
+    aService = aService.toLowerCase();
+
+    switch (aService) {
+      case 'hbo': return 'HBO';
+      case 'netflix': return 'Netflix';
+      case 'youtube': return 'YouTube RED';
+      case 'amazon': return 'Amazon Prime Video';
+      case 'hulu': return 'Hulu';
+      case 'showtime': return 'ShowTime';
+      case 'xfinity': return 'XFinity';
+      default: return '<none>';
+    }
   }
 
 }

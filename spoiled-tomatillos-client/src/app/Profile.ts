@@ -9,6 +9,7 @@ export class Profile {
     private _firstName: string;
     private _lastName: string;
     private _isAdmin: boolean;
+    private _preferredService: string;
     private _reviews: Array<object>;
     private _followers: Array<object>;
     private _following: Array<object>;
@@ -19,7 +20,7 @@ export class Profile {
     private _last_updated: number;
 
     constructor(id: number, bio: string, email: string, username: string, photoPath: string,
-        firstName: string, lastName: string, isAdmin: boolean, reviews: Array<object>, followers: Array<object>,
+        firstName: string, lastName: string, isAdmin: boolean, preferredService: string, reviews: Array<object>, followers: Array<object>,
         following: Array<object>, activity: Array<object>, watchList: Watchlist, createdTimestamp: string, lastUpdatedTimestamp: string) {
       this._id = id || 999;
       this._bio = bio || '<no bio>';
@@ -29,6 +30,7 @@ export class Profile {
       this._firstName = firstName || 'Nofirstname';
       this._lastName = lastName || 'Nolastname';
       this._isAdmin = isAdmin || false;
+      this._preferredService = preferredService || '';
       this._reviews = reviews || [];
       this._followers = followers || [];
       this._following = following || [];
@@ -103,6 +105,10 @@ export class Profile {
         return this._isAdmin;
     }
 
+    public getPreferredService(): string {
+        return this._preferredService;
+    }
+
     public getCreateDate(): number {
         return this._create_date;
     }
@@ -130,6 +136,10 @@ export class Profile {
 
     public setEmail(newEmail: string): void {
         this._email = newEmail;
+    }
+
+    public setPreferredService(newService: string): void {
+        this._preferredService = newService;
     }
 
     public setReviews(newReviews: Array<object>): void {
