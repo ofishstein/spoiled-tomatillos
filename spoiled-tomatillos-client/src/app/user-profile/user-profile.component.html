@@ -230,7 +230,7 @@
                 <!--</div>-->
               <!--</div>-->
 
-                <div class="row mt-3 border-bottom" *ngFor="let review of userProfile?.getReviews() | slice:0:3">
+                <div class="row mt-3 border-bottom" *ngFor="let review of sortReviews(userProfile?.getReviews())">
                   <div class="media">
                     <div class="card ml-2 mr-2 mb-2">
                       <a routerLink="/movie/{{review.Movie?.id}}"><div class="card-img-top">

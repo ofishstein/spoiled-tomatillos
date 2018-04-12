@@ -246,12 +246,30 @@ export class UserProfileComponent implements OnInit {
     const timeDiff = Math.abs(new Date(Date.now()).getTime() - asDate.getTime());
     const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     if (diffDays <= 1) {
-      return String( Math.ceil(timeDiff / (1000 * 3600)) ) + 'h ago';
+      const hours = Math.ceil( timeDiff / (1000 * 3600) );
+
+      if (hours === 1) {
+        return 'less than 1h ago';
+      } else {
+        return String(hours) + 'h ago';
+      }
     } else if (diffDays < 7) {
      return String(diffDays) + 'd ago';
     } else {
       return asDate.toDateString();
     }
+  }
+
+  /**
+   * Displays the user Profile's reviews sorted according to most recent "updatedAt" field.
+   * @param reviewsArray the Profile's reviews to be sorted.
+   */
+  public sortReviews(reviewsArray: Array<{ updatedAt: string }>): Array<object> {
+    return reviewsArray.sort((a, b) => {
+      const aDate = new Date(Date.parse(a.updatedAt));
+      const bDate = new Date(Date.parse(b.updatedAt));
+      return aDate > bDate ? -1 : bDate > aDate ? 1 : 0;
+    });
   }
 
   public getActionFromActivityType(activityType: string): string {
