@@ -2,70 +2,68 @@
   <div class="row">
     <div class="col">
       <h2>Notifications</h2>
-      {{notifications}}
-      {{unseenCount}}
     </div>
   </div>
 
+  <!-- list of notifications-->
+  <ng-container *ngIf="notifications; else noNotifications">
+    <div *ngFor="let notif of notifications">
 
-  <div class="row border">
-
-    <!-- if no notifications (new or old) -->
-    <ng-container *ngIf="!notifications; else notificationList">
-      <span>You have 0 notifications</span>
-    </ng-container>
-
-    <!-- list of notifications-->
-    <ng-template #notificationList>
-      <div *ngFor="let notif of notifications">
-        <ng-container *ngIf="notif.type === 'FOLLOWER'; else recommendation">
-
-          <!-- new follower notification -->
-          <div [class.new-notification]="notif.seen === null">
-            <div class="col-2">
-              <a routerLink="/user/{{notif.Follower.FollowerUser.id}}">
+      <div *ngIf="notif.type === 'FOLLOWER'">
+        <!-- new follower notification -->
+        <div class="row border">
+          <a routerLink="/user/{{notif.Follower.FollowerUser.id}}">
+            <div [class.new-notification]="notif.seen === null">
+              <div class="col-2 mr-3">
                 <img class="img-fluid float-right" src="{{notif.Follower.FollowerUser.profileImageUrl}}" style="max-height: 75px">
-              </a>
-            </div>
-            <div class="col-9">
+              </div>
+              <div class="col-9">
               <span>
-                <a routerLink="/user/{{notif.Follower.FollowerUser.id}}">
-                  {{notif.Follower.FollowerUser.username}}</a> started following you.
+                  {{notif.Follower.FollowerUser.username}} started following you.
               </span>
-              <!--<p class="text-muted text-right mb-0"><small>{{ getActivityDisplayDate(notif.createdAt) }}</small></p>-->
+                <!--<p class="text-muted text-right mb-0"><small>{{ getActivityDisplayDate(notif.createdAt) }}</small></p>-->
+              </div>
             </div>
-          </div>
-
-        </ng-container>
-
-
-      </div>
-
-    </ng-template>
-
-    <!-- new recommendation notification -->
-    <ng-template #recommendation>
-      <div [class.new-notification]="notif.seen === null">
-        <div class="col-2">
-          <a routerLink="/user/{{notif.Recommendation.Movie.id}}">
-            <img class="img-fluid float-right" src="{{notif.Recommendation.Movie.poster}}" style="max-height: 75px">
           </a>
         </div>
-        <div class="col-9">
-              <span>
-                <a routerLink="/user/{{notif.Recommendation.Recommender.id}}">
-                  {{notif.Recommendation.Recommender.username}}
-                </a>
-                recommended
-                <a routerLink="/movie/{{notif.Recommendation.Movie.id}}">
-                  {{notif.Recommendation.movie.title}}.
-                </a>
-              </span>
-          <!--<p class="text-muted text-right mb-0"><small>{{ getActivityDisplayDate(notif.createdAt) }}</small></p>-->
+      </div>
+
+      <div *ngIf="notif.type === 'RECOMMENDATION'">
+        <!-- new recommendation notification -->
+        <div class="row border">
+          <a routerLink="/user/{{notif.Recommendation.Movie.id}}">
+            <div [class.new-notification]="notif.seen === null">
+              <div class="col-2 mr-3">
+                <img class="img-fluid float-right" src="{{notif.Recommendation.Movie.poster}}" style="max-height: 75px">
+              </div>
+              <div class="col-9">
+            <span>
+              {{notif.Recommendation.Recommender.username}} recommended {{notif.Recommendation.Movie.title}}.
+            </span>
+                <div *ngIf="notif.Recommendation.message">
+                  <div class="row border rec-msg">
+                    <p style="min-height: 50px;">{{notif.Recommendation.message}}</p>
+                  </div>
+                </div>
+                <!--<p class="text-muted text-right mb-0"><small>{{ getActivityDisplayDate(notif.createdAt) }}</small></p>-->
+              </div>
+            </div>
+          </a>
         </div>
       </div>
 
-    </ng-template>
-  </div>
+
+    </div>
+
+  </ng-container>
+
+  <!-- if no notifications (new or old) -->
+  <ng-template #noNotifications>
+    <div class="row border">
+      <span>You have 0 notifications</span>
+    </div>
+  </ng-template>
 
 </div>
+
+

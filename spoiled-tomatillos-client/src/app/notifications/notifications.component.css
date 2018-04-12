@@ -15,3 +15,16 @@ a {
 .new-notification {
   background-color: #7f7f7f;
 }
+
+.new-notification:hover {
+  background-color: lightgoldenrodyellow;
+}
+
+.rec-msg {
+  margin: 10px;
+  margin-bottom: 15px;
+}
+
+.row.border {
+  padding: 5px;
+}

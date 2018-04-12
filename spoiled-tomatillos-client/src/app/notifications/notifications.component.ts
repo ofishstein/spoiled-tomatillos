@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
-import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-notifications',
@@ -9,19 +8,21 @@ import { AuthService } from '../services/auth.service';
 })
 export class NotificationsComponent implements OnInit {
 
-  private notifications: Array<any>;
-  private unseenCount: number;
+  public notifications: Array<any>;
+  public unseenCount: number;
 
   constructor(private _notificationService: NotificationService) {}
 
   ngOnInit() {
     this._notificationService.getNotifications().subscribe((response) => {
       if (response) {
-        console.log('GET NOTIFICATIONS RESPONSE: '+response);
+        console.log('GET NOTIFICATIONS RESPONSE["notifications"]: '+response['notifications']);
         this.notifications = response['notifications'];
         this.unseenCount = response['unseenCount'];
       }
     });
+
+    this._notificationService.updateUnseenCount();
   }
 
 }
