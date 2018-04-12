@@ -11,3 +11,7 @@ a {
     /*color: inherit; we may or may not want this*/
     text-decoration: none;
 }
+
+.new-notification {
+  background-color: #7f7f7f;
+}
