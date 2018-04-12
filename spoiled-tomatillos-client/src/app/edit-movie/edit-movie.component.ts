@@ -10,7 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class EditMovieComponent implements OnInit {
 
-  loading = false;
+  public isLoading: boolean;
   private movieData;
 
   movie: AdminMovie = {
@@ -20,10 +20,12 @@ export class EditMovieComponent implements OnInit {
     imdbId: null
   };
 
-  constructor(private _router: Router, private _movieService: MovieService, private route: ActivatedRoute) { }
+  constructor(private _movieService: MovieService, private _router: Router, private _route: ActivatedRoute) {
+    this.isLoading = false;
+  }
 
   ngOnInit() {
-    this._movieService.getMovie(this.route.snapshot.params.id).subscribe(
+    this._movieService.getMovie(this._route.snapshot.params.id).subscribe(
       data => {
         console.log(data);
         this.movieData = data;
@@ -37,14 +39,14 @@ export class EditMovieComponent implements OnInit {
   }
 
   editMovie() {
-    this.loading = true;
-    this._movieService.editMovie(this.movie, this.route.snapshot.params.id).subscribe(
+    this.isLoading = true;
+    this._movieService.editMovie(this.movie, this._route.snapshot.params.id).subscribe(
       data => {
         this._router.navigate(['/admin/home']);
       },
       error => {
         console.log(error);
-        this.loading = false;
+        this.isLoading = false;
       }
     );
   }
