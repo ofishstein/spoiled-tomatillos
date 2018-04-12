@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../users.service';
 import { User } from '../user';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-settings',
@@ -15,44 +17,62 @@ export class AccountSettingsComponent implements OnInit {
       password: null,
       firstName: null,
       lastName: null,
-      isAdmin: false
+      isAdmin: false,
+      bio: null,
+      preferredService: null
     };
 
-  loading = false;
+  public isLoading: boolean;
+  private _userId: number;
 
-  constructor(private userService: UsersService) { }
+  constructor(private _userService: UsersService, private _router: Router) {
+    this.isLoading = false;
+    this._userId = null;
+  }
 
   ngOnInit() {
-    this.loading = true;
-    this.userService.getUserInfo().subscribe((userData) => {
-      this.user.username = userData.username;
-      this.user.email = userData.email;
-      this.user.firstName = userData.firstName;
-      this.user.lastName = userData.lastName;
-      this.user.isAdmin = userData.isAdmin;
+    this.isLoading = true;
+
+    this._userService.getUserInfo().subscribe((userData) => {
+      if (userData) {
+        this._userId = userData['id'];
+        this.user.username = userData.username;
+        this.user.email = userData.email;
+        this.user.bio = userData.bio;
+        this.user.preferredService = userData.preferredService;
+        this.user.firstName = userData.firstName;
+        this.user.lastName = userData.lastName;
+        this.user.isAdmin = userData.isAdmin;
+
+        this.isLoading = false;
+      }
     }, error => {
-      //todo
+      // TODO
       console.log(error);
-      
+      this.isLoading = false;
     });
-    this.loading = false;
   }
 
-  update() {
-  	this.loading = true;
-    this.userService.update(this.user)
-        .subscribe(
-            data => {
-          
-            },
-            error => {
-            	//todo
-              console.log(error);
-            
-            });
-    this.loading = false;
-  }
+  public update(updateForm: NgForm) {
+    this.isLoading = true;
+    const values = updateForm.value;
 
-    
+    // Check password fields were submitted & equal, otherwise update will fail
+    if (values.inputNewPassword === values.inputConfirmPassword) {
+      this.user.password = values.inputNewPassword;
+      console.log('fired. latest local user obj: ');
+      console.log(this.user);
+
+      this._userService.update(this.user).subscribe(data => {
+          // update successful; navigate to user's profile
+          this.isLoading = false;
+          this._router.navigate(['/user/' + String(this._userId)]);
+      }, err => {
+        // TODO
+        console.log(err);
+        this.isLoading = false;
+      });
+    }
+  }
 
 }
