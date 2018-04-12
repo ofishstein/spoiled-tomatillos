@@ -5,4 +5,6 @@ export class User {
     firstName: string;
     lastName: string;
     isAdmin: boolean;
+    bio: string;
+    preferredService: string;
 }

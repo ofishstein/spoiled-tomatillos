@@ -27,6 +27,21 @@
         <label for="inputEmail">Email</label>
         <input type="email" class="form-control"  id="inputEmail" [(ngModel)]="user.email" name="email" [value]="name">
         <br>
+        <label for="inputEmail">Bio</label>
+        <input type="text" class="form-control"  id="inputBio" [(ngModel)]="user.bio" name="bio" [value]="name">
+        <br>
+        <label for="streamService">Preferred Streaming Service</label>
+        <br>
+        <select id="streamService" class="form-control" [(ngModel)]="user.preferredService" name="preferredService" [value]="name">
+            <option value="netflix">Netflix</option>
+            <option value="hulu">Hulu</option>
+            <option value="amazon">Amazon Video</option>
+            <option value="youtube">Youtube RED</option>
+            <option value="hbo">HBO</option>
+            <option value="showtime">Showtime</option>
+            <option value="xfinity">Xfinity</option>
+        </select>
+        <br>
         <div class="form-row">
           <div class="col-6">
         <label for="inputFirstname">First Name</label>
@@ -37,13 +52,13 @@
         <input type="text" class="form-control" id="inputLastname" [(ngModel)]="user.lastName" name="lastName" [value]="name">
         </div>
         </div>
+        <br>
+        <label for="inputNewPassword">New Password</label>
+        <input type="password" class="form-control" id="inputNewPassword">
+        <label for="inputConfirmPassword">Confirm New Password</label>
+        <input type="password" class="form-control" id="inputConfirmPassword">
       </div>
     </div>
-
-    <label for="inputNewPassword">New Password</label>
-    <input type="password" class="form-control" id="inputNewPassword">
-    <label for="inputConfirmPassword">Confirm New Password</label>
-    <input type="password" class="form-control" id="inputConfirmPassword">
 
     <button type="button" class="btn btn-primary btn-block mt-2">Connect with Facebook</button>
     <div class="form-row">

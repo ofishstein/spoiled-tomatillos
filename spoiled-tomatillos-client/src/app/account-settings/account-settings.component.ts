@@ -15,7 +15,9 @@ export class AccountSettingsComponent implements OnInit {
       password: null,
       firstName: null,
       lastName: null,
-      isAdmin: false
+      isAdmin: false,
+      bio: null,
+      preferredService: null
     };
 
   loading = false;
