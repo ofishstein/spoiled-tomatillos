@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../services/notification.service';
+import { Utils } from '../utils';
 
 @Component({
   selector: 'app-notifications',
@@ -11,12 +12,11 @@ export class NotificationsComponent implements OnInit {
   public notifications: Array<any>;
   public unseenCount: number;
 
-  constructor(private _notificationService: NotificationService) {}
+  constructor(private _notificationService: NotificationService, public utils: Utils) {}
 
   ngOnInit() {
     this._notificationService.getNotifications().subscribe((response) => {
       if (response) {
-        console.log('GET NOTIFICATIONS RESPONSE["notifications"]: '+response['notifications']);
         this.notifications = response['notifications'];
         this.unseenCount = response['unseenCount'];
       }
@@ -24,5 +24,4 @@ export class NotificationsComponent implements OnInit {
 
     this._notificationService.updateUnseenCount();
   }
-
 }

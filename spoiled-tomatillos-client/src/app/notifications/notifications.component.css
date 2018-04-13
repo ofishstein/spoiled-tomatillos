@@ -3,7 +3,7 @@ div.border {
     border-collapse: collapse !important;
 }
 
-div.border:hover {
+div.border:hover, .new-notification:hover {
     background-color: lightgoldenrodyellow;
 }
 
@@ -13,11 +13,7 @@ a {
 }
 
 .new-notification {
-  background-color: #7f7f7f;
-}
-
-.new-notification:hover {
-  background-color: lightgoldenrodyellow;
+  background-color: #69758061;
 }
 
 .rec-msg {
@@ -25,6 +21,29 @@ a {
   margin-bottom: 15px;
 }
 
-.row.border {
-  padding: 5px;
+.rec-msg p {
+  margin: 5px;
+  color: black;
+  min-height: 50px;
+}
+
+.notification-img-container {
+  width: 100px;
+  height: 150px;
+  display: table;
+}
+
+.notification-img-container.notification-img {
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.notification-img-container .notification-img img {
+  max-width: 100px;
+  max-height: 150px;
+}
+
+.container {
+  margin-bottom: 100px;
 }
