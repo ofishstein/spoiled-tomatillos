@@ -10,8 +10,8 @@ import { MovieService } from '../services/movie/movie.service';
 })
 export class AddMovieComponent implements OnInit {
 
-  loading = false;
-  movie: AdminMovie = {
+  public isLoading: boolean;
+  public movie: AdminMovie = {
     poster: null,
     title: null,
     tmdbId: null,
@@ -19,20 +19,21 @@ export class AddMovieComponent implements OnInit {
   };
 
   constructor(private _router: Router, private _movieService: MovieService) {
+    this.isLoading = false;
   }
 
   ngOnInit() {
   }
 
   addMovie() {
-    this.loading = true;
+    this.isLoading = true;
     this._movieService.addMovie(this.movie).subscribe(
       data => {
         this._router.navigate(['/admin/home']);
       },
       error => {
         console.log(error);
-        this.loading = false;
+        this.isLoading = false;
       }
     );
   }
