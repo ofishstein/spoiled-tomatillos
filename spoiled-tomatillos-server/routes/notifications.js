@@ -56,8 +56,6 @@ router.get('/', authCheck, (req, res) => {
                 .then((rNotifications) => {
                   response = {notifications: fNotifications.concat(rNotifications)};
                   response['unseenCount'] = followerUnseen + recUnseen;
-                  console.log('\n\nunseenCount before update = '+response['unseenCount']);
-                  console.log('\n\nnotifications COUNT before update = '+response['notifications'].length);
 
                   const fNotifIds = fNotifications.map((notif) => notif.id);
                   const rNotifIds = rNotifications.map((notif) => notif.id);
@@ -92,8 +90,6 @@ router.get('/', authCheck, (req, res) => {
                           }
                         })
                         .then(() => {
-                          console.log('\n\nunseenCount after update = '+response['unseenCount']);
-                          console.log('\n\nnotifications COUNT after update = '+response['notifications'].length);
                           res.json(response);
                         });
                     });
