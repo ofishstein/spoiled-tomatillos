@@ -9,47 +9,46 @@ module.exports = {
      Example:
      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    return Promise.all([
-      queryInterface.createTable('RecommendationNotifications', {
-        id: {
-          allowNull: false,
-          autoIncrement: true,
-          primaryKey: true,
-          type: Sequelize.INTEGER
+    return queryInterface.createTable('RecommendationNotifications', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Users',
+          key: 'id'
         },
-        userId: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Users',
-            key: 'id'
-          },
-          onDelete: 'CASCADE'
+        onDelete: 'CASCADE'
+      },
+      type: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      recommendationId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Recommendations',
+          key: 'id'
         },
-        type: {
-          allowNull: false,
-          type: Sequelize.STRING
-        },
-        recommendationId: {
-          type: Sequelize.INTEGER,
-          references: {
-            model: 'Recommendations',
-            key: 'id'
-          },
-          onDelete: 'CASCADE'
-        },
-        createdAt: {
-          allowNull: false,
-          type: Sequelize.DATE
-        },
-        updatedAt: {
-          allowNull: false,
-          type: Sequelize.DATE
-        },
-        seen: {
-          allowNull: true,
-          type: Sequelize.DATE
-        }
-      })]);
+        onDelete: 'CASCADE'
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      seen: {
+        allowNull: true,
+        type: Sequelize.DATE
+      }
+    });
   },
 
   down: (queryInterface, Sequelize) => {
@@ -60,8 +59,6 @@ module.exports = {
      Example:
      return queryInterface.dropTable('users');
      */
-    return Promise.all([
-      queryInterface.dropTable('RecommendationNotifications'),
-    ]);
+    return queryInterface.dropTable('RecommendationNotifications');
   }
 };

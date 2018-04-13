@@ -54,7 +54,7 @@ router.get('/', authCheck, (req, res) => {
                     }
                 })
                 .then((rNotifications) => {
-                  response = {notifications: fNotifications.concat(rNotifications)};
+                  const response = {notifications: fNotifications.concat(rNotifications)};
                   response['unseenCount'] = followerUnseen + recUnseen;
 
                   const fNotifIds = fNotifications.map((notif) => notif.id);
@@ -71,7 +71,7 @@ router.get('/', authCheck, (req, res) => {
                         }
                       })
                     .then(fUpdated => {
-                      if (fUpdated.toString() !== fNotifIds.length.toString()) {
+                      if (fUpdated.toString() !== fNotifIds.length.toString()) /* istanbul ignore next */ {
                         logger.warn('Not all follower notifications updated to seen');
                       }
                       session.RecommendationNotification
@@ -85,7 +85,7 @@ router.get('/', authCheck, (req, res) => {
                             }
                           })
                         .then(rUpdated => {
-                          if (rUpdated.toString() !== rNotifIds.length.toString()) {
+                          if (rUpdated.toString() !== rNotifIds.length.toString()) /* istanbul ignore next */ {
                             logger.warn('Not all recommendation notifications updated to seen');
                           }
                         })
