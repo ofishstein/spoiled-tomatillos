@@ -3,11 +3,47 @@ div.border {
     border-collapse: collapse !important;
 }
 
-div.border:hover {
+div.border:hover, .new-notification:hover {
     background-color: lightgoldenrodyellow;
 }
 
 a {
     /*color: inherit; we may or may not want this*/
     text-decoration: none;
+}
+
+.new-notification {
+  background-color: #69758061;
+}
+
+.rec-msg {
+  margin: 10px;
+  margin-bottom: 15px;
+}
+
+.rec-msg p {
+  margin: 5px;
+  color: black;
+  min-height: 50px;
+}
+
+.notification-img-container {
+  width: 100px;
+  height: 150px;
+  display: table;
+}
+
+.notification-img-container.notification-img {
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.notification-img-container .notification-img img {
+  max-width: 100px;
+  max-height: 150px;
+}
+
+.container {
+  margin-bottom: 100px;
 }

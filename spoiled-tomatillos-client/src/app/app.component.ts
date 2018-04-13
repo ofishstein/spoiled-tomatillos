@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { SearchService } from './services/search.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { NotificationService } from './services/notification.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -14,15 +15,25 @@ export class AppComponent implements OnInit {
   public title: string;
   private currentUser: Observable<any>;
   private isLoggedIn: Observable<boolean>;
+  private unseenNotifications: number | boolean;
 
   constructor(private _searchService: SearchService, private _router: Router,
-              private _authService: AuthService) {
+              private _authService: AuthService, private _notificationService: NotificationService) {
     this.title = 'Spoiled Tomatillos';
     this.currentUser = _authService.getCurrentUser();
     this.isLoggedIn = _authService.isLoggedIn();
   }
 
   ngOnInit() {
+    this._router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this._notificationService.updateUnseenCount();
+      }
+    });
+
+    this._notificationService.unseenCount.subscribe((unseen) => {
+      this.unseenNotifications = unseen;
+    });
 
     // Navigates the user to the SearchComponent upon a successful search.
     this._searchService.searchChange.subscribe((searchSuccessful) => {
@@ -51,6 +62,7 @@ export class AppComponent implements OnInit {
 
   public logout(): void {
     this._authService.logout();
+    this._notificationService.resetUnseenCount();
     this._router.navigate(['/login']);
   }
 }

@@ -306,10 +306,42 @@ module.exports = {
       createdAt: now,
       updatedAt: now
     }];
+    const followerNotificationsToInsert = [{
+      seen: null,
+      type: 'FOLLOWER',
+      userId: 1,
+      followshipId: 1,
+      createdAt: now,
+      updatedAt: now
+    }, {
+      seen: null,
+      type: 'FOLLOWER',
+      userId: 1,
+      followshipId: 2,
+      createdAt: now,
+      updatedAt: now
+    }];
+    const recommendationNotificationsToInsert = [{
+      seen: null,
+      type: 'RECOMMENDATION',
+      userId: 1,
+      recommendationId: 1,
+      createdAt: now,
+      updatedAt: now
+    }, {
+      seen: null,
+      type: 'RECOMMENDATION',
+      userId: 1,
+      recommendationId: 2,
+      createdAt: now,
+      updatedAt: now
+    }];
 
     await queryInterface.bulkInsert('ReviewComments', reviewCommentsToInsert, {});
     await queryInterface.bulkInsert('WatchlistComments', watchlistCommentsToInsert, {});
-    return await queryInterface.bulkInsert('WatchlistItems', watchlistItemsToInsert, {});
+    await queryInterface.bulkInsert('WatchlistItems', watchlistItemsToInsert, {});
+    await queryInterface.bulkInsert('FollowerNotifications', followerNotificationsToInsert, {});
+    return await queryInterface.bulkInsert('RecommendationNotifications', recommendationNotificationsToInsert, {});
   },
 
   down: async function(queryInterface, Sequelize) {

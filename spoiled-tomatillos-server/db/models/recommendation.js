@@ -2,7 +2,23 @@
 module.exports = (sequelize, DataTypes) => {
   const Recommendation = sequelize.define('Recommendation', {
     message: DataTypes.STRING
-  }, {});
+  }, {
+    hooks:
+      {
+        afterCreate: (rec, options) => {
+          sequelize.models.RecommendationNotification
+            .findOrCreate({
+              where: {
+                userId: rec.recommendeeId,
+                seen: null,
+                recommendationId: rec.id,
+                type: 'RECOMMENDATION'
+              }
+            })
+            .then(() => {});
+        }
+      }
+  });
   Recommendation.associate = function(models) {
     Recommendation.belongsTo(models.User,
       {as: 'Recommender', sourceKey: 'id', foreignKey: 'recommenderId'});

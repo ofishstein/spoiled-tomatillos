@@ -1,43 +1,83 @@
 <div class="container">
+  <div class="col-lg-10 mx-auto">
   <div class="row">
     <div class="col">
       <h2>Notifications</h2>
     </div>
   </div>
-  <div class="row border">
-    <div class="col-2">
-      <a href="#">
-      <img class="img-fluid float-right" src="../../assets/notifications_img_placeholder.png" style="max-height: 75px">
-      </a>
+
+  <!-- list of notifications-->
+  <ng-container *ngIf="notifications; else noNotifications">
+    <div *ngFor="let notif of notifications">
+
+      <!-- follower notification -->
+      <div *ngIf="notif.type === 'FOLLOWER'">
+        <div class="row border" [class.new-notification]="notif.seen === null">
+          <div class="col-xs-3 col-sm-2 mt-3 mb-3 mx-auto">
+            <a routerLink="/user/{{notif.Follower.FollowerUser.id}}">
+              <div class="notification-img-container">
+                <div class="notification-img">
+                  <img class="img-fluid rounded mx-auto float-right" src="{{notif.Follower.FollowerUser.profileImageUrl}}">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-8 col-sm-9 mt-3 mb-3">
+            <a routerLink="/user/{{notif.Follower.FollowerUser.id}}">
+              <span>
+                  {{notif.Follower.FollowerUser.username}} started following you.
+              </span>
+            </a>
+            <p class="text-muted text-right mb-0 st-timestamp">
+              <small>{{ utils.getActivityDisplayDate(notif.createdAt) }}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- recommendation notification -->
+      <div *ngIf="notif.type === 'RECOMMENDATION'">
+        <div class="row border" [class.new-notification]="notif.seen === null">
+          <div class="col-xs-3 col-sm-2 mt-3 mb-3 mx-auto">
+            <a routerLink="/movie/{{notif.Recommendation.Movie.id}}">
+              <div class="notification-img-container">
+                <div class="notification-img">
+                  <img class="img-fluid rounded mx-auto float-right" src="{{notif.Recommendation.Movie.poster}}">
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-xs-8 col-sm-9 mt-3 mb-3">
+            <a routerLink="/movie/{{notif.Recommendation.Movie.id}}">
+            <span>
+              {{notif.Recommendation.Recommender.username}} recommended {{notif.Recommendation.Movie.title}}.
+            </span>
+              <div *ngIf="notif.Recommendation.message">
+                <div class="col-9">
+                  <div class="row border rec-msg">
+                  <p>{{notif.Recommendation.message}}</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <p class="text-muted text-right mb-0 st-timestamp">
+              <small>{{ utils.getActivityDisplayDate(notif.createdAt) }}</small>
+            </p>
+          </div>
+        </div>
+      </div>
+
+
     </div>
-    <div class="col-9">
-      <a href="#">
-      <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet, felis id ultrices vulputate, turpis risus mattis massa, id tincidunt ligula dui sed turpis.</span>
-      </a>
+  </ng-container>
+
+  <!-- if no notifications (new or old) -->
+  <ng-template #noNotifications>
+    <div class="row border">
+      <span>You have 0 notifications</span>
     </div>
-  </div>
-  <div class="row border">
-    <div class="col-2">
-      <a href="#">
-      <img class="img-fluid float-right" src="../../assets/notifications_img_placeholder.png" style="max-height: 75px">
-      </a>
-    </div>
-    <div class="col-9">
-      <a href="#">
-      <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet, felis id ultrices vulputate, turpis risus mattis massa, id tincidunt ligula dui sed turpis.</span>
-      </a>
-    </div>
-  </div>
-  <div class="row border">
-    <div class="col-2">
-      <a href="#">
-      <img class="img-fluid float-right" src="../../assets/notifications_img_placeholder.png" style="max-height: 75px">
-      </a>
-    </div>
-    <div class="col-9">
-      <a href="#">
-      <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet, felis id ultrices vulputate, turpis risus mattis massa, id tincidunt ligula dui sed turpis.</span>
-      </a>
-    </div>
-  </div>
+  </ng-template>
+
 </div>
+</div>
+

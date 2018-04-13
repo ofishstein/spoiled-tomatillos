@@ -36,6 +36,8 @@ import { MovieService } from './services/movie/movie.service';
 import { ProfileService } from './services/profile.service';
 import { ApiInterceptor } from './api-interceptor';
 import { RecommendService } from './services/recommend.service';
+import { NotificationService } from './services/notification.service';
+import { Utils } from './utils';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,9 @@ import { RecommendService } from './services/recommend.service';
     AuthService,
     MovieService,
     ProfileService,
-    RecommendService
+    RecommendService,
+    NotificationService,
+    Utils
   ],
 
   bootstrap: [AppComponent]
