@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   public title: string;
   private currentUser: Observable<any>;
   private isLoggedIn: Observable<boolean>;
-  private unseenNotifications: Observable<any>;
+  private unseenNotifications: number | boolean;
 
   constructor(private _searchService: SearchService, private _router: Router,
               private _authService: AuthService, private _notificationService: NotificationService) {

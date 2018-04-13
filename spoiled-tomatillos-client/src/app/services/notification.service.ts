@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class NotificationService {
 
-  public unseenCount: BehaviorSubject<any>;
+  public unseenCount: BehaviorSubject<number | boolean>;
   public notifications: any;
 
   constructor(private http: HttpClient) {
@@ -17,14 +17,13 @@ export class NotificationService {
   }
 
   public updateUnseenCount(): void {
-      this.http.get('/api/notifications/unseenCount', {withCredentials: true}).toPromise()
-        .then((res) => {
+    this.http.get('/api/notifications/unseenCount', {withCredentials: true})
+      .subscribe((res) => {
         if (this.unseenCount.value !== res) {
-          this.unseenCount.next(res);
+          this.unseenCount.next(Number(res));
         }
-      })
-        .catch((err) => {
-        console.log('Checking for new notifications failed: ',+err);
+      }, (err) => {
+        console.log('Checking for new notifications failed.', err);
       });
   }
 
