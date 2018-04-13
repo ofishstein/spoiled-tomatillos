@@ -110,8 +110,11 @@ describe('Movies endpoint', () => {
         response.body.title.should.equal(testData.movies[0].title);
         done();
       });
-      it('It should have a poster url', (done) => {
+      it('It should have a poster url and average rating', (done) => {
         response.body.should.have.property('poster');
+        response.body.should.have.property('rating');
+        // reviews bulk created, so review afterCreate hooks not hit to update movie rating
+        expect(response.body['rating']).to.eql(null);
         done();
       });
       it('It should have movie info from omdb', (done) => {
@@ -141,6 +144,29 @@ describe('Movies endpoint', () => {
         res.body.should.have.length(expectedReviews.length);
         done();
       });
+    });
+  });
+
+  describe('POST movie review', () => {
+    it('It should successfully post a movie review', (done) => {
+      authenticatedUser.post('/api/movies/103/review')
+        .send({
+          rating: 4.5,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+
+    it('It should update the average movie rating after posting new review', (done) => {
+      authenticatedUser.get('/api/movies/103')
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('rating');
+          expect(res.body['rating']).to.eql('3.50');
+          done();
+        });
     });
   });
 
