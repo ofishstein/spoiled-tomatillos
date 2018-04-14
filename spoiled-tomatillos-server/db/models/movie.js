@@ -53,6 +53,8 @@ module.exports = (sequelize, DataTypes) => {
     tmdbId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     poster: DataTypes.STRING,
+    rating: DataTypes.DECIMAL,
+    reviewCount: DataTypes.INTEGER,
     Title: DataTypes.VIRTUAL,
     Year: DataTypes.VIRTUAL,
     Rated: DataTypes.VIRTUAL,
