@@ -9,47 +9,45 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       afterCreate: (review, options) => {
-        sequelize.models.Review
-          .findAndCountAll({
-            where: { movieId: review.movieId },
-            attributes: ['rating']
+        sequelize.models.Movie
+          .findOne({
+            where: { id: review.movieId },
+            attributes: ['rating', 'reviewCount']
           })
-          .then(result => {
-            let total = 0;
-            result.rows.forEach(r => {
-              total += r.rating;
-            });
-            const average = total / result.count;
+          .then(movie => {
+            let total = movie.rating * movie.reviewCount;
+            total += review.rating;
 
             sequelize.models.Movie
-              .update({ rating: average },
-                {
-                  where: { id: review.movieId }
-                })
+              .update({
+                rating: total / (movie.reviewCount + 1),
+                reviewCount: movie.reviewCount + 1
+              }, {
+                where: { id: review.movieId }
+              })
               .then(updated => {})
               .catch(err => {
                 logger.warn('Error updating average movie rating', err);
               });
           });
       },
-      afterDestroy: (review, options) => {
-        sequelize.models.Review
-          .findAndCountAll({
-            where: { movieId: review.movieId },
-            attributes: ['rating']
+      beforeDestroy: (review, options) => {
+        sequelize.models.Movie
+          .findOne({
+            where: { id: review.movieId },
+            attributes: ['rating', 'reviewCount']
           })
-          .then(result => {
-            let total = 0;
-            result.rows.forEach(r => {
-              total += r.rating;
-            });
-            const average = total / result.count;
+          .then(movie => {
+            let total = movie.rating * movie.reviewCount;
+            total -= review.rating;
 
             sequelize.models.Movie
-              .update({ rating: average },
-                {
-                  where: { id: review.movieId }
-                })
+              .update({
+                rating: total / (movie.reviewCount - 1),
+                reviewCount: movie.reviewCount - 1
+              }, {
+                where: { id: review.movieId }
+              })
               .then(updated => {})
               .catch(err => {
                 logger.warn('Error updating average movie rating', err);

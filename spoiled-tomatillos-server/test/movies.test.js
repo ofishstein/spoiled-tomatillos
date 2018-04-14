@@ -164,7 +164,7 @@ describe('Movies endpoint', () => {
         .end((err, res) => {
           expect(res).to.have.status(200);
           expect(res.body).to.have.property('rating');
-          expect(res.body['rating']).to.eql('3.50');
+          expect(res.body['rating']).to.eql('4.50');
           done();
         });
     });

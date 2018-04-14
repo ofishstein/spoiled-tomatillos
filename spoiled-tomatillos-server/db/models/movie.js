@@ -54,6 +54,7 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     poster: DataTypes.STRING,
     rating: DataTypes.DECIMAL,
+    reviewCount: DataTypes.INTEGER,
     Title: DataTypes.VIRTUAL,
     Year: DataTypes.VIRTUAL,
     Rated: DataTypes.VIRTUAL,
