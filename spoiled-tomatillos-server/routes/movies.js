@@ -98,12 +98,13 @@ router.post('/', adminCheck, function(req, res) {
       res.sendStatus(200);
     })
     .catch(error => {
+      /* istanbul ignore else */
       if (error instanceof session.Sequelize.DatabaseError) {
         // Invalid movie body
         logger.warn('Admin attempted to post invalid movie object', error);
         res.sendStatus(400);
         res.end();
-      } /* istanbul ignore else */ else {
+      } else {
         // DB error
         logger.warn('DB Error attempting to post new movie', error);
         res.sendStatus(500);
@@ -122,11 +123,12 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
       res.sendStatus(200);
     })
     .catch(error => {
+      /* istanbul ignore else */
       if (error instanceof session.Sequelize.DatabaseError) {
         // Invalid review body
         logger.warn('User attempted to post invalid review', error);
         res.sendStatus(400);
-      } /* istanbul ignore else */ else {
+      } else {
         // DB error
         logger.warn('DB Error attempting to post new movie', error);
         res.sendStatus(500);
@@ -145,11 +147,12 @@ router.put('/:movie_id', adminCheck, function(req, res) {
       res.send(result);
     })
     .catch(error => {
+      /* istanbul ignore else */
       if (error instanceof session.Sequelize.DatabaseError) {
         // Invalid movie
         logger.warn('Admin attempted to PUT invalid movie', error);
         res.sendStatus(400);
-      } /* istanbul ignore else */ else {
+      } else {
         // DB error
         logger.warn('DB Error attempting to post new movie', error);
         res.sendStatus(500);
