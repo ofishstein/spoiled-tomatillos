@@ -71,7 +71,8 @@ router.get('/', authCheck, (req, res) => {
                         }
                       })
                     .then(fUpdated => {
-                      if (fUpdated.toString() !== fNotifIds.length.toString()) /* istanbul ignore next */ {
+                      /* istanbul ignore if */
+                      if (fUpdated.toString() !== fNotifIds.length.toString()) {
                         logger.warn('Not all follower notifications updated to seen');
                       }
                       session.RecommendationNotification
@@ -85,7 +86,8 @@ router.get('/', authCheck, (req, res) => {
                             }
                           })
                         .then(rUpdated => {
-                          if (rUpdated.toString() !== rNotifIds.length.toString()) /* istanbul ignore next */ {
+                          /* istanbul ignore if */
+                          if (rUpdated.toString() !== rNotifIds.length.toString()) {
                             logger.warn('Not all recommendation notifications updated to seen');
                           }
                         })

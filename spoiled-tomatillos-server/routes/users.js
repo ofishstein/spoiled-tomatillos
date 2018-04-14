@@ -24,7 +24,7 @@ router.get('/', function(req, res) {
   (error, status) => {
     console.log(error);
     res.sendStatus(status);
- });
+  });
 });
 
 router.get('/settings', authCheck, function(req, res) {
@@ -62,8 +62,8 @@ function reformatProfile(profile) {
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
   profileInfo['activities'].forEach(item => {
-    item['img'] = item['Movie']['poster']
-    item['type'] = 'review'
+    item['img'] = item['Movie']['poster'];
+    item['type'] = 'review';
   });
   ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {

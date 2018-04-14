@@ -4,7 +4,9 @@ const router = express.Router();
 const db = require('../db/db.js');
 const session = db.get_session();
 const utils = require('./utils.js');
+const logger = require('../logger');
 const authCheck = require('./auth');
+const adminCheck = require('./adminCheck');
 
 // GET METHODS
 // Handle searching for movies
@@ -12,8 +14,8 @@ router.get('/', function(req, res) {
   utils.handleSearch(req.query, session.Movie, session, (result) => {
     res.send(result);
   },
-  (error, status) => {
-    console.log(error);
+  (error, status) /* istanbul ignore next */ => {
+    logger.warn('Movie search lookup failed', error);
     res.sendStatus(status);
   });
 });
@@ -88,9 +90,7 @@ router.get('/:movie_id/reviews', function(req, res) {
 
 // POST METHODS
 
-router.post('/', authCheck, function(req, res) {
-  // TODO: check they are admin
-  // TODO: validate body
+router.post('/', adminCheck, function(req, res) {
   session.Movie
     .build(req.body)
     .save()
@@ -98,12 +98,21 @@ router.post('/', authCheck, function(req, res) {
       res.sendStatus(200);
     })
     .catch(error => {
-      res.sendStatus(500);
+      if (error instanceof session.Sequelize.DatabaseError) {
+        // Invalid movie body
+        logger.warn('Admin attempted to post invalid movie object', error);
+        res.sendStatus(400);
+        res.end();
+      } /* istanbul ignore else */ else {
+        // DB error
+        logger.warn('DB Error attempting to post new movie', error);
+        res.sendStatus(500);
+      }
     });
 });
 
 router.post('/:movie_id/review', authCheck, function(req, res) {
-  review = req.body; // TODO: Validate fields
+  let review = req.body;
   review['movieId'] = req.params['movie_id'];
   review['userId'] = req.user.id;
   session.Review
@@ -113,15 +122,21 @@ router.post('/:movie_id/review', authCheck, function(req, res) {
       res.sendStatus(200);
     })
     .catch(error => {
-      console.log(error);
-      res.sendStatus(500);
+      if (error instanceof session.Sequelize.DatabaseError) {
+        // Invalid review body
+        logger.warn('User attempted to post invalid review', error);
+        res.sendStatus(400);
+      } /* istanbul ignore else */ else {
+        // DB error
+        logger.warn('DB Error attempting to post new movie', error);
+        res.sendStatus(500);
+      }
     });
 });
 
 // PUT METHODS
 
-router.put('/:movie_id', authCheck, function(req, res) {
-  // TODO: validate body and movie id
+router.put('/:movie_id', adminCheck, function(req, res) {
   session.Movie.update(
     req.body,
     { where: {id: req.params['movie_id']} }
@@ -130,15 +145,21 @@ router.put('/:movie_id', authCheck, function(req, res) {
       res.send(result);
     })
     .catch(error => {
-      console.log(error);
-      res.sendStatus(500);
+      if (error instanceof session.Sequelize.DatabaseError) {
+        // Invalid movie
+        logger.warn('Admin attempted to PUT invalid movie', error);
+        res.sendStatus(400);
+      } /* istanbul ignore else */ else {
+        // DB error
+        logger.warn('DB Error attempting to post new movie', error);
+        res.sendStatus(500);
+      }
     });
 });
 
 // DELETE METHODS
 
-router.delete('/:movie_id', authCheck, function(req, res) {
-  //TODO: Authenticate is admin
+router.delete('/:movie_id', adminCheck, function(req, res) {
   session.Movie
     .destroy({
       where: {
@@ -147,6 +168,10 @@ router.delete('/:movie_id', authCheck, function(req, res) {
     })
     .then(() => {
       res.sendStatus(200);
+    })
+    .catch(/* istanbul ignore next */ error => {
+      logger.warn('DB error', error);
+      res.sendStatus(500);
     });
 });
 
