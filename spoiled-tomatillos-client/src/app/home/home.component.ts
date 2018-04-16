@@ -18,9 +18,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this._recommendService.getAllRecommendations().subscribe(
       data => {
-        this.recommendations = data;
+        this.recommendations = JSON.parse(data);
 
-        if (data) {
+        if (this.recommendations.length > 0) {
           this.noRes = false;
         } else {
           this.noRes = true;
