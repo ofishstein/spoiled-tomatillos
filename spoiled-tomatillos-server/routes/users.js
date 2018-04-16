@@ -24,7 +24,7 @@ router.get('/', function(req, res) {
   (error, status) => {
     console.log(error);
     res.sendStatus(status);
- });
+  });
 });
 
 router.get('/settings', authCheck, function(req, res) {
@@ -62,8 +62,8 @@ function reformatProfile(profile) {
   profileInfo['activities'] = [];
   profileInfo['activities'] = profileInfo['activities'].concat(profileInfo['reviews']);
   profileInfo['activities'].forEach(item => {
-    item['img'] = item['Movie']['poster']
-    item['type'] = 'review'
+    item['img'] = item['Movie']['poster'];
+    item['type'] = 'review';
   });
   ['RecommendationsSent', 'RecommendationsReceived'].forEach(key => {
     profileInfo[key].forEach(item => {
@@ -268,7 +268,8 @@ router.put('/settings', authCheck, function(req, res) {
 
   session.User.findById(req.user.id)
     .then(user => {
-      if (!user) /* istanbul ignore next */ {
+      /* istanbul ignore if */
+      if (!user) {
         logger.error('Settings put failed', req.body);
         res.sendStatus(500);
       } else {
